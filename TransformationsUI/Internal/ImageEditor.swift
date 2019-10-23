@@ -1,0 +1,80 @@
+//
+//  ImageEditor.swift
+//  TransformationsUI
+//
+//  Created by Ruben Nine on 7/4/19.
+//  Copyright © 2019 Filestack. All rights reserved.
+//
+
+import UIKit.UIImage
+
+class ImageEditor {
+    private var editedImages: [UIImage] = []
+    private var undoneImages: [UIImage] = []
+
+    public let originalImage: UIImage
+
+    public var editedImage: UIImage {
+        return editedImages.last ?? originalImage
+    }
+
+    init?(image: UIImage) {
+        guard let ciImageBackedCopy = image.ciImageBackedCopy() else { return nil }
+
+        originalImage = ciImageBackedCopy
+    }
+}
+
+// MARK: - Image Transform Commands
+
+extension ImageEditor {
+    func rotate(clockwise: Bool) {
+        if let rotatedImage = editedImage.rotated(clockwise: clockwise) {
+            editedImages.append(rotatedImage)
+            undoneImages.removeAll()
+        }
+    }
+
+    func crop(insets: UIEdgeInsets) {
+        if let croppedImage = editedImage.cropped(by: insets) {
+            editedImages.append(croppedImage)
+            undoneImages.removeAll()
+        }
+    }
+
+    func cropCircled(center: CGPoint, radius: CGFloat) {
+        if let cropCircledImage = editedImage.circled(center: center, radius: radius) {
+            editedImages.append(cropCircledImage)
+            undoneImages.removeAll()
+        }
+    }
+}
+
+// MARK: - Image Undo, Redo & Reset Commands
+
+extension ImageEditor {
+    func undo() {
+        if canUndo() {
+            undoneImages.append(editedImages.removeLast())
+        }
+    }
+
+    func redo() {
+        if canRedo() {
+            editedImages.append(undoneImages.removeLast())
+        }
+    }
+
+    func canUndo() -> Bool {
+        return !editedImages.isEmpty
+    }
+
+    func canRedo() -> Bool {
+        return !undoneImages.isEmpty
+    }
+
+    func reset() {
+        editedImages.removeAll()
+        undoneImages.removeAll()
+    }
+}
