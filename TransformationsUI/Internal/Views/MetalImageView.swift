@@ -8,7 +8,6 @@
 
 import UIKit
 import MetalKit
-//import QuartzCore
 
 class MetalImageView: MTKView {
     let colorSpace = CGColorSpaceCreateDeviceRGB()
@@ -51,13 +50,16 @@ class MetalImageView: MTKView {
         let scale = min(scaleX, scaleY)
 
         // Scaled image
-        let scaled = image.transformed(by: CGAffineTransform(scaleX: scale, y: scale))
+        let scaled = image
+            .transformed(by: CGAffineTransform(scaleX: scale, y: scale))
+
         // Centered scaled image
         let centered = scaled
             .transformed(by: CGAffineTransform(translationX: (drawableSize.width - scaled.extent.width) / 2,
                                                y: (drawableSize.height - scaled.extent.height) / 2))
             .transformed(by: CGAffineTransform(translationX: -scaled.extent.origin.x,
                                                y: -scaled.extent.origin.y))
+
         // Composite scaled & centered image over clear background
         let compositedImage = centered.composited(over: CIImage(color: .clear))
 
