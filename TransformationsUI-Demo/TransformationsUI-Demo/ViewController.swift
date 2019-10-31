@@ -26,12 +26,19 @@ class ViewController: UIViewController {
     @IBAction func presentTransformationsUI(_ sender: AnyObject) {
         guard let image = imageView.image else { return }
 
-        let transformationsUI = TransformationsUI()
+        let config = Config()
+        let transformationsUI = TransformationsUI(with: config)
 
-        let editorVC = transformationsUI.editor(with: image) { outImage in
-            self.editedImageView.image = outImage ?? UIImage(named: "placeholder")
+        transformationsUI.delegate = self
+
+        if let editorVC = transformationsUI.editor(with: image) {
+            present(editorVC, animated: true)
         }
+    }
+}
 
-        present(editorVC, animated: true)
+extension ViewController: TransformationsUIDelegate {
+    func editorDismissed(with image: UIImage?) {
+        editedImageView.image = image ?? UIImage(named: "placeholder")
     }
 }
