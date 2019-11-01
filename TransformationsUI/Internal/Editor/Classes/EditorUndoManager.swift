@@ -31,6 +31,7 @@ class EditorUndoManager {
 
     func register(step: State) {
         undoStack.append(step)
+        redoStack.removeAll()
 
         DispatchQueue.main.async {
             self.delegate?.undoManagerChanged(editorUndoManager: self)
