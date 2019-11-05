@@ -40,7 +40,7 @@ class CircleGesturesHandler {
             return length(fromRelativeLenght: relativeCircle.radius)
         }
         set {
-            relativeCircle.radius = relativeLenght(fromLenght: newValue)
+            relativeCircle.radius = relativeLength(fromLenght: newValue)
             sendUpdate()
         }
     }
@@ -93,8 +93,8 @@ private extension CircleGesturesHandler {
         return shorterEdge * relativeLenght
     }
 
-    func relativeLenght(fromLenght lenght: CGFloat) -> CGFloat {
-        return lenght / shorterEdge
+    func relativeLength(fromLenght length: CGFloat) -> CGFloat {
+        return length / shorterEdge
     }
 
     var maxRadius: CGFloat { return 0.5 }
