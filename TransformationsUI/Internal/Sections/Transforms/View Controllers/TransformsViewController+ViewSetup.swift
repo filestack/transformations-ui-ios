@@ -37,7 +37,7 @@ extension TransformsViewController {
         imageView.isOpaque = false
         imageView.contentMode = .redraw
         preview.addSubview(imageClearBackground)
-        imageClearBackground.backgroundColor = UIColor(patternImage: .fromFilestackBundle("clear-pattern"))
+        imageClearBackground.backgroundColor = UIColor(patternImage: .fromFrameworkBundle("clear-pattern"))
         imageClearBackground.frame = imageFrame.applying(CGAffineTransform(translationX: 4, y: 4))
     }
 

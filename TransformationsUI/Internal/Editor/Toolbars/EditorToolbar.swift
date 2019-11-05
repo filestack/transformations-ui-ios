@@ -42,8 +42,7 @@ class EditorToolbar: UIToolbar {
 
 private extension EditorToolbar {
     func imageBarButton(_ imageName: String, action: Selector) -> UIBarButtonItem {
-        let image = UIImage.fromFilestackBundle(imageName)
-        return UIBarButtonItem(image: image, style: .plain, target: self, action: action)
+        return UIBarButtonItem(image: .fromFrameworkBundle(imageName), style: .plain, target: self, action: action)
     }
 
     var editColor: UIColor {

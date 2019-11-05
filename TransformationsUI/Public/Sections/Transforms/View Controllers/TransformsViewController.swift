@@ -9,7 +9,7 @@
 import UIKit
 
 public class TransformsViewController: UIViewController, UIGestureRecognizerDelegate, Section {
-    public lazy var icon = UIImage.fromFilestackBundle("icon-section-transforms")
+    public lazy var icon = UIImage.fromFrameworkBundle("icon-section-transforms")
 
     public lazy var renderNode: RenderNode = {
         let node = TransformsRenderNode()

@@ -9,11 +9,7 @@
 import UIKit
 
 extension UIImage {
-    static func fromFilestackBundle(_ name: String) -> UIImage {
+    static func fromFrameworkBundle(_ name: String) -> UIImage {
         return UIImage(named: name, in: Bundle(for: TransformationsUI.self), compatibleWith: nil) ?? UIImage()
-    }
-
-    static func templatedFilestackImage(_ name: String) -> UIImage {
-        return fromFilestackBundle(name).withRenderingMode(.alwaysTemplate)
     }
 }
