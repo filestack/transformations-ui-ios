@@ -10,18 +10,18 @@ import UIKit
 import MetalKit
 import CoreImage
 
-class MetalImageView: MTKView {
-    let colorSpace = CGColorSpaceCreateDeviceRGB()
+public class MetalImageView: MTKView {
+    private let colorSpace = CGColorSpaceCreateDeviceRGB()
 
-    lazy var commandQueue: MTLCommandQueue? = {
+    private lazy var commandQueue: MTLCommandQueue? = {
         return device!.makeCommandQueue()
     }()
 
-    lazy var ciContext: CIContext = {
+    private lazy var ciContext: CIContext = {
         return CIContext(mtlDevice: device!)
     }()
 
-    override init(frame frameRect: CGRect, device: MTLDevice?) {
+    public override init(frame frameRect: CGRect, device: MTLDevice?) {
         super.init(frame: frameRect, device: device ?? MTLCreateSystemDefaultDevice())
 
         guard super.device != nil else {
@@ -33,16 +33,16 @@ class MetalImageView: MTKView {
         framebufferOnly = false
     }
 
-    required init(coder: NSCoder) {
+    public required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     /// The image to display
-    var image: CIImage? {
+    public var image: CIImage? {
         didSet { setNeedsDisplay() }
     }
 
-    override func draw(_ rect: CGRect) {
+    public override func draw(_ rect: CGRect) {
         guard let image = image, let currentDrawable = currentDrawable else { return }
         guard let commandBuffer = commandQueue?.makeCommandBuffer() else { return }
 

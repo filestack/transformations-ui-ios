@@ -169,6 +169,14 @@
 			path = Toolbars;
 			sourceTree = "<group>";
 		};
+		452BF79C2371826B005DE175 /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				457935E5235F2B4100938CEF /* MetalImageView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		454D7DAE236B0752004B2898 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,7 +203,6 @@
 				454D7DAE236B0752004B2898 /* Protocols */,
 				451F92992369AD95006D47DE /* Toolbars */,
 				45793555235EFF1400938CEF /* View Controllers */,
-				4579355A235EFF1400938CEF /* Views */,
 			);
 			path = Editor;
 			sourceTree = "<group>";
@@ -301,14 +308,6 @@
 			path = "View Controllers";
 			sourceTree = "<group>";
 		};
-		4579355A235EFF1400938CEF /* Views */ = {
-			isa = PBXGroup;
-			children = (
-				457935E5235F2B4100938CEF /* MetalImageView.swift */,
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		4579355C235EFF1400938CEF /* Gesture Handlers */ = {
 			isa = PBXGroup;
 			children = (
@@ -335,6 +334,7 @@
 		4579358A235F006600938CEF /* Public */ = {
 			isa = PBXGroup;
 			children = (
+				452BF79C2371826B005DE175 /* Views */,
 				45121A47236853E800798073 /* Classes */,
 				45121A3E2368527700798073 /* Protocols */,
 				454D7DB9236B1B38004B2898 /* Sections */,
