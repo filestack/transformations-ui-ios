@@ -9,6 +9,6 @@ Pod::Spec.new do |spec|
 
   spec.platform     = :ios, "11.0"
 
-  spec.source_files = "TransformationsUI/**/*.{h,m}"
+  spec.source_files = "TransformationsUI/**/*.{swift,h,m}"
   spec.resources    = "TransformationsUI/Resources/*.xcassets"
 end
