@@ -73,6 +73,7 @@ private extension CropGesturesHandler {
         get {
             return edgeInsets(from: relativeCropInsets)
         }
+
         set {
             relativeCropInsets = relativeInsets(from: newValue)
             delegate?.updateCropInset(newValue)
@@ -157,7 +158,9 @@ private extension CropGesturesHandler {
 
     func nearestCorner(for point: CGPoint) -> Corner? {
         typealias CornerDistance = (corner: Corner, distance: CGFloat)
+
         var distances = Corner.all.map { CornerDistance(corner: $0, distance: location(of: $0).distance(to: point)) }
+
         distances = distances.filter { (_, distance) -> Bool in distance < 100 }
         distances.sort(by: { $0.distance < $1.distance })
 

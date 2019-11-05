@@ -28,6 +28,7 @@ class CircleGesturesHandler {
         get {
             return point(fromRelativeX: relativeCircle.centerX, relativeY: relativeCircle.centerY)
         }
+
         set {
             relativeCircle.centerX = relativeX(from: newValue) ?? 0
             relativeCircle.centerY = relativeY(from: newValue) ?? 0
@@ -39,6 +40,7 @@ class CircleGesturesHandler {
         get {
             return length(fromRelativeLenght: relativeCircle.radius)
         }
+
         set {
             relativeCircle.radius = relativeLength(fromLenght: newValue)
             sendUpdate()
@@ -117,11 +119,13 @@ extension CircleGesturesHandler {
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: recognizer.view)
         let origin = recognizer.location(in: recognizer.view).movedBy(x: -translation.x, y: -translation.y)
+
         handle(translation: translation, from: origin, forState: recognizer.state)
     }
 
     func handlePinchGesture(recognizer: UIPinchGestureRecognizer) {
         let origin = recognizer.location(in: recognizer.view)
+
         handle(scaling: recognizer.scale, center: origin, forState: recognizer.state)
     }
 
@@ -129,6 +133,7 @@ extension CircleGesturesHandler {
         let rotatedCircle = RelativeCircle(centerX: relativeCircle.centerY,
                                            centerY: 1 - relativeCircle.centerX,
                                            radius: relativeCircle.radius)
+
         relativeCircle = rotatedCircle
     }
 }
@@ -158,6 +163,7 @@ private extension CircleGesturesHandler {
 
     func reset(to circle: RelativeCircle?) {
         guard let circle = circle else { return }
+
         circleCenter = point(fromRelativeX: circle.centerX, relativeY: circle.centerY)
         circleRadius = length(fromRelativeLenght: circle.radius)
     }
@@ -173,6 +179,7 @@ private extension CircleGesturesHandler {
         let rightSpace = delegate.imageFrame.maxX - startCenter.x - circleRadius
         let moveY = clamp(translation.y, min: topSpace, max: bottomSpace)
         let moveX = clamp(translation.x, min: leftSpace, max: rightSpace)
+
         circleCenter = startCenter.movedBy(x: moveX, y: moveY)
     }
 }
@@ -203,6 +210,7 @@ private extension CircleGesturesHandler {
     func scale(by scale: CGFloat) {
         let adjustedScale = scale / 2 + 0.5
         let radius = clamp(relativeCircle.radius * adjustedScale, min: minRadius, max: maxRadius)
+
         circleRadius = length(fromRelativeLenght: radius)
         move(by: .zero)
     }
