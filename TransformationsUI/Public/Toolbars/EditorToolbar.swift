@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class EditorToolbar: ArrangeableToolbar {
+open class EditorToolbar: ArrangeableToolbar {
     // MARK: - Lifecycle Functions
 
     public override init() {

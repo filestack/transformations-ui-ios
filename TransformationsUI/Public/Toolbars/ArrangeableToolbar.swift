@@ -8,7 +8,9 @@
 
 import UIKit
 
-public class ArrangeableToolbar: UIView {
+open class ArrangeableToolbar: UIView {
+    // MARK: - Public Properties
+
     public var shouldAutoAdjustAxis: Bool = true
 
     public var distribution: UIStackView.Distribution {
@@ -29,15 +31,19 @@ public class ArrangeableToolbar: UIView {
         didSet { setupViews() }
     }
 
+    // MARK: - Private Properties
+
     private lazy var stackView = UIStackView()
     private var shouldSetupViews = true
     private var stackViewConstraints = [NSLayoutConstraint]()
 
-    init() {
+    // MARK: - Lifecycle Functions
+    
+    public init() {
         super.init(frame: .infinite)
     }
 
-    init(items: [UIView]) {
+    public init(items: [UIView]) {
         super.init(frame: .infinite)
 
         for item in items {
@@ -45,10 +51,12 @@ public class ArrangeableToolbar: UIView {
         }
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Public Functions
+    
     public func addItem(_ item: UIView) {
         stackView.addArrangedSubview(item)
     }
