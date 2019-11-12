@@ -52,6 +52,7 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
         titleToolbar.title = module.title
         containerView.fill(with: module.view, activate: true)
         activeModule = module
+        module.didMove(toParent: self)
     }
 }
 
