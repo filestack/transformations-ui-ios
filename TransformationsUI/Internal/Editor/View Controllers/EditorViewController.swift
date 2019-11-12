@@ -49,9 +49,19 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
     // MARK: - Public Functions
 
     func activate(module: EditorModule) {
+        // Remove any previously added module vc's.
+        for child in (children.compactMap { $0 as? EditorModule }) {
+            child.removeFromParent()
+        }
+
+        // Add module as a child vc.
+        addChild(module)
+
         titleToolbar.title = module.title
         containerView.fill(with: module.view, activate: true)
         activeModule = module
+
+        // Notify that module vc moved to a new parent.
         module.didMove(toParent: self)
     }
 }
