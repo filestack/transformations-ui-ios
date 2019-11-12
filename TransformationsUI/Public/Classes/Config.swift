@@ -9,8 +9,5 @@
 import Foundation
 
 @objc(FSConfig) public class Config: NSObject {
-    private static let defaultSections = [TransformsViewController.self]
-
-    /// Represents the list of sections available in the editor.
-    public var availableSections: [Section.Type] = defaultSections
+    internal static let defaultModules: [EditorModule.Type] = [TransformsViewController.self]
 }

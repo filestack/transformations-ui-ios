@@ -9,33 +9,41 @@
 import UIKit
 
 extension UIView {
-    func fill(with subview: UIView,
-              connectingEdges: [NSLayoutConstraint.Attribute] = [.top, .bottom, .left, .right],
-              inset: CGFloat = 0,
-              withSafeAreaRespecting useSafeArea: Bool = false) {
+    @discardableResult func fill(with subview: UIView,
+                                 connectingEdges: [NSLayoutConstraint.Attribute] = [.top, .bottom, .left, .right],
+                                 inset: CGFloat = 0,
+                                 withSafeAreaRespecting useSafeArea: Bool = false,
+                                 activate: Bool = false) -> [NSLayoutConstraint] {
         subview.translatesAutoresizingMaskIntoConstraints = false
 
         if !subviews.contains(subview) {
             addSubview(subview)
         }
 
-        connect(edges: connectingEdges, of: subview, inset: inset, withSafeAreaRespecting: useSafeArea)
+        return connect(edges: connectingEdges, of: subview, inset: inset, withSafeAreaRespecting: useSafeArea, activate: activate)
     }
 
-    func connect(edges: [NSLayoutConstraint.Attribute],
-                 of subview: UIView,
-                 inset: CGFloat = 0,
-                 withSafeAreaRespecting useSafeArea: Bool = false) {
-        guard subviews.contains(subview) else { return }
+    @discardableResult func connect(edges: [NSLayoutConstraint.Attribute],
+                                    of subview: UIView,
+                                    inset: CGFloat = 0,
+                                    withSafeAreaRespecting useSafeArea: Bool = false,
+                                    activate: Bool = false) -> [NSLayoutConstraint] {
+        guard subviews.contains(subview) else { return [] }
 
         let primaryItem = useSafeArea ? safeAreaLayoutGuide : self
+        var constraints = [NSLayoutConstraint]()
 
         for edge in edges {
             let reversedEdges: [NSLayoutConstraint.Attribute] = [.top, .left, .topMargin, .leftMargin]
             let offset = reversedEdges.contains(edge) ? -inset : inset
 
-            NSLayoutConstraint(item: primaryItem, attribute: edge, relatedBy: .equal,
-                               toItem: subview, attribute: edge, multiplier: 1, constant: offset).isActive = true
+            let constraint = NSLayoutConstraint(item: primaryItem, attribute: edge, relatedBy: .equal,
+                               toItem: subview, attribute: edge, multiplier: 1, constant: offset)
+
+            constraint.isActive = activate
+            constraints.append(constraint)
         }
+
+        return constraints
     }
 }
