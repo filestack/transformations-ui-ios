@@ -9,5 +9,5 @@
 import Foundation
 
 @objc(FSConfig) public class Config: NSObject {
-    internal static let defaultModules: [EditorModule.Type] = [TransformsViewController.self]
+    public static let defaultModules: [EditorModule.Type] = [TransformsViewController.self]
 }
