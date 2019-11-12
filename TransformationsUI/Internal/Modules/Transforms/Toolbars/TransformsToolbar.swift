@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public protocol TransformsToolbarDelegate: class {
+@objc protocol TransformsToolbarDelegate: class {
     func rotateSelected(sender: UIButton)
     func cropSelected(sender: UIButton)
     func circleSelected(sender: UIButton)
