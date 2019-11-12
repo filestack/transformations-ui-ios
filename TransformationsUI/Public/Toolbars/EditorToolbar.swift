@@ -21,16 +21,16 @@ open class EditorToolbar: ArrangeableToolbar {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Public Functions
+    // MARK: - Open Functions
 
-    public func button(using image: UIImage) -> UIButton {
+    open func button(using image: UIImage) -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
 
         return button
     }
 
-    public func button(using title: String) -> UIButton {
+    open func button(using title: String) -> UIButton {
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
         button.setTitle(title, for: .normal)
@@ -38,7 +38,7 @@ open class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
-    public func label(titled title: String) -> UILabel {
+    open func label(titled title: String) -> UILabel {
         let label = UILabel()
 
         label.text = title
@@ -49,7 +49,7 @@ open class EditorToolbar: ArrangeableToolbar {
         return label
     }
 
-    public func setItems(_ items: [UIView] = []) {
+    open func setItems(_ items: [UIView] = []) {
         removeAllItems()
 
         for item in items {
