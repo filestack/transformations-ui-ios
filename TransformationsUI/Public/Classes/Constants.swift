@@ -10,7 +10,7 @@ import UIKit
 
 public struct Constants {
     public static let toolbarInset: CGFloat = 12
-    public static let toolbarSpacing: CGFloat = 12
+    public static let toolbarSpacing: CGFloat = 6
     public static let toolbarInnerInset: CGFloat = 6
     public static let toolbarSize: CGFloat = 48
 

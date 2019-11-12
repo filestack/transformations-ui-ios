@@ -145,8 +145,8 @@
 		45121A47236853E800798073 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				453E31AA2379B66700A05EAB /* Constants.swift */,
 				454D7DB0236B0D8D004B2898 /* Config.swift */,
+				453E31AA2379B66700A05EAB /* Constants.swift */,
 				4579358B235F008300938CEF /* TransformationsUI.swift */,
 			);
 			path = Classes;
