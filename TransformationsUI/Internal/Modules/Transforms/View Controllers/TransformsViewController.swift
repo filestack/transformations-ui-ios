@@ -9,6 +9,8 @@
 import UIKit
 
 class TransformsViewController: ArrangeableViewController, EditorModule, Editable, UIGestureRecognizerDelegate {
+    let config: Config
+
     lazy var icon = UIImage.fromFrameworkBundle("icon-module-transforms")
     lazy var imageView: CIImageView = buildImageView()
 
@@ -46,7 +48,9 @@ class TransformsViewController: ArrangeableViewController, EditorModule, Editabl
 
     // MARK: - Lifecycle Functions
 
-    init() {
+    required init(config: Config) {
+        self.config = config
+        
         super.init(nibName: nil, bundle: nil)
 
         title = "Transforms"

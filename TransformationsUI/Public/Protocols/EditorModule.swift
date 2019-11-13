@@ -8,12 +8,14 @@
 
 import UIKit
 
-public protocol EditorModule: UIViewController {
+public protocol EditorModule: UIViewController, Configurable {
     var title: String? { get }
     var icon: UIImage { get }
 
     var renderNode: RenderNode { get }
     var imageView: CIImageView { get }
+
+    init(config: Config)
 }
 
 extension EditorModule {

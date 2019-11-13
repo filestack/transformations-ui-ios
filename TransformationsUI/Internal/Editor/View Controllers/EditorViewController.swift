@@ -8,7 +8,9 @@
 
 import UIKit
 
-final class EditorViewController: ArrangeableViewController, UIGestureRecognizerDelegate {
+final class EditorViewController: ArrangeableViewController, Configurable, UIGestureRecognizerDelegate {
+    let config: Config
+
     // MARK: - Internal Properties
 
     let titleToolbar = TitleToolbar()
@@ -30,9 +32,10 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
 
     // MARK: - Lifecycle Functions
 
-    init?(image: UIImage, modules: [EditorModule], completion: @escaping (UIImage?) -> Void) {
+    init?(image: UIImage, config: Config, modules: [EditorModule], completion: @escaping (UIImage?) -> Void) {
         guard let ciImage = image.ciImageBackedCopy()?.ciImage else { return nil }
 
+        self.config = config
         self.modules = modules
         self.renderPipeline = BasicRenderPipeline(inputImage: ciImage)
         self.completion = completion
