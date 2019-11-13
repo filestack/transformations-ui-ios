@@ -8,6 +8,6 @@
 
 import Foundation
 
-@objc(FSConfig) open class Config: NSObject {
+open class Config: NSObject {
     public static let defaultModules: [EditorModule.Type] = [TransformsViewController.self]
 }
