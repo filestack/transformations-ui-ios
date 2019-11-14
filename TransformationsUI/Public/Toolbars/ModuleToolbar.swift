@@ -15,7 +15,7 @@ import UIKit
 public class ModuleToolbar: EditorToolbar {
     public weak var delegate: ModuleToolbarDelegate?
 
-    private var innerToolbar = ArrangeableToolbar()
+    private lazy var innerToolbar = ArrangeableToolbar()
     private let commands: [EditorModuleCommand]
 
     // MARK: - Lifecycle Functions
@@ -36,7 +36,18 @@ public class ModuleToolbar: EditorToolbar {
         innerToolbar = ArrangeableToolbar(items: items)
         innerToolbar.spacing = Constants.toolbarSpacing
 
-        super.setItems([UIView(), innerToolbar, UIView()])
+        let scrollView = CenteredScrollView()
+
+        scrollView.translatesAutoresizingMaskIntoConstraints = false
+        scrollView.fill(with: innerToolbar, activate: true)
+
+        super.setItems([scrollView])
+    }
+
+    public override func layoutSubviews() {
+        super.layoutSubviews()
+
+        innerToolbar.setNeedsLayout()
     }
 }
 

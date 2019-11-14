@@ -33,6 +33,7 @@
 		454D7DB3236B0DAB004B2898 /* TransformationsUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB2236B0DAB004B2898 /* TransformationsUIDelegate.swift */; };
 		454D7DB8236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB7236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift */; };
 		4570AE0F237AD3BA00F1B24F /* Editable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4570AE0E237AD3BA00F1B24F /* Editable.swift */; };
+		4574D713237DBF09006A6D15 /* CenteredScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574D712237DBF09006A6D15 /* CenteredScrollView.swift */; };
 		4579353F235EFC1900938CEF /* TransformationsUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4579353D235EFC1900938CEF /* TransformationsUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		45793567235EFF1400938CEF /* CropLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45793550235EFF1400938CEF /* CropLayer.swift */; };
 		45793568235EFF1400938CEF /* CircleLayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45793551235EFF1400938CEF /* CircleLayer.swift */; };
@@ -87,6 +88,7 @@
 		454D7DB2236B0DAB004B2898 /* TransformationsUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationsUIDelegate.swift; sourceTree = "<group>"; };
 		454D7DB7236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+ToolbarDelegate.swift"; sourceTree = "<group>"; };
 		4570AE0E237AD3BA00F1B24F /* Editable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editable.swift; sourceTree = "<group>"; };
+		4574D712237DBF09006A6D15 /* CenteredScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredScrollView.swift; sourceTree = "<group>"; };
 		4579353A235EFC1900938CEF /* TransformationsUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TransformationsUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		4579353D235EFC1900938CEF /* TransformationsUI.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = TransformationsUI.h; sourceTree = "<group>"; };
 		4579353E235EFC1900938CEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
@@ -184,13 +186,6 @@
 			path = Transforms;
 			sourceTree = "<group>";
 		};
-		452BF79C2371826B005DE175 /* Views */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Views;
-			sourceTree = "<group>";
-		};
 		453E319023795F6C00A05EAB /* Support */ = {
 			isa = PBXGroup;
 			children = (
@@ -237,6 +232,7 @@
 		453E31B02379BC0100A05EAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4574D712237DBF09006A6D15 /* CenteredScrollView.swift */,
 				457935E5235F2B4100938CEF /* MetalImageView.swift */,
 			);
 			path = Views;
@@ -372,7 +368,6 @@
 				453E319023795F6C00A05EAB /* Support */,
 				453E31AD2379B7E200A05EAB /* Toolbars */,
 				453E319323795F9800A05EAB /* View Controllers */,
-				452BF79C2371826B005DE175 /* Views */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -509,6 +504,7 @@
 				454D7DB8236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift in Sources */,
 				454D7DB3236B0DAB004B2898 /* TransformationsUIDelegate.swift in Sources */,
 				454D7DB1236B0D8D004B2898 /* Config.swift in Sources */,
+				4574D713237DBF09006A6D15 /* CenteredScrollView.swift in Sources */,
 				45B335D5236872AE008BD64F /* RenderNodeDelegate.swift in Sources */,
 				45793568235EFF1400938CEF /* CircleLayer.swift in Sources */,
 				45793567235EFF1400938CEF /* CropLayer.swift in Sources */,
