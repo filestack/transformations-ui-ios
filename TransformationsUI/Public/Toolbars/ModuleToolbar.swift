@@ -13,7 +13,7 @@ import UIKit
 }
 
 public class ModuleToolbar: EditorToolbar {
-    weak var delegate: ModuleToolbarDelegate?
+    public weak var delegate: ModuleToolbarDelegate?
 
     private var innerToolbar = ArrangeableToolbar()
     private let commands: [EditorModuleCommand]
