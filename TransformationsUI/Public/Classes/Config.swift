@@ -9,5 +9,9 @@
 import Foundation
 
 open class Config: NSObject {
-    public static let defaultModules: [EditorModule.Type] = [TransformsViewController.self]
+    public let modules: EditorModules
+
+    public init(modules: EditorModules = StandardModules()) {
+        self.modules = modules
+    }
 }

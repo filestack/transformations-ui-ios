@@ -14,9 +14,9 @@ public struct Constants {
     public static let toolbarInnerInset: CGFloat = 6
     public static let toolbarSize: CGFloat = 48
 
-    public static var backgroundColor = UIColor(white: 31 / 255, alpha: 1)
-    public static var iconColor = UIColor.white
-    public static var labelColor = UIColor.white
-    public static var cancelColor = UIColor.white
-    public static var doneColor = UIColor(red: 240 / 255, green: 180 / 255, blue: 0, alpha: 1)
+    public static let backgroundColor = UIColor(white: 31 / 255, alpha: 1)
+    public static let iconColor = UIColor.white
+    public static let labelColor = UIColor.white
+    public static let cancelColor = UIColor.white
+    public static let doneColor = UIColor(red: 240 / 255, green: 180 / 255, blue: 0, alpha: 1)
 }

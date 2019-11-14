@@ -34,11 +34,11 @@ class TransformsRenderNode: RenderNode {
         renderedImage = outputImage.rotated(clockwise: clockwise)
     }
 
-    func crop(insets: UIEdgeInsets) {
+    func cropRect(insets: UIEdgeInsets) {
         renderedImage = outputImage.cropped(by: insets)
     }
 
-    func circled(center: CGPoint, radius: CGFloat) {
+    func cropCircle(center: CGPoint, radius: CGFloat) {
         renderedImage = outputImage.circled(center: center, radius: radius)
     }
 }

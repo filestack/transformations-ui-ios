@@ -8,38 +8,37 @@
 
 import UIKit
 
-extension TransformsViewController: TransformsToolbarDelegate {
-    private enum EditorCommand {
+extension TransformsViewController: ModuleToolbarDelegate {
+    private enum NodeCommand {
         case rotate(clockwise: Bool)
-        case crop(insets: UIEdgeInsets)
-        case circled(center: CGPoint, radius: CGFloat)
+        case cropRect(insets: UIEdgeInsets)
+        case cropCircle(center: CGPoint, radius: CGFloat)
     }
 
-    public func rotateSelected(sender: UIButton) {
-        perform(command: .rotate(clockwise: false))
-        cropHandler.rotateCounterClockwise()
-        circleHandler.rotateCounterClockwise()
-    }
+    func toolbarItemSelected(sender: UIButton) {
+        let command = config.commands[sender.tag]
 
-    public func cropSelected(sender: UIButton) {
-        switch editMode {
-        case .crop: editMode = .none
-        case .circle, .none: editMode = .crop
+        switch command {
+        case is Config.Commands.Rotate:
+            perform(command: .rotate(clockwise: false))
+        case let crop as Config.Commands.Crop:
+            editMode = editMode == .crop(mode: crop) ? .none : .crop(mode: crop)
+        default:
+            break
         }
     }
 
-    public func circleSelected(sender: UIButton) {
+    func saveSelected() {
         switch editMode {
-        case .circle: editMode = .none
-        case .crop, .none: editMode = .circle
-        }
-    }
-
-    public func saveSelected() {
-        switch editMode {
-        case .crop: perform(command: .crop(insets: cropHandler.actualEdgeInsets))
-        case .circle: perform(command: .circled(center: circleHandler.actualCenter, radius: circleHandler.actualRadius))
-        case .none: return
+        case .crop(let mode):
+            switch mode.type {
+            case .rect:
+                perform(command: .cropRect(insets: cropHandler.actualEdgeInsets))
+            case .circle:
+                perform(command: .cropCircle(center: circleHandler.actualCenter, radius: circleHandler.actualRadius))
+            }
+        case .none:
+            return
         }
 
         editMode = .none
@@ -47,16 +46,16 @@ extension TransformsViewController: TransformsToolbarDelegate {
 
     // MARK: - Private Functions
 
-    private func perform(command: EditorCommand) {
+    private func perform(command: NodeCommand) {
         guard let renderNode = renderNode as? TransformsRenderNode else { return }
 
         switch command {
         case let .rotate(clockwise):
             renderNode.rotate(clockwise: clockwise)
-        case let .crop(insets):
-            renderNode.crop(insets: insets)
-        case let .circled(center, radius):
-            renderNode.circled(center: center, radius: radius)
+        case let .cropRect(insets):
+            renderNode.cropRect(insets: insets)
+        case let .cropCircle(center, radius):
+            renderNode.cropCircle(center: center, radius: radius)
         }
 
         editMode = .none

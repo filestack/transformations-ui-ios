@@ -2,24 +2,13 @@
 //  EditorModule.swift
 //  TransformationsUI
 //
-//  Created by Ruben Nine on 29/10/2019.
+//  Created by Ruben Nine on 14/11/2019.
 //  Copyright © 2019 Filestack. All rights reserved.
 //
 
-import UIKit
+import Foundation
 
-public protocol EditorModule: UIViewController, Configurable {
-    var title: String? { get }
-    var icon: UIImage { get }
-
-    var renderNode: RenderNode { get }
-    var imageView: CIImageView { get }
-
-    init(config: Config)
-}
-
-extension EditorModule {
-    public func buildImageView() -> CIImageView {
-        return MetalImageView()
-    }
+public protocol EditorModule: DescriptibleEditorItem {
+    var isEnabled: Bool { get }
+    var viewController: EditorModuleVC { get }
 }

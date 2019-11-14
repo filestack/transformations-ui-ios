@@ -1,5 +1,5 @@
 //
-//  MainToolbar.swift
+//  ModulesToolbar.swift
 //  TransformationsUI
 //
 //  Created by Ruben Nine on 07/11/2019.
@@ -14,7 +14,7 @@ import UIKit
     func moduleSelected(sender: UIButton)
 }
 
-class ModuleToolbar: EditorToolbar {
+class ModulesToolbar: EditorToolbar {
     weak var delegate: ModulesToolbarDelegate?
 
     private var innerToolbar = ArrangeableToolbar()
@@ -53,7 +53,7 @@ class ModuleToolbar: EditorToolbar {
 
     // MARK: - Internal Functions
 
-    func module(using image: UIImage) -> UIButton {
+    func moduleButton(using image: UIImage) -> UIButton {
         let button = self.button(using: image)
 
         button.addTarget(delegate, action: #selector(ModulesToolbarDelegate.moduleSelected), for: .touchUpInside)
@@ -72,7 +72,7 @@ class ModuleToolbar: EditorToolbar {
     }
 }
 
-extension ModuleToolbar {
+extension ModulesToolbar {
     override func layoutSubviews() {
         super.layoutSubviews()
 

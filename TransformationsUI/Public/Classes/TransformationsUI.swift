@@ -23,10 +23,8 @@ import UIKit
 
     // MARK: - Public Functions
 
-    open func editor(with image: UIImage, using modules: [EditorModule.Type] = Config.defaultModules) -> UIViewController? {
-        let instantiatedModules = modules.map { $0.init(config: config) }
-
-        return EditorViewController(image: image, config: config, modules: instantiatedModules) { image in
+    open func editor(with image: UIImage) -> UIViewController? {
+        return EditorViewController(image: image, config: config) { image in
             self.delegate?.editorDismissed(with: image)
         }
     }

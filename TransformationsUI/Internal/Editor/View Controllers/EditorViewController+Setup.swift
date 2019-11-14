@@ -32,7 +32,7 @@ extension EditorViewController {
 private extension EditorViewController {
     func setupPipeline() {
         for module in modules {
-            renderPipeline.addNode(node: module.renderNode)
+            renderPipeline.addNode(node: module.viewController.renderNode)
         }
     }
 
@@ -40,7 +40,7 @@ private extension EditorViewController {
         var moduleItems = [UIView]()
 
         for (idx, module) in modules.enumerated() {
-            let item = modulesToolbar.module(using: module.icon)
+            let item = modulesToolbar.moduleButton(using: module.icon)
 
             item.tag = idx
             item.tintColor = .white

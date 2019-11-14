@@ -8,21 +8,20 @@
 
 import UIKit
 
-final class EditorViewController: ArrangeableViewController, Configurable, UIGestureRecognizerDelegate {
-    let config: Config
-
+final class EditorViewController: ArrangeableViewController, UIGestureRecognizerDelegate {
     // MARK: - Internal Properties
 
     let titleToolbar = TitleToolbar()
-    let modulesToolbar = ModuleToolbar()
+    let modulesToolbar = ModulesToolbar()
 
     let renderPipeline: BasicRenderPipeline
-    let modules: [UIViewController & EditorModule]
+    let modules: [EditorModule]
     let containerView = UIView()
     var editorUndoManager: EditorUndoManager?
 
     // MARK: - Private Properties
 
+    private let config: Config
     private var completion: ((UIImage?) -> Void)?
     private var isEditingObserver: NSKeyValueObservation?
 
@@ -30,13 +29,17 @@ final class EditorViewController: ArrangeableViewController, Configurable, UIGes
         didSet { setupEditingObserver() }
     }
 
+    private var activeEditableModuleVC: Editable? {
+        activeModule?.viewController as? Editable
+    }
+
     // MARK: - Lifecycle Functions
 
-    init?(image: UIImage, config: Config, modules: [EditorModule], completion: @escaping (UIImage?) -> Void) {
+    init?(image: UIImage, config: Config, completion: @escaping (UIImage?) -> Void) {
         guard let ciImage = image.ciImageBackedCopy()?.ciImage else { return nil }
 
         self.config = config
-        self.modules = modules
+        self.modules = config.modules.all.compactMap { $0.isEnabled ? $0 : nil }
         self.renderPipeline = BasicRenderPipeline(inputImage: ciImage)
         self.completion = completion
 
@@ -53,25 +56,25 @@ final class EditorViewController: ArrangeableViewController, Configurable, UIGes
 
     func activate(module: EditorModule) {
         // Remove any previously added module vc's.
-        for child in (children.compactMap { $0 as? EditorModule }) {
+        for child in (children.compactMap { $0 as? EditorModuleVC }) {
             child.removeFromParent()
         }
 
         // Add module as a child vc.
-        addChild(module)
+        addChild(module.viewController)
 
         titleToolbar.title = module.title
-        containerView.fill(with: module.view, activate: true)
+        containerView.fill(with: module.viewController.view, activate: true)
         activeModule = module
 
         // Notify that module vc moved to a new parent.
-        module.didMove(toParent: self)
+        module.viewController.didMove(toParent: self)
     }
 }
 
 private extension EditorViewController {
     func setupEditingObserver() {
-        guard let vc: UIViewController = activeModule else { return }
+        guard let vc: UIViewController = activeModule?.viewController else { return }
 
         isEditingObserver = vc.observe(\.isEditing, options: [.new]) { _, change in
             guard let isEditing = change.newValue else { return }
@@ -98,9 +101,9 @@ extension EditorViewController: EditorUndoManagerDelegate {
 
 extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
     func doneSelected(sender: UIButton) {
-        switch (activeModule as? Editable)?.isEditing {
+        switch activeEditableModuleVC?.isEditing {
         case true:
-            (activeModule as? Editable)?.applyEditing()
+            activeEditableModuleVC?.applyEditing()
         case false:
             fallthrough
         default:
@@ -123,7 +126,7 @@ extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
 
     func undoSelected(sender: UIButton) {
         editorUndoManager?.undo()
-        (activeModule as? Editable)?.applyEditing()
+        activeEditableModuleVC?.applyEditing()
 
         if let state = editorUndoManager?.current {
             renderPipeline.restore(from: state)
@@ -132,7 +135,7 @@ extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
 
     func redoSelected(sender: UIButton) {
         editorUndoManager?.redo()
-        (activeModule as? Editable)?.applyEditing()
+        activeEditableModuleVC?.applyEditing()
 
         if let state = editorUndoManager?.current {
             renderPipeline.restore(from: state)

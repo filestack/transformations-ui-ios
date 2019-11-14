@@ -8,10 +8,17 @@
 
 import UIKit
 
-class TransformsViewController: ArrangeableViewController, EditorModule, Editable, UIGestureRecognizerDelegate {
+class TransformsViewController: ArrangeableViewController, EditorModuleVC, Editable, UIGestureRecognizerDelegate {
+    typealias Config = StandardModules.Transforms
     let config: Config
 
-    lazy var icon = UIImage.fromFrameworkBundle("icon-module-transforms")
+    let preview = UIView()
+
+    enum EditMode: Hashable {
+        case crop(mode: Config.Commands.Crop)
+        case none
+    }
+
     lazy var imageView: CIImageView = buildImageView()
 
     lazy var renderNode: RenderNode = {
@@ -20,10 +27,6 @@ class TransformsViewController: ArrangeableViewController, EditorModule, Editabl
 
         return node
     }()
-
-    enum EditMode {
-        case crop, circle, none
-    }
 
     var editMode = EditMode.none {
         didSet {
@@ -34,12 +37,10 @@ class TransformsViewController: ArrangeableViewController, EditorModule, Editabl
         }
     }
 
-    let preview = UIView()
-    let toolbar = TransformsToolbar()
-
     var panGestureRecognizer = UIPanGestureRecognizer()
     var pinchGestureRecognizer = UIPinchGestureRecognizer()
 
+    lazy var toolbar = ModuleToolbar(commands: config.commands)
     lazy var cropHandler = CropGesturesHandler(delegate: self)
     lazy var circleHandler = CircleGesturesHandler(delegate: self)
 
@@ -52,8 +53,6 @@ class TransformsViewController: ArrangeableViewController, EditorModule, Editabl
         self.config = config
         
         super.init(nibName: nil, bundle: nil)
-
-        title = "Transforms"
     }
 
     required init?(coder _: NSCoder) {
@@ -97,16 +96,19 @@ private extension TransformsViewController {
 
     func turnOn(mode: EditMode) {
         addLayer(for: mode)
-        toolbar.isEditing = (mode != .none)
     }
 }
 
 private extension TransformsViewController {
     func layer(for mode: EditMode) -> CALayer? {
         switch mode {
-        case .crop: return cropLayer
-        case .circle: return circleLayer
-        case .none: return nil
+        case .crop(let mode):
+            switch mode.type {
+            case .rect: return cropLayer
+            case .circle: return circleLayer
+            }
+        case .none:
+            return nil
         }
     }
 
@@ -125,9 +127,13 @@ private extension TransformsViewController {
 
     func updatePaths() {
         switch editMode {
-        case .crop: updateCropPaths()
-        case .circle: updateCirclePaths()
-        case .none: return
+        case .crop(let mode):
+            switch mode.type {
+            case .rect: updateCropPaths()
+            case .circle: updateCirclePaths()
+            }
+        case .none:
+            break
         }
     }
 
@@ -146,17 +152,25 @@ private extension TransformsViewController {
 extension TransformsViewController {
     @objc func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         switch editMode {
-        case .crop: cropHandler.handlePanGesture(recognizer: recognizer)
-        case .circle: circleHandler.handlePanGesture(recognizer: recognizer)
-        case .none: return
+        case .crop(let mode):
+            switch mode.type {
+            case .rect: cropHandler.handlePanGesture(recognizer: recognizer)
+            case .circle: circleHandler.handlePanGesture(recognizer: recognizer)
+            }
+        case .none:
+            break
         }
     }
 
     @objc func handlePinchGesture(recognizer: UIPinchGestureRecognizer) {
         switch editMode {
-        case .crop: return
-        case .circle: circleHandler.handlePinchGesture(recognizer: recognizer)
-        case .none: return
+        case .crop(let mode):
+            switch mode.type {
+            case .rect: break
+            case .circle: circleHandler.handlePinchGesture(recognizer: recognizer)
+            }
+        case .none:
+            break
         }
     }
 }
