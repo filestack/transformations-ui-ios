@@ -76,7 +76,7 @@ open class EditorToolbar: ArrangeableToolbar {
 
 private extension EditorToolbar {
     func setup() {
-        innerInset = Constants.toolbarInnerInset
+        innerInset = Constants.toolbarInset
         distribution = .equalSpacing
     }
 }
