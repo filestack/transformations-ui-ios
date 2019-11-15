@@ -60,6 +60,7 @@
 		45BEE25A237D6987007DB750 /* EditorModuleCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE259237D6987007DB750 /* EditorModuleCommand.swift */; };
 		45F10AC0237EBE0900DCBF52 /* UIGeometry+Rounding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10ABE237EBE0900DCBF52 /* UIGeometry+Rounding.swift */; };
 		45F10AC1237EBE0900DCBF52 /* CoreGraphics+Rounding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10ABF237EBE0900DCBF52 /* CoreGraphics+Rounding.swift */; };
+		45F10AC5237ED5CD00DCBF52 /* StandardModules+Transforms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10AC4237ED5CD00DCBF52 /* StandardModules+Transforms.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -118,6 +119,7 @@
 		45BEE259237D6987007DB750 /* EditorModuleCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModuleCommand.swift; sourceTree = "<group>"; };
 		45F10ABE237EBE0900DCBF52 /* UIGeometry+Rounding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGeometry+Rounding.swift"; sourceTree = "<group>"; };
 		45F10ABF237EBE0900DCBF52 /* CoreGraphics+Rounding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Rounding.swift"; sourceTree = "<group>"; };
+		45F10AC4237ED5CD00DCBF52 /* StandardModules+Transforms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StandardModules+Transforms.swift"; sourceTree = "<group>"; };
 		45FDF6C223607A0600888E62 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -397,6 +399,7 @@
 				454D7DB0236B0D8D004B2898 /* Config.swift */,
 				453E31AA2379B66700A05EAB /* Constants.swift */,
 				45BEE24E237D68B6007DB750 /* StandardModules.swift */,
+				45F10AC4237ED5CD00DCBF52 /* StandardModules+Transforms.swift */,
 				4579358B235F008300938CEF /* TransformationsUI.swift */,
 			);
 			path = Classes;
@@ -528,6 +531,7 @@
 				4579357F235EFFC600938CEF /* UIImage+Copy.swift in Sources */,
 				4570AE0F237AD3BA00F1B24F /* Editable.swift in Sources */,
 				45BEE254237D6927007DB750 /* DescriptibleEditorItem.swift in Sources */,
+				45F10AC5237ED5CD00DCBF52 /* StandardModules+Transforms.swift in Sources */,
 				45121A44236852BD00798073 /* RenderPipeline.swift in Sources */,
 				45121A49236853FA00798073 /* BasicRenderPipeline.swift in Sources */,
 				4579358C235F008300938CEF /* TransformationsUI.swift in Sources */,
