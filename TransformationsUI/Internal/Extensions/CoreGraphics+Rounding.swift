@@ -19,3 +19,14 @@ extension CGSize {
         return CGSize(width: width.rounded(rule), height: height.rounded(rule))
     }
 }
+
+extension CGRect {
+    func rounded(rule: FloatingPointRoundingRule = .toNearestOrAwayFromZero) -> CGRect {
+        return rounded(originRule: rule, sizeRule: rule)
+    }
+
+    func rounded(originRule: FloatingPointRoundingRule = .toNearestOrAwayFromZero,
+                 sizeRule: FloatingPointRoundingRule = .toNearestOrAwayFromZero) -> CGRect {
+        return CGRect(origin: origin.rounded(rule: originRule), size: size.rounded(rule: sizeRule))
+    }
+}

@@ -138,12 +138,12 @@ private extension TransformsViewController {
     }
 
     func updateCropPaths() {
-        cropLayer.imageFrame = imageFrame
-        cropLayer.cropRect = cropHandler.croppedRect
+        cropLayer.imageFrame = imageFrame.rounded(originRule: .down, sizeRule: .up)
+        cropLayer.cropRect = cropHandler.croppedRect.rounded()
     }
 
     func updateCirclePaths() {
-        circleLayer.imageFrame = imageFrame
+        circleLayer.imageFrame = imageFrame.rounded(originRule: .down, sizeRule: .up)
         circleLayer.circleCenter = circleHandler.circleCenter
         circleLayer.circleRadius = circleHandler.circleRadius
     }
