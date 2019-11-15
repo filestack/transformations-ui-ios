@@ -8,12 +8,6 @@
 
 import UIKit
 
-extension UIEdgeInsets {
-    fileprivate func rounded() -> UIEdgeInsets {
-        return UIEdgeInsets(top: top.rounded(), left: left.rounded(), bottom: bottom.rounded(), right: right.rounded())
-    }
-}
-
 extension CIImage {
     /// Returns a 90 degree-rotated `CIImage`.
     ///
@@ -30,7 +24,7 @@ extension CIImage {
     ///
     func cropped(by insets: UIEdgeInsets) -> CIImage? {
         let transform = coordinatesTransform(rect: extent)
-        let rect = extent.applying(transform).inset(by: insets.rounded()).applying(transform)
+        let rect = extent.applying(transform).inset(by: insets).applying(transform)
 
         return cropped(to: rect)
     }
@@ -45,10 +39,10 @@ extension CIImage {
         let transform = coordinatesTransform(rect: extent)
         let tCenter = center.applying(transform)
 
-        let origin = CGPoint(x: (extent.minX + (tCenter.x - radius)).rounded(),
-                             y: (extent.minY + (tCenter.y - radius)).rounded())
+        let origin = CGPoint(x: extent.minX + (tCenter.x - radius),
+                             y: extent.minY + (tCenter.y - radius)).rounded()
 
-        let rect = CGRect(origin: origin, size: CGSize(width: radius.rounded() * 2, height: radius.rounded() * 2))
+        let rect = CGRect(origin: origin, size: CGSize(width: radius * 2, height: radius * 2).rounded())
 
         let transformedCIImage = cropped(to: rect)
 

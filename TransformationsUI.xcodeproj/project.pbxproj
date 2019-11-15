@@ -58,6 +58,8 @@
 		45BEE256237D6942007DB750 /* EditorModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE255237D6942007DB750 /* EditorModule.swift */; };
 		45BEE258237D6976007DB750 /* EditorModules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE257237D6976007DB750 /* EditorModules.swift */; };
 		45BEE25A237D6987007DB750 /* EditorModuleCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE259237D6987007DB750 /* EditorModuleCommand.swift */; };
+		45F10AC0237EBE0900DCBF52 /* UIGeometry+Rounding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10ABE237EBE0900DCBF52 /* UIGeometry+Rounding.swift */; };
+		45F10AC1237EBE0900DCBF52 /* CoreGraphics+Rounding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10ABF237EBE0900DCBF52 /* CoreGraphics+Rounding.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -114,6 +116,8 @@
 		45BEE255237D6942007DB750 /* EditorModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModule.swift; sourceTree = "<group>"; };
 		45BEE257237D6976007DB750 /* EditorModules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModules.swift; sourceTree = "<group>"; };
 		45BEE259237D6987007DB750 /* EditorModuleCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModuleCommand.swift; sourceTree = "<group>"; };
+		45F10ABE237EBE0900DCBF52 /* UIGeometry+Rounding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGeometry+Rounding.swift"; sourceTree = "<group>"; };
+		45F10ABF237EBE0900DCBF52 /* CoreGraphics+Rounding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Rounding.swift"; sourceTree = "<group>"; };
 		45FDF6C223607A0600888E62 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -356,7 +360,9 @@
 			children = (
 				4579357E235EFFC600938CEF /* CGPoint+Distance.swift */,
 				4579357D235EFFC600938CEF /* CGRect+Transforms.swift */,
+				45F10ABF237EBE0900DCBF52 /* CoreGraphics+Rounding.swift */,
 				45793586235F001E00938CEF /* Math+Clamp.swift */,
+				45F10ABE237EBE0900DCBF52 /* UIGeometry+Rounding.swift */,
 				45793584235EFFE000938CEF /* UIImage+Bundle.swift */,
 				4579357A235EFFC600938CEF /* UIImage+Copy.swift */,
 				45793588235F004600938CEF /* UIView+Constraints.swift */,
@@ -510,6 +516,7 @@
 				454D7DB1236B0D8D004B2898 /* Config.swift in Sources */,
 				4574D713237DBF09006A6D15 /* CenteredScrollView.swift in Sources */,
 				45B335D5236872AE008BD64F /* RenderNodeDelegate.swift in Sources */,
+				45F10AC1237EBE0900DCBF52 /* CoreGraphics+Rounding.swift in Sources */,
 				45793568235EFF1400938CEF /* CircleLayer.swift in Sources */,
 				45793567235EFF1400938CEF /* CropLayer.swift in Sources */,
 				450B806C236AE0C60097F091 /* EditorUndoManager.swift in Sources */,
@@ -517,6 +524,7 @@
 				45793570235EFF1400938CEF /* CropGesturesHandler.swift in Sources */,
 				45BEE256237D6942007DB750 /* EditorModule.swift in Sources */,
 				45B335D723687B87008BD64F /* TransformsViewController+Setup.swift in Sources */,
+				45F10AC0237EBE0900DCBF52 /* UIGeometry+Rounding.swift in Sources */,
 				4579357F235EFFC600938CEF /* UIImage+Copy.swift in Sources */,
 				4570AE0F237AD3BA00F1B24F /* Editable.swift in Sources */,
 				45BEE254237D6927007DB750 /* DescriptibleEditorItem.swift in Sources */,

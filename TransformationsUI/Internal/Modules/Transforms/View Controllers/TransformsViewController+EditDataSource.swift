@@ -11,12 +11,7 @@ import Foundation
 
 extension TransformsViewController: EditDataSource {
     var imageFrame: CGRect {
-        let frame = AVMakeRect(aspectRatio: imageActualSize, insideRect: imageView.bounds)
-
-        return CGRect(x: frame.origin.x.rounded(.down),
-                      y: frame.origin.y.rounded(.down),
-                      width: frame.width.rounded(.up),
-                      height: frame.height.rounded(.up))
+        return AVMakeRect(aspectRatio: imageActualSize, insideRect: imageView.bounds)
     }
 
     var imageSize: CGSize {
