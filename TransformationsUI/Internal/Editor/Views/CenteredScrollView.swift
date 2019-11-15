@@ -16,6 +16,11 @@ class CenteredScrollView: UIScrollView {
 
         showsHorizontalScrollIndicator = false
         showsVerticalScrollIndicator = false
+        delaysContentTouches = false
+    }
+
+    override func touchesShouldCancel(in view: UIView) -> Bool {
+        return true
     }
 
     required init?(coder: NSCoder) {

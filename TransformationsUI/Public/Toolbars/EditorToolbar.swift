@@ -26,6 +26,7 @@ open class EditorToolbar: ArrangeableToolbar {
     open func button(using image: UIImage) -> UIButton {
         let button = UIButton(type: .system)
         button.setImage(image, for: .normal)
+        button.addTarget(self, action: #selector(delayedStopHighlighting), for: .touchUpInside)
 
         return button
     }
@@ -34,6 +35,7 @@ open class EditorToolbar: ArrangeableToolbar {
         let button = UIButton(type: .system)
         button.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
         button.setTitle(title, for: .normal)
+        button.addTarget(self, action: #selector(delayedStopHighlighting), for: .touchUpInside)
 
         return button
     }
@@ -57,6 +59,18 @@ open class EditorToolbar: ArrangeableToolbar {
         }
 
         setNeedsLayout()
+    }
+
+    // MARK: - Actions
+
+    @objc func delayedStopHighlighting(sender: UIButton) {
+        DispatchQueue.main.async {
+            sender.isHighlighted = true
+        }
+
+        DispatchQueue.main.asyncAfter(deadline: .now() + 0.125) {
+            sender.isHighlighted = false
+        }
     }
 }
 

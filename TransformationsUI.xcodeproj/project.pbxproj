@@ -18,7 +18,6 @@
 		45121A522368554700798073 /* TransformsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A512368554700798073 /* TransformsViewController.swift */; };
 		45121A552368574A00798073 /* RenderPipelineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A542368574A00798073 /* RenderPipelineDelegate.swift */; };
 		451F929F2369AE2C006D47DE /* EditorToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451F929E2369AE2C006D47DE /* EditorToolbarDelegate.swift */; };
-		453E318F23795F3600A05EAB /* UIControl+HighlightWorkaround.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E318E23795F3600A05EAB /* UIControl+HighlightWorkaround.swift */; };
 		453E319223795F7B00A05EAB /* L18.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319123795F7B00A05EAB /* L18.swift */; };
 		453E319523795FA400A05EAB /* ArrangeableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319423795FA400A05EAB /* ArrangeableViewController.swift */; };
 		453E319A23795FF000A05EAB /* TitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319623795FEF00A05EAB /* TitleToolbar.swift */; };
@@ -73,7 +72,6 @@
 		45121A512368554700798073 /* TransformsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformsViewController.swift; sourceTree = "<group>"; };
 		45121A542368574A00798073 /* RenderPipelineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPipelineDelegate.swift; sourceTree = "<group>"; };
 		451F929E2369AE2C006D47DE /* EditorToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorToolbarDelegate.swift; sourceTree = "<group>"; };
-		453E318E23795F3600A05EAB /* UIControl+HighlightWorkaround.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIControl+HighlightWorkaround.swift"; sourceTree = "<group>"; };
 		453E319123795F7B00A05EAB /* L18.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L18.swift; sourceTree = "<group>"; };
 		453E319423795FA400A05EAB /* ArrangeableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeableViewController.swift; sourceTree = "<group>"; };
 		453E319623795FEF00A05EAB /* TitleToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleToolbar.swift; sourceTree = "<group>"; };
@@ -279,6 +277,13 @@
 			path = Classes;
 			sourceTree = "<group>";
 		};
+		455EF758237E09BE00A1FABD /* Views */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
 		45793530235EFC1900938CEF = {
 			isa = PBXGroup;
 			children = (
@@ -355,7 +360,6 @@
 				45793584235EFFE000938CEF /* UIImage+Bundle.swift */,
 				4579357A235EFFC600938CEF /* UIImage+Copy.swift */,
 				45793588235F004600938CEF /* UIView+Constraints.swift */,
-				453E318E23795F3600A05EAB /* UIControl+HighlightWorkaround.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -368,6 +372,7 @@
 				453E319023795F6C00A05EAB /* Support */,
 				453E31AD2379B7E200A05EAB /* Toolbars */,
 				453E319323795F9800A05EAB /* View Controllers */,
+				455EF758237E09BE00A1FABD /* Views */,
 			);
 			path = Public;
 			sourceTree = "<group>";
@@ -495,7 +500,6 @@
 				45793583235EFFC600938CEF /* CGPoint+Distance.swift in Sources */,
 				453E319D23795FF000A05EAB /* ModulesToolbar.swift in Sources */,
 				45793582235EFFC600938CEF /* CGRect+Transforms.swift in Sources */,
-				453E318F23795F3600A05EAB /* UIControl+HighlightWorkaround.swift in Sources */,
 				45121A402368528100798073 /* Snapshotable.swift in Sources */,
 				45B335DB23687BEB008BD64F /* EditDataSource.swift in Sources */,
 				453E319A23795FF000A05EAB /* TitleToolbar.swift in Sources */,
