@@ -17,4 +17,8 @@ extension EditorModuleVC {
     public func buildImageView() -> CIImageView {
         return MetalImageView()
     }
+
+    public func updateImageView() {
+        imageView.image = renderNode.pipeline?.outputImage
+    }
 }

@@ -58,6 +58,7 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
         // Remove any previously added module vc's.
         for child in (children.compactMap { $0 as? EditorModuleVC }) {
             child.removeFromParent()
+            child.view.removeFromSuperview()
         }
 
         // Add module as a child vc.

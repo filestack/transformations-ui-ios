@@ -71,7 +71,7 @@ open class ArrangeableToolbar: UIView {
     }
 
     public func removeAllItems() {
-        for item in items {
+        for item in stackView.arrangedSubviews {
             removeItem(item)
         }
     }

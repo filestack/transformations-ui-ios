@@ -13,15 +13,25 @@ import UIKit
 }
 
 public class ModuleToolbar: EditorToolbar {
+    // MARK: - Public Properties
+
     public weak var delegate: ModuleToolbarDelegate?
+
+    public override var items: [UIView] {
+        return innerToolbar.items
+    }
+
+    // MARK: - Private Properties
 
     private lazy var innerToolbar = ArrangeableToolbar()
     private let commands: [EditorModuleCommand]
+    private let buttonType: UIButton.ButtonType
 
     // MARK: - Lifecycle Functions
 
-    public required init(commands: [EditorModuleCommand]) {
+    public required init(commands: [EditorModuleCommand], buttonType: UIButton.ButtonType = .system) {
         self.commands = commands
+        self.buttonType = buttonType
         super.init()
         setup()
     }
@@ -58,7 +68,7 @@ private extension ModuleToolbar {
     }
 
     func commandButton(using image: UIImage, tag: Int) -> UIButton {
-        let button = self.button(using: image)
+        let button = self.button(using: image, type: buttonType)
 
         button.tintColor = Constants.iconColor
         button.addTarget(delegate, action: #selector(ModuleToolbarDelegate.toolbarItemSelected), for: .touchUpInside)

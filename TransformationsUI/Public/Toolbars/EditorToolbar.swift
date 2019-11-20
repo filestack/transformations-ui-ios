@@ -23,16 +23,16 @@ open class EditorToolbar: ArrangeableToolbar {
 
     // MARK: - Open Functions
 
-    open func button(using image: UIImage) -> UIButton {
-        let button = UIButton(type: .system)
+    open func button(using image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
+        let button = UIButton(type: type)
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(delayedStopHighlighting), for: .touchUpInside)
 
         return button
     }
 
-    open func button(using title: String) -> UIButton {
-        let button = UIButton(type: .system)
+    open func button(using title: String, type: UIButton.ButtonType = .system) -> UIButton {
+        let button = UIButton(type: type)
         button.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
         button.setTitle(title, for: .normal)
         button.addTarget(self, action: #selector(delayedStopHighlighting), for: .touchUpInside)
