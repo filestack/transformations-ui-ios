@@ -40,7 +40,9 @@ private extension EditorViewController {
         var moduleItems = [UIView]()
 
         for (idx, module) in modules.enumerated() {
-            let item = modulesToolbar.moduleButton(using: module.icon)
+            guard let icon = module.icon else { continue }
+
+            let item = modulesToolbar.moduleButton(using: icon)
 
             item.tag = idx
             item.tintColor = .white

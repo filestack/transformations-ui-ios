@@ -14,7 +14,6 @@ public protocol RenderNode: class {
     var inputImage: CIImage { get set }
     var outputImage: CIImage { get }
 
-    var delegate: RenderNodeDelegate? { get set }
     var pipeline: RenderPipeline? { get set }
 }
 

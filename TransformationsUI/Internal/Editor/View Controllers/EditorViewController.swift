@@ -88,6 +88,10 @@ private extension EditorViewController {
 
 extension EditorViewController: RenderPipelineDelegate {
     func outputChanged(pipeline: RenderPipeline) {
+        activeModule?.viewController.updateImageView()
+    }
+
+    func outputFinishedChanging(pipeline: RenderPipeline) {
         guard let snapshot = (pipeline as? Snapshotable)?.snapshot() else { return }
 
         editorUndoManager?.register(step: snapshot)

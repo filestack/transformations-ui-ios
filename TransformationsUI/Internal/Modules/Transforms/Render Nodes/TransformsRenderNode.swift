@@ -10,7 +10,6 @@ import UIKit
 
 class TransformsRenderNode: RenderNode {
     weak var pipeline: RenderPipeline?
-    weak var delegate: RenderNodeDelegate?
 
     let uuid = UUID()
 
@@ -23,11 +22,7 @@ class TransformsRenderNode: RenderNode {
     }
 
     var renderedImage: CIImage? = nil {
-        didSet {
-            DispatchQueue.main.async {
-                self.delegate?.renderNodeOutputChanged(renderNode: self)
-            }
-        }
+        didSet { pipeline?.nodeChanged(node: self) }
     }
 
     func rotate(clockwise: Bool) {

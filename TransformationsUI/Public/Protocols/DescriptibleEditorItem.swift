@@ -10,5 +10,5 @@ import UIKit
 
 public protocol DescriptibleEditorItem: NSObject {
     var title: String { get }
-    var icon: UIImage { get }
+    var icon: UIImage? { get }
 }

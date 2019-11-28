@@ -10,4 +10,5 @@ import Foundation
 
 public protocol RenderPipelineDelegate: class {
     func outputChanged(pipeline: RenderPipeline)
+    func outputFinishedChanging(pipeline: RenderPipeline)
 }

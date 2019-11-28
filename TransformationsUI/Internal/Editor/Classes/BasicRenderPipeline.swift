@@ -23,6 +23,7 @@ class BasicRenderPipeline: RenderPipeline {
     // MARK: - Private Properties
 
     private var nodes = LinkedList<RenderNode>()
+    private var shouldNotifyFinishedChanging = false
 
     // MARK: - Lifecycle Functions
 
@@ -57,20 +58,26 @@ class BasicRenderPipeline: RenderPipeline {
     }
 
     func nodeFinishedChanging(node: RenderNode) {
-        if !updateNextNode(using: node) {
-            // This is the last node in the render pipeline.
-            // It is time to notify the delegate that our output changed.
-            delegate?.outputChanged(pipeline: self)
-        }
+        shouldNotifyFinishedChanging = true
+        updateNextNode(using: node)
     }
 
     // MARK: - Private Functions
 
     @discardableResult private func updateNextNode(using node: RenderNode) -> Bool {
-        guard let nextNode = innerNode(for: node)?.next?.value else { return false }
+        let nextNode = innerNode(for: node)?.next?.value
 
         // Update next node's input image.
-        nextNode.inputImage = node.outputImage
+        nextNode?.inputImage = node.outputImage
+
+        DispatchQueue.main.async {
+            self.delegate?.outputChanged(pipeline: self)
+
+            if nextNode == nil, self.shouldNotifyFinishedChanging {
+                self.shouldNotifyFinishedChanging = false
+                self.delegate?.outputFinishedChanging(pipeline: self)
+            }
+        }
 
         return true
     }

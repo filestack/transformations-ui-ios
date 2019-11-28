@@ -20,13 +20,7 @@ class TransformsViewController: ArrangeableViewController, EditorModuleVC, Edita
     }
 
     lazy var imageView: CIImageView = buildImageView()
-
-    lazy var renderNode: RenderNode = {
-        let node = TransformsRenderNode()
-        node.delegate = self
-
-        return node
-    }()
+    lazy var renderNode: RenderNode = TransformsRenderNode()
 
     var editMode = EditMode.none {
         didSet {
@@ -172,14 +166,6 @@ extension TransformsViewController {
         case .none:
             break
         }
-    }
-}
-
-// MARK: - RenderNodeDelegate
-
-extension TransformsViewController: RenderNodeDelegate {
-    func renderNodeOutputChanged(renderNode: RenderNode) {
-        imageView.image = renderNode.outputImage
     }
 }
 

@@ -64,7 +64,12 @@ public class ModuleToolbar: EditorToolbar {
 private extension ModuleToolbar {
     func setup() {
         distribution = .equalCentering
-        setItems(commands.enumerated().compactMap { commandButton(using: $0.element.icon, tag: $0.offset) })
+
+        setItems(commands.enumerated().compactMap {
+            guard let icon = $0.element.icon else { return nil }
+
+            return commandButton(using: icon, tag: $0.offset)
+        })
     }
 
     func commandButton(using image: UIImage, tag: Int) -> UIButton {

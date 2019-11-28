@@ -18,12 +18,17 @@ open class ArrangeableToolbar: UIView {
         set { stackView.distribution = newValue }
     }
 
+    public var axis: NSLayoutConstraint.Axis {
+        get { stackView.axis }
+        set { stackView.axis = newValue }
+    }
+
     public var spacing: CGFloat {
         get { stackView.spacing }
         set { stackView.spacing = newValue }
     }
 
-    public var items: [UIView] {
+    open var items: [UIView] {
         return stackView.arrangedSubviews
     }
 
@@ -78,7 +83,7 @@ open class ArrangeableToolbar: UIView {
 }
 
 extension ArrangeableToolbar {
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
 
         if shouldSetupViews {

@@ -18,6 +18,7 @@
 		45121A522368554700798073 /* TransformsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A512368554700798073 /* TransformsViewController.swift */; };
 		45121A552368574A00798073 /* RenderPipelineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A542368574A00798073 /* RenderPipelineDelegate.swift */; };
 		451F929F2369AE2C006D47DE /* EditorToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451F929E2369AE2C006D47DE /* EditorToolbarDelegate.swift */; };
+		4530BCD423900575007D7B41 /* BoundedRangeCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530BCD323900575007D7B41 /* BoundedRangeCommand.swift */; };
 		453E319223795F7B00A05EAB /* L18.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319123795F7B00A05EAB /* L18.swift */; };
 		453E319523795FA400A05EAB /* ArrangeableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319423795FA400A05EAB /* ArrangeableViewController.swift */; };
 		453E319A23795FF000A05EAB /* TitleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319623795FEF00A05EAB /* TitleToolbar.swift */; };
@@ -48,7 +49,6 @@
 		4579358C235F008300938CEF /* TransformationsUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579358B235F008300938CEF /* TransformationsUI.swift */; };
 		4579358F235F010A00938CEF /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4579358E235F010A00938CEF /* Icons.xcassets */; };
 		457935E6235F2B4100938CEF /* MetalImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457935E5235F2B4100938CEF /* MetalImageView.swift */; };
-		45B335D5236872AE008BD64F /* RenderNodeDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335D4236872AE008BD64F /* RenderNodeDelegate.swift */; };
 		45B335D723687B87008BD64F /* TransformsViewController+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335D623687B87008BD64F /* TransformsViewController+Setup.swift */; };
 		45B335DB23687BEB008BD64F /* EditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335DA23687BEB008BD64F /* EditDataSource.swift */; };
 		45B335DD23687C1E008BD64F /* TransformsViewController+EditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335DC23687C1E008BD64F /* TransformsViewController+EditDataSource.swift */; };
@@ -75,6 +75,7 @@
 		45121A512368554700798073 /* TransformsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformsViewController.swift; sourceTree = "<group>"; };
 		45121A542368574A00798073 /* RenderPipelineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPipelineDelegate.swift; sourceTree = "<group>"; };
 		451F929E2369AE2C006D47DE /* EditorToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorToolbarDelegate.swift; sourceTree = "<group>"; };
+		4530BCD323900575007D7B41 /* BoundedRangeCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundedRangeCommand.swift; sourceTree = "<group>"; };
 		453E319123795F7B00A05EAB /* L18.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L18.swift; sourceTree = "<group>"; };
 		453E319423795FA400A05EAB /* ArrangeableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeableViewController.swift; sourceTree = "<group>"; };
 		453E319623795FEF00A05EAB /* TitleToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TitleToolbar.swift; sourceTree = "<group>"; };
@@ -145,6 +146,7 @@
 		45121A3E2368527700798073 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
+				4530BCD323900575007D7B41 /* BoundedRangeCommand.swift */,
 				453E31B12379BC3200A05EAB /* CIImageView.swift */,
 				45BEE253237D6927007DB750 /* DescriptibleEditorItem.swift */,
 				4570AE0E237AD3BA00F1B24F /* Editable.swift */,
@@ -236,7 +238,6 @@
 		453E31B02379BC0100A05EAB /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				4574D712237DBF09006A6D15 /* CenteredScrollView.swift */,
 				457935E5235F2B4100938CEF /* MetalImageView.swift */,
 			);
 			path = Views;
@@ -286,6 +287,7 @@
 		455EF758237E09BE00A1FABD /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				4574D712237DBF09006A6D15 /* CenteredScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -500,6 +502,7 @@
 				45B335DF236880D2008BD64F /* ModuleToolbar.swift in Sources */,
 				454D7DAD236AF88E004B2898 /* CIImage+Transformations.swift in Sources */,
 				454D7DAB236AF3D5004B2898 /* EditorViewController+Setup.swift in Sources */,
+				4530BCD423900575007D7B41 /* BoundedRangeCommand.swift in Sources */,
 				45793571235EFF1400938CEF /* CircleGesturesHandler.swift in Sources */,
 				45121A522368554700798073 /* TransformsViewController.swift in Sources */,
 				45793589235F004600938CEF /* UIView+Constraints.swift in Sources */,
@@ -518,7 +521,6 @@
 				454D7DB3236B0DAB004B2898 /* TransformationsUIDelegate.swift in Sources */,
 				454D7DB1236B0D8D004B2898 /* Config.swift in Sources */,
 				4574D713237DBF09006A6D15 /* CenteredScrollView.swift in Sources */,
-				45B335D5236872AE008BD64F /* RenderNodeDelegate.swift in Sources */,
 				45F10AC1237EBE0900DCBF52 /* CoreGraphics+Rounding.swift in Sources */,
 				45793568235EFF1400938CEF /* CircleLayer.swift in Sources */,
 				45793567235EFF1400938CEF /* CropLayer.swift in Sources */,

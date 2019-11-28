@@ -11,7 +11,7 @@ import UIKit
 extension StandardModules {
     public class Transforms: NSObject, EditorModule {
         public var title: String = "Transforms"
-        public var icon: UIImage = .fromFrameworkBundle("icon-module-transforms")
+        public var icon: UIImage? = .fromFrameworkBundle("icon-module-transforms")
         public var isEnabled: Bool = true
 
         public lazy var viewController: EditorModuleVC = {
@@ -30,7 +30,7 @@ extension StandardModules {
             /// Rotate command.
             public class Rotate: NSObject, EditorModuleCommand {
                 public var title: String = "Rotate"
-                public lazy var icon = UIImage.fromFrameworkBundle("icon-rotate")
+                public lazy var icon: UIImage? = UIImage.fromFrameworkBundle("icon-rotate")
             }
 
             /// Crop command.
@@ -44,7 +44,7 @@ extension StandardModules {
                     }
                 }()
 
-                public lazy var icon: UIImage = {
+                public lazy var icon: UIImage? = {
                     switch type {
                     case .rect:
                         return .fromFrameworkBundle("icon-crop")

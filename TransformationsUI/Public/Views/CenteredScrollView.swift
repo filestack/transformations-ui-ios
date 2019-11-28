@@ -8,10 +8,10 @@
 
 import UIKit
 
-class CenteredScrollView: UIScrollView {
+public class CenteredScrollView: UIScrollView {
     // MARK: - Lifecycle Functions
 
-    init() {
+    public init() {
         super.init(frame: .zero)
 
         showsHorizontalScrollIndicator = false
@@ -19,17 +19,17 @@ class CenteredScrollView: UIScrollView {
         delaysContentTouches = false
     }
 
-    override func touchesShouldCancel(in view: UIView) -> Bool {
+    public override func touchesShouldCancel(in view: UIView) -> Bool {
         return true
     }
 
-    required init?(coder: NSCoder) {
+    public required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Misc Overrides
 
-    override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
 
         // Keep content centered by default
