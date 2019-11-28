@@ -108,7 +108,6 @@
 		4579358B235F008300938CEF /* TransformationsUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationsUI.swift; sourceTree = "<group>"; };
 		4579358E235F010A00938CEF /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		457935E5235F2B4100938CEF /* MetalImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalImageView.swift; sourceTree = "<group>"; };
-		45B335D4236872AE008BD64F /* RenderNodeDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderNodeDelegate.swift; sourceTree = "<group>"; };
 		45B335D623687B87008BD64F /* TransformsViewController+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+Setup.swift"; sourceTree = "<group>"; };
 		45B335DA23687BEB008BD64F /* EditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDataSource.swift; sourceTree = "<group>"; };
 		45B335DC23687C1E008BD64F /* TransformsViewController+EditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+EditDataSource.swift"; sourceTree = "<group>"; };
@@ -155,7 +154,6 @@
 				45BEE257237D6976007DB750 /* EditorModules.swift */,
 				45121A45236852F800798073 /* EditorModuleVC.swift */,
 				45121A412368528F00798073 /* RenderNode.swift */,
-				45B335D4236872AE008BD64F /* RenderNodeDelegate.swift */,
 				45121A43236852BD00798073 /* RenderPipeline.swift */,
 				45121A542368574A00798073 /* RenderPipelineDelegate.swift */,
 				45121A3F2368528100798073 /* Snapshotable.swift */,
