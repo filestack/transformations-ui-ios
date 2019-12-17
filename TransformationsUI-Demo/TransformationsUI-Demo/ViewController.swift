@@ -40,6 +40,7 @@ class ViewController: UIViewController {
         transformationsUI.delegate = self
 
         if let editorVC = transformationsUI.editor(with: image) {
+            editorVC.modalPresentationStyle = .fullScreen
             present(editorVC, animated: true)
         }
     }
