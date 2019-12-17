@@ -8,18 +8,15 @@
 
 import UIKit
 
-class TransformsViewController: ArrangeableViewController, EditorModuleVC, Editable, UIGestureRecognizerDelegate {
+class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, UIGestureRecognizerDelegate {
     typealias Config = StandardModules.Transforms
     let config: Config
-
-    let preview = UIView()
 
     enum EditMode: Hashable {
         case crop(mode: Config.Commands.Crop)
         case none
     }
 
-    lazy var imageView: CIImageView = buildImageView()
     lazy var renderNode: RenderNode = TransformsRenderNode()
 
     var editMode = EditMode.none {
@@ -28,6 +25,12 @@ class TransformsViewController: ArrangeableViewController, EditorModuleVC, Edita
             turnOff(mode: oldValue)
             turnOn(mode: editMode)
             updatePaths()
+
+            if isEditing {
+                addCropGestureRecognizers()
+            } else {
+                removeCropGestoreRecognizers()
+            }
         }
     }
 
@@ -71,6 +74,11 @@ class TransformsViewController: ArrangeableViewController, EditorModuleVC, Edita
         setupGestureRecognizer()
         setupView()
     }
+
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateImageView()
+    }
 }
 
 extension TransformsViewController {
@@ -80,6 +88,8 @@ extension TransformsViewController {
         DispatchQueue.main.async() {
             self.updatePaths()
         }
+
+        imageView.setNeedsDisplay()
     }
 }
 
@@ -107,12 +117,12 @@ private extension TransformsViewController {
     }
 
     func isVisible(layer: CALayer) -> Bool {
-        return imageView.layer.sublayers?.contains(layer) ?? false
+        return scrollView.layer.sublayers?.contains(layer) ?? false
     }
 
     func addLayer(for mode: EditMode) {
         guard let editLayer = layer(for: mode), !isVisible(layer: editLayer) else { return }
-        imageView.layer.addSublayer(editLayer)
+        scrollView.layer.addSublayer(editLayer)
     }
 
     func hideLayer(for mode: EditMode) {
@@ -132,14 +142,24 @@ private extension TransformsViewController {
     }
 
     func updateCropPaths() {
-        cropLayer.imageFrame = imageFrame.rounded(originRule: .down, sizeRule: .up)
+        cropLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
         cropLayer.cropRect = cropHandler.croppedRect.rounded()
     }
 
     func updateCirclePaths() {
-        circleLayer.imageFrame = imageFrame.rounded(originRule: .down, sizeRule: .up)
+        circleLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
         circleLayer.circleCenter = circleHandler.circleCenter
         circleLayer.circleRadius = circleHandler.circleRadius
+    }
+
+    func addCropGestureRecognizers() {
+        scrollView.addGestureRecognizer(panGestureRecognizer)
+        scrollView.addGestureRecognizer(pinchGestureRecognizer)
+    }
+
+    func removeCropGestoreRecognizers() {
+        scrollView.removeGestureRecognizer(panGestureRecognizer)
+        scrollView.removeGestureRecognizer(pinchGestureRecognizer)
     }
 }
 

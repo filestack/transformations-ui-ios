@@ -10,4 +10,5 @@ import UIKit
 
 public protocol CIImageView: UIView {
     var image: CIImage? { set get }
+    var imageViewDelegate: CIImageViewDelegate? { set get }
 }

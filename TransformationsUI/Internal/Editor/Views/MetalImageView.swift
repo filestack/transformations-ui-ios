@@ -13,8 +13,21 @@ import CoreImage
 class MetalImageView: MTKView, CIImageView {
     // MARK: - Internal Properties
 
+    var imageViewDelegate: CIImageViewDelegate?
+
     var image: CIImage? {
-        didSet { setNeedsDisplay() }
+        didSet {
+            guard let image = image else { return }
+
+            bounds = CGRect(origin: .zero, size: image.extent.size)
+            frame = CGRect(origin: .zero, size: frame.size)
+
+            setNeedsDisplay()
+
+            DispatchQueue.main.async {
+                self.imageViewDelegate?.imageChanged(image: self.image)
+            }
+        }
     }
 
     // MARK: - Private Properties

@@ -13,4 +13,9 @@ protocol EditDataSource: AnyObject {
     var imageSize: CGSize { get }
     var imageOrigin: CGPoint { get }
     var imageActualSize: CGSize { get }
+    var zoomScale: CGFloat { get }
+    var virtualFrame: CGRect { get }
+
+    func convertPointFromVirtualFrameToImageFrame(_ point: CGPoint) -> CGPoint
+    func convertRectFromVirtualFrameToImageFrame(_ rect: CGRect) -> CGRect
 }

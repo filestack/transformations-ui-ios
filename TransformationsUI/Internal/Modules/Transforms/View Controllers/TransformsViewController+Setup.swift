@@ -14,15 +14,12 @@ extension TransformsViewController {
         panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture(recognizer:)))
         pinchGestureRecognizer.delegate = self
         pinchGestureRecognizer.addTarget(self, action: #selector(handlePinchGesture(recognizer:)))
-        imageView.isUserInteractionEnabled = true
-        imageView.addGestureRecognizer(panGestureRecognizer)
-        imageView.addGestureRecognizer(pinchGestureRecognizer)
     }
 
     func setupView() {
         toolbar.delegate = self
         setupImageView()
-        setupPreview()
+        setupScrollView()
         connectViews()
     }
 }
@@ -35,10 +32,11 @@ private extension TransformsViewController {
 
     func connectViews() {
         view.addSubview(toolbar)
-        view.addSubview(preview)
+        view.addSubview(scrollView)
+        view.sendSubviewToBack(scrollView)
 
         setupToolbar()
-        setupPreview()
+        setupScrollView()
     }
 
     func setupToolbar() {
@@ -63,18 +61,15 @@ private extension TransformsViewController {
         }
     }
 
-    func setupPreview() {
-        preview.fill(with: imageView, inset: 4, activate: true)
+    func setupScrollView() {
+        scrollView.addSubview(imageView)
 
         // On .. x hR
         defineConstraints(width: .unspecified, height: .regular) {
             var constraints = [NSLayoutConstraint]()
 
-            constraints.append(contentsOf: view.fill(with: preview, connectingEdges: [.left, .right]))
-            constraints.append(contentsOf: view.fill(with: preview, connectingEdges: [.top]))
-
-            let bottomConstraint = preview.bottomAnchor.constraint(equalTo: toolbar.topAnchor)
-            constraints.append(bottomConstraint)
+            constraints.append(contentsOf: view.fill(with: scrollView, connectingEdges: [.left, .right, .top]))
+            constraints.append(scrollView.bottomAnchor.constraint(equalTo: toolbar.topAnchor))
 
             return constraints
         }
@@ -83,11 +78,8 @@ private extension TransformsViewController {
         defineConstraints(width: .unspecified, height: .compact) {
             var constraints = [NSLayoutConstraint]()
 
-            constraints.append(contentsOf: view.fill(with: preview, connectingEdges: [.top, .bottom]))
-            constraints.append(contentsOf: view.fill(with: preview, connectingEdges: [.left], inset: Constants.toolbarSize))
-
-            let rightConstraint = preview.rightAnchor.constraint(equalTo: toolbar.leftAnchor)
-            constraints.append(rightConstraint)
+            constraints.append(contentsOf: view.fill(with: scrollView, connectingEdges: [.top, .bottom, .left]))
+            constraints.append(scrollView.rightAnchor.constraint(equalTo: toolbar.leftAnchor))
 
             return constraints
         }

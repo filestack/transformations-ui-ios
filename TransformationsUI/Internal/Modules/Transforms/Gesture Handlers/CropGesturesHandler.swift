@@ -31,16 +31,18 @@ class CropGesturesHandler {
     }
 
     var croppedRect: CGRect {
-        return delegate?.imageFrame.inset(by: cropInsets) ?? .zero
+        return delegate?.virtualFrame.inset(by: cropInsets) ?? .zero
     }
 
     var actualEdgeInsets: UIEdgeInsets {
         guard let delegate = delegate else { return .zero }
 
-        return UIEdgeInsets(top: relativeCropInsets.top * delegate.imageActualSize.height,
-                            left: relativeCropInsets.left * delegate.imageActualSize.width,
-                            bottom: relativeCropInsets.bottom * delegate.imageActualSize.height,
-                            right: relativeCropInsets.right * delegate.imageActualSize.width)
+        let actualImageRect = delegate.convertRectFromVirtualFrameToImageFrame(croppedRect)
+
+        return UIEdgeInsets(top: actualImageRect.minY - delegate.imageFrame.minY,
+                            left: actualImageRect.minX - delegate.imageFrame.minX,
+                            bottom: delegate.imageFrame.maxY - actualImageRect.maxY,
+                            right: delegate.imageFrame.maxX - actualImageRect.maxX)
     }
 
     func reset() {
@@ -83,10 +85,10 @@ private extension CropGesturesHandler {
     func edgeInsets(from relativeInsets: RelativeInsets?) -> UIEdgeInsets {
         guard let delegate = delegate, let relativeInsets = relativeInsets else { return .zero }
 
-        return UIEdgeInsets(top: relativeInsets.top * delegate.imageSize.height,
-                            left: relativeInsets.left * delegate.imageSize.width,
-                            bottom: relativeInsets.bottom * delegate.imageSize.height,
-                            right: relativeInsets.right * delegate.imageSize.width)
+        return UIEdgeInsets(top: relativeInsets.top * delegate.virtualFrame.height,
+                            left: relativeInsets.left * delegate.virtualFrame.width,
+                            bottom: relativeInsets.bottom * delegate.virtualFrame.height,
+                            right: relativeInsets.right * delegate.virtualFrame.width)
     }
 
     func relativeInsets(from edgeInsets: UIEdgeInsets?) -> RelativeInsets {
@@ -94,10 +96,10 @@ private extension CropGesturesHandler {
             return RelativeInsets(top: 0, left: 0, bottom: 0, right: 0)
         }
 
-        return RelativeInsets(top: edgeInsets.top / delegate.imageSize.height,
-                              left: edgeInsets.left / delegate.imageSize.width,
-                              bottom: edgeInsets.bottom / delegate.imageSize.height,
-                              right: edgeInsets.right / delegate.imageSize.width)
+        return RelativeInsets(top: edgeInsets.top / delegate.virtualFrame.height,
+                              left: edgeInsets.left / delegate.virtualFrame.width,
+                              bottom: edgeInsets.bottom / delegate.virtualFrame.height,
+                              right: edgeInsets.right / delegate.virtualFrame.width)
     }
 }
 
@@ -108,7 +110,7 @@ private extension CropGesturesHandler {
         switch state {
         case .began:
             beginInset = relativeCropInsets
-            let adjustedPoint = origin.movedBy(x: -delegate.imageOrigin.x, y: -delegate.imageOrigin.y)
+            let adjustedPoint = origin.movedBy(x: -delegate.virtualFrame.origin.x, y: -delegate.virtualFrame.origin.y)
             movingCorner = nearestCorner(for: adjustedPoint)
             move(by: translation)
         case .changed:
@@ -129,10 +131,12 @@ private extension CropGesturesHandler {
     func location(of corner: Corner) -> CGPoint {
         guard let delegate = delegate else { return .zero }
 
-        var top: CGFloat { return cropInsets.top }
-        var bottom: CGFloat { return delegate.imageSize.height - cropInsets.bottom }
-        var left: CGFloat { return cropInsets.left }
-        var right: CGFloat { return delegate.imageSize.width - cropInsets.right }
+        let insets = cropInsets
+
+        let top: CGFloat = insets.top
+        let bottom: CGFloat = delegate.virtualFrame.height - insets.bottom
+        let left: CGFloat = insets.left
+        let right: CGFloat = delegate.virtualFrame.width - insets.right
 
         switch corner {
         case .topLeft:
@@ -181,8 +185,8 @@ private extension CropGesturesHandler {
         var left = startInset.left
         var right = startInset.right
         var bottom = startInset.bottom
-        let minHeight = delegate.imageSize.height - top - bottom
-        let minWidth = delegate.imageSize.width - left - right
+        let minHeight = delegate.virtualFrame.height - top - bottom
+        let minWidth = delegate.virtualFrame.width - left - right
 
         switch movingCorner {
         case .topLeft:

@@ -50,16 +50,15 @@ class CircleGesturesHandler {
     var actualCenter: CGPoint {
         guard let delegate = delegate else { return .zero }
 
-        let x = delegate.imageActualSize.width * relativeCircle.centerX
-        let y = delegate.imageActualSize.height * relativeCircle.centerY
+        let actualPoint = point(fromRelativeX: relativeCircle.centerX, relativeY: relativeCircle.centerY)
 
-        return CGPoint(x: x, y: y)
+        return delegate.convertPointFromVirtualFrameToImageFrame(actualPoint)
     }
 
     var actualRadius: CGFloat {
         guard let delegate = delegate else { return .zero }
 
-        return min(delegate.imageActualSize.width, delegate.imageActualSize.height) * relativeCircle.radius
+        return shorterEdge * relativeCircle.radius * (1 / delegate.zoomScale)
     }
 
     func reset() {
@@ -73,22 +72,20 @@ private extension CircleGesturesHandler {
     func point(fromRelativeX relativeX: CGFloat, relativeY: CGFloat) -> CGPoint {
         guard let delegate = delegate else { return .zero }
 
-        let x = delegate.imageOrigin.x + delegate.imageSize.width * relativeX
-        let y = delegate.imageOrigin.y + delegate.imageSize.height * relativeY
-
-        return CGPoint(x: x, y: y)
+        return CGPoint(x: delegate.virtualFrame.origin.x + delegate.virtualFrame.width * relativeX,
+                       y: delegate.virtualFrame.origin.y + delegate.virtualFrame.height * relativeY)
     }
 
     func relativeX(from point: CGPoint) -> CGFloat? {
         guard let delegate = delegate else { return nil }
 
-        return (point.x - delegate.imageOrigin.x) / delegate.imageSize.width
+        return (point.x - delegate.virtualFrame.origin.x) / delegate.virtualFrame.width
     }
 
     func relativeY(from point: CGPoint) -> CGFloat? {
         guard let delegate = delegate else { return nil }
 
-        return (point.y - delegate.imageOrigin.y) / delegate.imageSize.height
+        return (point.y - delegate.virtualFrame.origin.y) / delegate.virtualFrame.height
     }
 
     func length(fromRelativeLenght relativeLenght: CGFloat) -> CGFloat {
@@ -107,7 +104,7 @@ private extension CircleGesturesHandler {
     var shorterEdge: CGFloat {
         guard let delegate = delegate else { return 0 }
 
-        return min(delegate.imageSize.width, delegate.imageSize.height)
+        return min(delegate.virtualFrame.width, delegate.virtualFrame.height)
     }
 
     func sendUpdate() {
@@ -173,10 +170,10 @@ private extension CircleGesturesHandler {
         guard let delegate = delegate else { return }
 
         let startCenter = point(fromRelativeX: beginCircle.centerX, relativeY: beginCircle.centerY)
-        let topSpace = delegate.imageFrame.minY - startCenter.y + circleRadius
-        let bottomSpace = delegate.imageFrame.maxY - startCenter.y - circleRadius
-        let leftSpace = delegate.imageFrame.minX - startCenter.x + circleRadius
-        let rightSpace = delegate.imageFrame.maxX - startCenter.x - circleRadius
+        let topSpace = delegate.virtualFrame.minY - startCenter.y + circleRadius
+        let bottomSpace = delegate.virtualFrame.maxY - startCenter.y - circleRadius
+        let leftSpace = delegate.virtualFrame.minX - startCenter.x + circleRadius
+        let rightSpace = delegate.virtualFrame.maxX - startCenter.x - circleRadius
         let moveY = clamp(translation.y, min: topSpace, max: bottomSpace)
         let moveX = clamp(translation.x, min: leftSpace, max: rightSpace)
 

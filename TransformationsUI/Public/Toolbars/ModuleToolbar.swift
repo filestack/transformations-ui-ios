@@ -46,7 +46,7 @@ public class ModuleToolbar: EditorToolbar {
         innerToolbar = ArrangeableToolbar(items: items)
         innerToolbar.spacing = Constants.toolbarSpacing
 
-        let scrollView = CenteredScrollView()
+        let scrollView = ToolbarScrollView()
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.fill(with: innerToolbar, activate: true)

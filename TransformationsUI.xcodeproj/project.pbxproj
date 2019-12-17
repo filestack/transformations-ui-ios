@@ -32,6 +32,7 @@
 		454D7DB1236B0D8D004B2898 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB0236B0D8D004B2898 /* Config.swift */; };
 		454D7DB3236B0DAB004B2898 /* TransformationsUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB2236B0DAB004B2898 /* TransformationsUIDelegate.swift */; };
 		454D7DB8236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB7236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift */; };
+		4560B20E239BA688004D9FBC /* ToolbarScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4560B20D239BA688004D9FBC /* ToolbarScrollView.swift */; };
 		4570AE0F237AD3BA00F1B24F /* Editable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4570AE0E237AD3BA00F1B24F /* Editable.swift */; };
 		4574D713237DBF09006A6D15 /* CenteredScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574D712237DBF09006A6D15 /* CenteredScrollView.swift */; };
 		4579353F235EFC1900938CEF /* TransformationsUI.h in Headers */ = {isa = PBXBuildFile; fileRef = 4579353D235EFC1900938CEF /* TransformationsUI.h */; settings = {ATTRIBUTES = (Public, ); }; };
@@ -49,6 +50,8 @@
 		4579358C235F008300938CEF /* TransformationsUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579358B235F008300938CEF /* TransformationsUI.swift */; };
 		4579358F235F010A00938CEF /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4579358E235F010A00938CEF /* Icons.xcassets */; };
 		457935E6235F2B4100938CEF /* MetalImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457935E5235F2B4100938CEF /* MetalImageView.swift */; };
+		459F32CD23A8B99D0099A4B3 /* ModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459F32CC23A8B99D0099A4B3 /* ModuleViewController.swift */; };
+		459F32CF23A8BC620099A4B3 /* CIImageViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459F32CE23A8BC620099A4B3 /* CIImageViewDelegate.swift */; };
 		45B335D723687B87008BD64F /* TransformsViewController+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335D623687B87008BD64F /* TransformsViewController+Setup.swift */; };
 		45B335DB23687BEB008BD64F /* EditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335DA23687BEB008BD64F /* EditDataSource.swift */; };
 		45B335DD23687C1E008BD64F /* TransformsViewController+EditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335DC23687C1E008BD64F /* TransformsViewController+EditDataSource.swift */; };
@@ -89,6 +92,7 @@
 		454D7DB0236B0D8D004B2898 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		454D7DB2236B0DAB004B2898 /* TransformationsUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationsUIDelegate.swift; sourceTree = "<group>"; };
 		454D7DB7236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+ToolbarDelegate.swift"; sourceTree = "<group>"; };
+		4560B20D239BA688004D9FBC /* ToolbarScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarScrollView.swift; sourceTree = "<group>"; };
 		4570AE0E237AD3BA00F1B24F /* Editable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editable.swift; sourceTree = "<group>"; };
 		4574D712237DBF09006A6D15 /* CenteredScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredScrollView.swift; sourceTree = "<group>"; };
 		4579353A235EFC1900938CEF /* TransformationsUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = TransformationsUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -108,6 +112,8 @@
 		4579358B235F008300938CEF /* TransformationsUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationsUI.swift; sourceTree = "<group>"; };
 		4579358E235F010A00938CEF /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		457935E5235F2B4100938CEF /* MetalImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalImageView.swift; sourceTree = "<group>"; };
+		459F32CC23A8B99D0099A4B3 /* ModuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleViewController.swift; sourceTree = "<group>"; };
+		459F32CE23A8BC620099A4B3 /* CIImageViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIImageViewDelegate.swift; sourceTree = "<group>"; };
 		45B335D623687B87008BD64F /* TransformsViewController+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+Setup.swift"; sourceTree = "<group>"; };
 		45B335DA23687BEB008BD64F /* EditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDataSource.swift; sourceTree = "<group>"; };
 		45B335DC23687C1E008BD64F /* TransformsViewController+EditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+EditDataSource.swift"; sourceTree = "<group>"; };
@@ -147,6 +153,7 @@
 			children = (
 				4530BCD323900575007D7B41 /* BoundedRangeCommand.swift */,
 				453E31B12379BC3200A05EAB /* CIImageView.swift */,
+				459F32CE23A8BC620099A4B3 /* CIImageViewDelegate.swift */,
 				45BEE253237D6927007DB750 /* DescriptibleEditorItem.swift */,
 				4570AE0E237AD3BA00F1B24F /* Editable.swift */,
 				45BEE255237D6942007DB750 /* EditorModule.swift */,
@@ -202,6 +209,7 @@
 			isa = PBXGroup;
 			children = (
 				453E319423795FA400A05EAB /* ArrangeableViewController.swift */,
+				459F32CC23A8B99D0099A4B3 /* ModuleViewController.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -286,6 +294,7 @@
 			isa = PBXGroup;
 			children = (
 				4574D712237DBF09006A6D15 /* CenteredScrollView.swift */,
+				4560B20D239BA688004D9FBC /* ToolbarScrollView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -494,6 +503,7 @@
 				45BEE24F237D68B6007DB750 /* StandardModules.swift in Sources */,
 				45121A4C2368543000798073 /* LinkedList.swift in Sources */,
 				45BEE25A237D6987007DB750 /* EditorModuleCommand.swift in Sources */,
+				459F32CF23A8BC620099A4B3 /* CIImageViewDelegate.swift in Sources */,
 				45793585235EFFE000938CEF /* UIImage+Bundle.swift in Sources */,
 				45121A46236852F800798073 /* EditorModuleVC.swift in Sources */,
 				453E31AB2379B66700A05EAB /* Constants.swift in Sources */,
@@ -517,11 +527,13 @@
 				453E319223795F7B00A05EAB /* L18.swift in Sources */,
 				454D7DB8236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift in Sources */,
 				454D7DB3236B0DAB004B2898 /* TransformationsUIDelegate.swift in Sources */,
+				4560B20E239BA688004D9FBC /* ToolbarScrollView.swift in Sources */,
 				454D7DB1236B0D8D004B2898 /* Config.swift in Sources */,
 				4574D713237DBF09006A6D15 /* CenteredScrollView.swift in Sources */,
 				45F10AC1237EBE0900DCBF52 /* CoreGraphics+Rounding.swift in Sources */,
 				45793568235EFF1400938CEF /* CircleLayer.swift in Sources */,
 				45793567235EFF1400938CEF /* CropLayer.swift in Sources */,
+				459F32CD23A8B99D0099A4B3 /* ModuleViewController.swift in Sources */,
 				450B806C236AE0C60097F091 /* EditorUndoManager.swift in Sources */,
 				45121A552368574A00798073 /* RenderPipelineDelegate.swift in Sources */,
 				45793570235EFF1400938CEF /* CropGesturesHandler.swift in Sources */,
