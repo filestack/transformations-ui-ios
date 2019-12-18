@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ModuleViewController: ArrangeableViewController {
+open class ModuleViewController: ArrangeableViewController {
     public var maximumZoomScale: CGFloat = 2 {
         didSet { scrollView.maximumZoomScale = maximumZoomScale }
     }
