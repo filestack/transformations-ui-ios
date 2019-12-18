@@ -9,11 +9,11 @@
 import UIKit
 
 open class ModuleViewController: ArrangeableViewController {
-    public var maximumZoomScale: CGFloat = 2 {
+    open var maximumZoomScale: CGFloat = 2 {
         didSet { scrollView.maximumZoomScale = maximumZoomScale }
     }
 
-    public lazy var scrollView: CenteredScrollView = {
+    open lazy var scrollView: CenteredScrollView = {
         let scrollView = CenteredScrollView()
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -26,7 +26,7 @@ open class ModuleViewController: ArrangeableViewController {
         return scrollView
     }()
 
-    public lazy var imageView: CIImageView = {
+    open lazy var imageView: CIImageView = {
         let imageView = MetalImageView()
 
         imageView.imageViewDelegate = self
@@ -36,20 +36,20 @@ open class ModuleViewController: ArrangeableViewController {
 }
 
 extension ModuleViewController {
-    public override func viewDidLayoutSubviews() {
+    open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
         recalculateZoomScale()
     }
 }
 
 extension ModuleViewController: UIScrollViewDelegate {
-    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
 }
 
 extension ModuleViewController: CIImageViewDelegate {
-    public func imageChanged(image: CIImage?) {
+    open func imageChanged(image: CIImage?) {
         recalculateZoomScale()
     }
 }
