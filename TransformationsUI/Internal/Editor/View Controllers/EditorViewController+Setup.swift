@@ -32,7 +32,7 @@ extension EditorViewController {
 private extension EditorViewController {
     func setupPipeline() {
         for module in modules {
-            renderPipeline.addNode(node: module.viewController.renderNode)
+            renderPipeline.addNode(node: module.viewController.getRenderNode())
         }
     }
 
@@ -88,13 +88,13 @@ private extension EditorViewController {
             var constraints = [NSLayoutConstraint]()
 
             constraints.append(contentsOf: view.fill(with: containerView,
-                                                     connectingEdges: [.left, .bottom],
+                                                     connectingEdges: [.left, .top, .right],
                                                      inset: Constants.toolbarSize,
                                                      withSafeAreaRespecting: true))
 
             constraints.append(contentsOf: view.fill(with: containerView,
-                                                     connectingEdges: [.top, .right],
-                                                     inset: Constants.toolbarSize,
+                                                     connectingEdges: [.bottom],
+                                                     inset: 0,
                                                      withSafeAreaRespecting: true))
 
             return constraints

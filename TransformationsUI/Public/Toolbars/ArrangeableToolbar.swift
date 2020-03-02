@@ -18,6 +18,11 @@ open class ArrangeableToolbar: UIView {
         set { stackView.distribution = newValue }
     }
 
+    public var alignment: UIStackView.Alignment {
+        get { stackView.alignment }
+        set { stackView.alignment = newValue }
+    }
+
     public var axis: NSLayoutConstraint.Axis {
         get { stackView.axis }
         set { stackView.axis = newValue }

@@ -9,7 +9,10 @@
 import UIKit
 
 open class ModuleViewController: ArrangeableViewController {
-    open var maximumZoomScale: CGFloat = 2 {
+    private var lastImage: CIImage? = nil
+    private var lastViewFrame: CGRect? = nil
+
+    open var maximumZoomScale: CGFloat = .infinity {
         didSet { scrollView.maximumZoomScale = maximumZoomScale }
     }
 
@@ -19,7 +22,7 @@ open class ModuleViewController: ArrangeableViewController {
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.maximumZoomScale = self.maximumZoomScale
+        scrollView.maximumZoomScale = maximumZoomScale
         scrollView.delegate = self
         scrollView.clipsToBounds = false
 
@@ -33,12 +36,20 @@ open class ModuleViewController: ArrangeableViewController {
 
         return imageView
     }()
-}
 
-extension ModuleViewController {
+    open override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        recalculateZoomScale()
+    }
+
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
-        recalculateZoomScale()
+
+        if lastViewFrame != view.frame {
+            lastViewFrame = view.frame
+            recalculateZoomScale()
+        }
     }
 }
 
@@ -50,13 +61,18 @@ extension ModuleViewController: UIScrollViewDelegate {
 
 extension ModuleViewController: CIImageViewDelegate {
     open func imageChanged(image: CIImage?) {
-        recalculateZoomScale()
+        if lastImage?.extent != image?.extent {
+            recalculateZoomScale()
+        }
+
+        lastImage = image
     }
 }
 
 private extension ModuleViewController {
     func recalculateZoomScale() {
         guard let zoomedView = scrollView.delegate?.viewForZooming?(in: scrollView) else { return }
+        guard scrollView.bounds.size != .zero && zoomedView.bounds.size != .zero else { return }
 
         // Reset minimum zoom scale
         if scrollView.bounds.width <= scrollView.bounds.height {

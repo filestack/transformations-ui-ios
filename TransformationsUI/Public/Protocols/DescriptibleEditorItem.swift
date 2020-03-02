@@ -12,3 +12,7 @@ public protocol DescriptibleEditorItem: NSObject {
     var title: String { get }
     var icon: UIImage? { get }
 }
+
+extension DescriptibleEditorItem {
+    public var icon: UIImage? { return nil }
+}

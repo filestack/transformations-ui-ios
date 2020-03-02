@@ -52,6 +52,16 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - View Overrides
+
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        if #available(iOS 13.0, *) {
+            overrideUserInterfaceStyle = .dark
+        }
+    }
+
     // MARK: - Public Functions
 
     func activate(module: EditorModule) {
@@ -88,7 +98,9 @@ private extension EditorViewController {
 
 extension EditorViewController: RenderPipelineDelegate {
     func outputChanged(pipeline: RenderPipeline) {
-        activeModule?.viewController.updateImageView()
+        DispatchQueue.main.async {
+            self.activeModule?.viewController.updateImageView()
+        }
     }
 
     func outputFinishedChanging(pipeline: RenderPipeline) {
@@ -135,6 +147,10 @@ extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
 
         if let state = editorUndoManager?.current {
             renderPipeline.restore(from: state)
+            
+            DispatchQueue.main.async {
+                self.activeModule?.viewController.editorRestoredSnapshot()
+            }
         }
     }
 
@@ -144,6 +160,10 @@ extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
 
         if let state = editorUndoManager?.current {
             renderPipeline.restore(from: state)
+            
+            DispatchQueue.main.async {
+                self.activeModule?.viewController.editorRestoredSnapshot()
+            }
         }
     }
 }

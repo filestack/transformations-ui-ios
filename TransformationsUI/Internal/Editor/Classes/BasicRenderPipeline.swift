@@ -24,6 +24,7 @@ class BasicRenderPipeline: RenderPipeline {
 
     private var nodes = LinkedList<RenderNode>()
     private var shouldNotifyFinishedChanging = false
+    private var count: Int = 0
 
     // MARK: - Lifecycle Functions
 
@@ -70,13 +71,11 @@ class BasicRenderPipeline: RenderPipeline {
         // Update next node's input image.
         nextNode?.inputImage = node.outputImage
 
-        DispatchQueue.main.async {
-            self.delegate?.outputChanged(pipeline: self)
+        self.delegate?.outputChanged(pipeline: self)
 
-            if nextNode == nil, self.shouldNotifyFinishedChanging {
-                self.shouldNotifyFinishedChanging = false
-                self.delegate?.outputFinishedChanging(pipeline: self)
-            }
+        if nextNode == nil, self.shouldNotifyFinishedChanging {
+            self.shouldNotifyFinishedChanging = false
+            self.delegate?.outputFinishedChanging(pipeline: self)
         }
 
         return true
@@ -102,18 +101,22 @@ class BasicRenderPipeline: RenderPipeline {
 extension BasicRenderPipeline: Snapshotable {
     // Takes a snapshot of every node in the render pipeline.
     public func snapshot() -> Snapshot {
-        var snapshots = Snapshot()
+        var snapshot = Snapshot()
         var node: Node<RenderNode>? = nodes.first
 
         while node != nil {
-            if let snapshot = (node!.value as? Snapshotable)?.snapshot() {
-                snapshots[node!.value.uuid.uuidString] = snapshot
+            if let nodeSnapshot = (node!.value as? Snapshotable)?.snapshot() {
+                snapshot[node!.value.uuid.uuidString] = nodeSnapshot
             }
 
             node = node!.next
         }
 
-        return snapshots
+        // Keep track of snapshot number. Useful for debugging.
+        count += 1
+        snapshot["number"] = count
+
+        return snapshot
     }
 
     // Restores a snapshot of every node in the render pipeline.

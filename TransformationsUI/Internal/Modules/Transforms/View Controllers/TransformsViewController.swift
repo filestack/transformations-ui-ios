@@ -17,7 +17,7 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
         case none
     }
 
-    lazy var renderNode: RenderNode = TransformsRenderNode()
+    lazy var renderNode = TransformsRenderNode()
 
     var editMode = EditMode.none {
         didSet {
@@ -48,7 +48,7 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
 
     required init(config: Config) {
         self.config = config
-        
+
         super.init(nibName: nil, bundle: nil)
     }
 
@@ -57,6 +57,10 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
     }
 
     // MARK: - Internal Functions
+
+    func getRenderNode() -> RenderNode {
+        return renderNode
+    }
 
     func applyEditing() {
         saveSelected()
@@ -79,17 +83,19 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
         super.viewWillAppear(animated)
         updateImageView()
     }
-}
 
-extension TransformsViewController {
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        cancelEditing()
+    }
+
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         DispatchQueue.main.async() {
             self.updatePaths()
         }
-
-        imageView.setNeedsDisplay()
     }
 }
 
@@ -100,6 +106,18 @@ private extension TransformsViewController {
 
     func turnOn(mode: EditMode) {
         addLayer(for: mode)
+
+        switch mode {
+        case .crop(let mode):
+            switch mode.type {
+            case .rect:
+                cropHandler.reset()
+            case .circle:
+                circleHandler.reset()
+            }
+        case .none:
+            break
+        }
     }
 }
 

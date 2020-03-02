@@ -47,8 +47,6 @@ extension TransformsViewController: ModuleToolbarDelegate {
     // MARK: - Private Functions
 
     private func perform(command: NodeCommand) {
-        guard let renderNode = renderNode as? TransformsRenderNode else { return }
-
         switch command {
         case let .rotate(clockwise):
             renderNode.rotate(clockwise: clockwise)

@@ -9,6 +9,11 @@
 import UIKit
 
 public class CenteredScrollView: UIScrollView {
+    /// Allows adding extra insets to the auto managed `contentInset`.
+    public var extraContentInset: UIEdgeInsets = .zero {
+        didSet { setNeedsLayout() }
+    }
+
     // MARK: - Misc Overrides
 
     public override func layoutSubviews() {
@@ -21,9 +26,11 @@ public class CenteredScrollView: UIScrollView {
 
 private extension CenteredScrollView {
     func keepContentCentered() {
-        let offsetX = max((bounds.width - contentSize.width) * 0.5, 0)
-        let offsetY = max((bounds.height - contentSize.height) * 0.5, 0)
+        let offsetInsets = UIEdgeInsets(top: max((bounds.height - contentSize.height) * 0.5, 0),
+                                        left: max((bounds.width - contentSize.width) * 0.5, 0),
+                                        bottom: 0,
+                                        right: 0)
 
-        contentInset = UIEdgeInsets(top: offsetY, left: offsetX, bottom: 0, right: 0)
+        contentInset = offsetInsets.adding(insets: extraContentInset)
     }
 }

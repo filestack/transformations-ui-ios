@@ -9,8 +9,10 @@
 import UIKit
 
 public protocol EditorModuleVC: UIViewController {
-    var renderNode: RenderNode { get }
     var imageView: CIImageView { get }
+
+    func getRenderNode() -> RenderNode
+    func editorRestoredSnapshot()
 }
 
 extension EditorModuleVC {
@@ -19,6 +21,10 @@ extension EditorModuleVC {
     }
 
     public func updateImageView() {
-        imageView.image = renderNode.pipeline?.outputImage
+        imageView.image = getRenderNode().pipeline?.outputImage
+    }
+
+    public func editorRestoredSnapshot() {
+        // NO-OP
     }
 }
