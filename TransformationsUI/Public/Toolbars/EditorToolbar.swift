@@ -40,13 +40,13 @@ open class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
-    open func label(titled title: String) -> UILabel {
+    open func label(titled title: String, tintColor: UIColor = Constants.labelColor, textAlignment: NSTextAlignment = .left) -> UILabel {
         let label = UILabel()
 
         label.text = title
         label.font = UIFont.systemFont(ofSize: UIFont.systemFontSize)
-        label.tintColor = Constants.labelColor
-        label.textAlignment = .center
+        label.tintColor = tintColor
+        label.textAlignment = textAlignment
 
         return label
     }

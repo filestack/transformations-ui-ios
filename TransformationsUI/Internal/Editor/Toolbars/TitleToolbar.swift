@@ -23,7 +23,7 @@ class TitleToolbar: EditorToolbar {
     var title: String? {
         didSet {
             if let title = title {
-                setItems([label(titled: title.uppercased())])
+                setItems([label(titled: title.uppercased(), textAlignment: .center)])
             } else {
                 setItems([])
             }

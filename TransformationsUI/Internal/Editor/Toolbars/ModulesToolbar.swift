@@ -74,24 +74,25 @@ class ModulesToolbar: EditorToolbar {
 
 extension ModulesToolbar {
     override func layoutSubviews() {
-        super.layoutSubviews()
-
         switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass) {
         case (_, .regular):
-            insertItem(cancelButton, at: 0)
-            addItem(finishButton)
+            cancelButton.isUserInteractionEnabled = true
+            finishButton.isUserInteractionEnabled = true
+            cancelButton.alpha = 1
+            finishButton.alpha = 1
         case (_, .compact):
-            removeItem(cancelButton)
-            removeItem(finishButton)
+            cancelButton.isUserInteractionEnabled = false
+            finishButton.isUserInteractionEnabled = false
+            cancelButton.alpha = 0
+            finishButton.alpha = 0
         default:
             break
         }
 
         if items.contains(finishButton) && items.contains(cancelButton) {
-            // Keep the finish button the same width as the cancel button
-            finishButton.removeConstraints([finishButtonWidthConstraint].compactMap { $0 })
-            finishButtonWidthConstraint = finishButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor)
-            finishButtonWidthConstraint?.isActive = true
+            finishButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor).isActive = true
         }
+
+        super.layoutSubviews()
     }
 }

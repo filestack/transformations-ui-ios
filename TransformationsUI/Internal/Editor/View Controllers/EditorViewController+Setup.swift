@@ -125,11 +125,9 @@ private extension EditorViewController {
             var constraints = [NSLayoutConstraint]()
 
             constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.bottom],
-                                                     inset: 0,
                                                      withSafeAreaRespecting: true))
 
             constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.left, .right],
-                                                     inset: 0,
                                                      withSafeAreaRespecting: true))
 
             constraints.append(modulesToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize))
@@ -142,12 +140,10 @@ private extension EditorViewController {
             var constraints = [NSLayoutConstraint]()
 
             constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.right],
-                                                     inset: 0,
                                                      withSafeAreaRespecting: true))
 
             constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.top, .bottom],
-                                                     inset: 0,
-                                                     withSafeAreaRespecting: true))
+                                                     withSafeAreaRespecting: false))
 
             constraints.append(modulesToolbar.widthAnchor.constraint(equalToConstant: Constants.toolbarSize))
 
