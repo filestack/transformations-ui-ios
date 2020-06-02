@@ -9,6 +9,7 @@
 import UIKit
 
 open class ModuleViewController: ArrangeableViewController {
+    weak var delegate: EditorModuleVCDelegate?
     private var lastImage: CIImage? = nil
     private var lastViewFrame: CGRect? = nil
 
@@ -24,9 +25,18 @@ open class ModuleViewController: ArrangeableViewController {
         scrollView.showsVerticalScrollIndicator = false
         scrollView.maximumZoomScale = maximumZoomScale
         scrollView.delegate = self
-        scrollView.clipsToBounds = false
+        scrollView.clipsToBounds = true
 
         return scrollView
+    }()
+
+    public let stackView: UIStackView = {
+        let stackView = UIStackView()
+
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+
+        return stackView
     }()
 
     open lazy var imageView: CIImageView = {
@@ -36,6 +46,28 @@ open class ModuleViewController: ArrangeableViewController {
 
         return imageView
     }()
+
+    public lazy var discardApplyToolbar: DiscardApplyToolbar? = {
+        if self is Editable {
+            let toolbar = DiscardApplyToolbar()
+
+            toolbar.delegate = self
+
+            return toolbar
+        } else {
+            return nil
+        }
+    }()
+
+    open func getModule() -> EditorModule? {
+        return nil
+    }
+
+    open override func viewDidLoad() {
+        super.viewDidLoad()
+
+        setup()
+    }
 
     open override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
@@ -83,5 +115,19 @@ private extension ModuleViewController {
 
         // Reset zoom scale
         scrollView.zoomScale = scrollView.minimumZoomScale
+    }
+}
+
+extension ModuleViewController: DiscardApplyToolbarDelegate {
+    public func discardSelected(sender: UIButton) {
+        if let module = getModule() {
+            delegate?.moduleWantsToDiscardChanges(module: module)
+        }
+    }
+
+    public func applySelected(sender: UIButton) {
+        if let module = getModule() {
+            delegate?.moduleWantsToApplyChanges(module: module)
+        }
     }
 }

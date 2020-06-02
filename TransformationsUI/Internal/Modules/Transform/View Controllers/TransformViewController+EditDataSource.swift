@@ -1,5 +1,5 @@
 //
-//  TransformsViewController+EditDataSource.swift
+//  TransformViewController+EditDataSource.swift
 //  TransformationsUI
 //
 //  Created by Ruben Nine on 29/10/2019.
@@ -9,7 +9,7 @@
 import AVFoundation
 import Foundation
 
-extension TransformsViewController: EditDataSource {
+extension TransformViewController: EditDataSource {
     var imageFrame: CGRect {
         return AVMakeRect(aspectRatio: imageActualSize, insideRect: imageView.bounds)
     }

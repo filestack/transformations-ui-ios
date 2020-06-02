@@ -9,7 +9,21 @@
 import UIKit
 
 public class StandardModules: NSObject, EditorModules {
-    public lazy var all: [EditorModule] = [transforms]
+    public lazy var all: [EditorModule] = [transform]
 
-    public var transforms = Transforms()
+    public var transform = Transform()
+}
+
+extension StandardModules {
+    class Overview: NSObject, EditorModule {
+        public var title: String = "Overview"
+        public var icon: UIImage? = nil
+        public var isEnabled: Bool = true
+
+        public var viewController: EditorModuleVC
+
+        init(using viewController: EditorModuleVC) {
+            self.viewController = viewController
+        }
+    }
 }

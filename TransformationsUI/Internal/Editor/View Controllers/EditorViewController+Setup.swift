@@ -11,11 +11,10 @@ import UIKit
 extension EditorViewController {
     func setup() {
         setupPipeline()
-        setupModules()
         setupView()
+        setupAndActivateOverviewModule()
 
         titleToolbar.delegate = self
-        modulesToolbar.delegate = self
         renderPipeline.delegate = self
 
         editorUndoManager = EditorUndoManager(state: renderPipeline.snapshot())
@@ -30,78 +29,49 @@ extension EditorViewController {
 }
 
 private extension EditorViewController {
+    func setupAndActivateOverviewModule() {
+        renderPipeline.addNode(node: overviewModule.viewController.getRenderNode())
+        activate(module: overviewModule)
+    }
+
     func setupPipeline() {
         for module in modules {
             renderPipeline.addNode(node: module.viewController.getRenderNode())
         }
     }
 
-    func setupModules() {
-        var moduleItems = [UIView]()
-
-        for (idx, module) in modules.enumerated() {
-            guard let icon = module.icon else { continue }
-
-            let item = modulesToolbar.moduleButton(using: icon)
-
-            item.tag = idx
-            item.tintColor = .white
-
-            moduleItems.append(item)
-        }
-
-        modulesToolbar.setItems(moduleItems)
-
-        // Show first module by default.
-        if let module = modules.first {
-            activate(module: module)
-        }
-    }
-
     func setupView() {
         view.backgroundColor = Constants.backgroundColor
-        setupContainerView()
-        setupModulesToolbar()
-        setupTitleToolbar()
+        canvasView.backgroundColor = Constants.canvasBackgroundColor
+
+        setupCanvasViewConstraints()
+        setupTitleToolbarConstraints()
     }
 
-    func setupContainerView() {
-        // On .. x hR
-        defineConstraints(width: .unspecified, height: .regular) {
-            var constraints = [NSLayoutConstraint]()
+    func setupCanvasViewConstraints() {
+        var constraints = [NSLayoutConstraint]()
 
-            constraints.append(contentsOf: view.fill(with: containerView,
-                                                     connectingEdges: [.left, .right],
-                                                     inset: 0,
-                                                     withSafeAreaRespecting: true))
+        constraints.append(contentsOf: view.fill(with: canvasView,
+                                                 connectingEdges: [.left, .right],
+                                                 inset: 0,
+                                                 withSafeAreaRespecting: true))
 
-            constraints.append(contentsOf: view.fill(with: containerView,
-                                                     connectingEdges: [.top, .bottom],
-                                                     inset: Constants.toolbarSize,
-                                                     withSafeAreaRespecting: true))
+        constraints.append(contentsOf: view.fill(with: canvasView,
+                                                 connectingEdges: [.top],
+                                                 inset: Constants.toolbarSize.height,
+                                                 withSafeAreaRespecting: true))
 
-            return constraints
-        }
+        constraints.append(contentsOf: view.fill(with: canvasView,
+                                                 connectingEdges: [.bottom],
+                                                 inset: 0,
+                                                 withSafeAreaRespecting: true))
 
-        // On .. x hC
-        defineConstraints(width: .unspecified, height: .compact) {
-            var constraints = [NSLayoutConstraint]()
-
-            constraints.append(contentsOf: view.fill(with: containerView,
-                                                     connectingEdges: [.left, .top, .right],
-                                                     inset: Constants.toolbarSize,
-                                                     withSafeAreaRespecting: true))
-
-            constraints.append(contentsOf: view.fill(with: containerView,
-                                                     connectingEdges: [.bottom],
-                                                     inset: 0,
-                                                     withSafeAreaRespecting: true))
-
-            return constraints
+        for constraint in constraints {
+            constraint.isActive = true
         }
     }
 
-    func setupTitleToolbar() {
+    func setupTitleToolbarConstraints() {
         var constraints = [NSLayoutConstraint]()
 
         constraints.append(contentsOf: view.fill(with: titleToolbar, connectingEdges: [.top],
@@ -112,42 +82,10 @@ private extension EditorViewController {
                                                  inset: 0,
                                                  withSafeAreaRespecting: true))
 
-        constraints.append(titleToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize))
+        constraints.append(titleToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize.width))
 
         for constraint in constraints {
             constraint.isActive = true
-        }
-    }
-
-    func setupModulesToolbar() {
-        // On hR — anchor toolbar to the bottom
-        defineConstraints(width: .unspecified, height: .regular) {
-            var constraints = [NSLayoutConstraint]()
-
-            constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.bottom],
-                                                     withSafeAreaRespecting: true))
-
-            constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.left, .right],
-                                                     withSafeAreaRespecting: true))
-
-            constraints.append(modulesToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize))
-
-            return constraints
-        }
-
-        // On hC — anchor toolbar to the right
-        defineConstraints(width: .unspecified, height: .compact) {
-            var constraints = [NSLayoutConstraint]()
-
-            constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.right],
-                                                     withSafeAreaRespecting: true))
-
-            constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.top, .bottom],
-                                                     withSafeAreaRespecting: false))
-
-            constraints.append(modulesToolbar.widthAnchor.constraint(equalToConstant: Constants.toolbarSize))
-
-            return constraints
         }
     }
 }

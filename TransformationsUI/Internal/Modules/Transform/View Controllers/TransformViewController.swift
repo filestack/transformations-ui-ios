@@ -1,5 +1,5 @@
 //
-//  TransformsViewController.swift
+//  TransformViewController.swift
 //  TransformationsUI
 //
 //  Created by Ruben Nine on 29/10/2019.
@@ -8,20 +8,20 @@
 
 import UIKit
 
-class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, UIGestureRecognizerDelegate {
-    typealias Config = StandardModules.Transforms
+class TransformViewController: ModuleViewController, EditorModuleVC, Editable, UIGestureRecognizerDelegate {
+    typealias Config = StandardModules.Transform
     let config: Config
 
     enum EditMode: Hashable {
-        case crop(mode: Config.Commands.Crop)
         case none
+        case crop(mode: Config.Commands.Crop)
     }
 
-    lazy var renderNode = TransformsRenderNode()
+    lazy var renderNode = TransformRenderNode()
 
     var editMode = EditMode.none {
         didSet {
-            isEditing = editMode == .none ? false : true
+            isEditing = editMode != .none
             turnOff(mode: oldValue)
             turnOn(mode: editMode)
             updatePaths()
@@ -30,6 +30,7 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
                 addCropGestureRecognizers()
             } else {
                 removeCropGestoreRecognizers()
+                cropToolbar.resetSelectedSegment()
             }
         }
     }
@@ -37,7 +38,17 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
     var panGestureRecognizer = UIPanGestureRecognizer()
     var pinchGestureRecognizer = UIPinchGestureRecognizer()
 
-    lazy var toolbar = ModuleToolbar(commands: config.commands)
+    var extraToolsCommands: [EditorModuleCommand] {
+        config.extraCommands
+    }
+
+    var cropToolsCommands: [EditorModuleCommand] {
+        config.cropCommands
+    }
+
+    lazy var extraToolbar = ModuleToolbar(commands: extraToolsCommands)
+    lazy var cropToolbar = SegmentedToolbar(commands: cropToolsCommands)
+
     lazy var cropHandler = CropGesturesHandler(delegate: self)
     lazy var circleHandler = CircleGesturesHandler(delegate: self)
 
@@ -56,6 +67,12 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
         fatalError("init(coder:) has not been implemented")
     }
 
+    // MARK: - Function Overrides
+
+    override func getModule() -> EditorModule? {
+        return config
+    }
+
     // MARK: - Internal Functions
 
     func getRenderNode() -> RenderNode {
@@ -63,10 +80,12 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
     }
 
     func applyEditing() {
-        saveSelected()
+        applyPendingChanges()
+        editMode = .none
     }
 
     func cancelEditing() {
+        renderNode.discardChanges()
         editMode = .none
     }
 
@@ -84,12 +103,6 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
         updateImageView()
     }
 
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-
-        cancelEditing()
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
@@ -99,7 +112,7 @@ class TransformsViewController: ModuleViewController, EditorModuleVC, Editable, 
     }
 }
 
-private extension TransformsViewController {
+private extension TransformViewController {
     func turnOff(mode: EditMode) {
         hideLayer(for: mode)
     }
@@ -110,6 +123,9 @@ private extension TransformsViewController {
         switch mode {
         case .crop(let mode):
             switch mode.type {
+            case .none:
+                cropHandler.reset()
+                circleHandler.reset()
             case .rect:
                 cropHandler.reset()
             case .circle:
@@ -121,11 +137,12 @@ private extension TransformsViewController {
     }
 }
 
-private extension TransformsViewController {
+private extension TransformViewController {
     func layer(for mode: EditMode) -> CALayer? {
         switch mode {
         case .crop(let mode):
             switch mode.type {
+            case .none: return nil
             case .rect: return cropLayer
             case .circle: return circleLayer
             }
@@ -151,6 +168,7 @@ private extension TransformsViewController {
         switch editMode {
         case .crop(let mode):
             switch mode.type {
+            case .none: break
             case .rect: updateCropPaths()
             case .circle: updateCirclePaths()
             }
@@ -181,11 +199,12 @@ private extension TransformsViewController {
     }
 }
 
-extension TransformsViewController {
+extension TransformViewController {
     @objc func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         switch editMode {
         case .crop(let mode):
             switch mode.type {
+            case .none: break
             case .rect: cropHandler.handlePanGesture(recognizer: recognizer)
             case .circle: circleHandler.handlePanGesture(recognizer: recognizer)
             }
@@ -198,6 +217,7 @@ extension TransformsViewController {
         switch editMode {
         case .crop(let mode):
             switch mode.type {
+            case .none: break
             case .rect: break
             case .circle: circleHandler.handlePinchGesture(recognizer: recognizer)
             }
@@ -209,7 +229,7 @@ extension TransformsViewController {
 
 // MARK: - EditCropDelegate
 
-extension TransformsViewController: EditCropDelegate {
+extension TransformViewController: EditCropDelegate {
     func updateCropInset(_: UIEdgeInsets) {
         updateCropPaths()
     }
@@ -217,7 +237,7 @@ extension TransformsViewController: EditCropDelegate {
 
 // MARK: - EditCircleDelegate
 
-extension TransformsViewController: EditCircleDelegate {
+extension TransformViewController: EditCircleDelegate {
     func updateCircle(_: CGPoint, radius _: CGFloat) {
         updateCirclePaths()
     }

@@ -14,10 +14,9 @@
 		45121A46236852F800798073 /* EditorModuleVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A45236852F800798073 /* EditorModuleVC.swift */; };
 		45121A49236853FA00798073 /* BasicRenderPipeline.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A48236853FA00798073 /* BasicRenderPipeline.swift */; };
 		45121A4C2368543000798073 /* LinkedList.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A4B2368543000798073 /* LinkedList.swift */; };
-		45121A4F236854F900798073 /* TransformsRenderNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A4E236854F900798073 /* TransformsRenderNode.swift */; };
-		45121A522368554700798073 /* TransformsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A512368554700798073 /* TransformsViewController.swift */; };
+		45121A4F236854F900798073 /* TransformRenderNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A4E236854F900798073 /* TransformRenderNode.swift */; };
+		45121A522368554700798073 /* TransformViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A512368554700798073 /* TransformViewController.swift */; };
 		45121A552368574A00798073 /* RenderPipelineDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45121A542368574A00798073 /* RenderPipelineDelegate.swift */; };
-		451F929F2369AE2C006D47DE /* EditorToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 451F929E2369AE2C006D47DE /* EditorToolbarDelegate.swift */; };
 		4530BCD423900575007D7B41 /* BoundedRangeCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4530BCD323900575007D7B41 /* BoundedRangeCommand.swift */; };
 		453E319223795F7B00A05EAB /* L18.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319123795F7B00A05EAB /* L18.swift */; };
 		453E319523795FA400A05EAB /* ArrangeableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319423795FA400A05EAB /* ArrangeableViewController.swift */; };
@@ -27,11 +26,16 @@
 		453E319D23795FF000A05EAB /* ModulesToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E319923795FF000A05EAB /* ModulesToolbar.swift */; };
 		453E31AB2379B66700A05EAB /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E31AA2379B66700A05EAB /* Constants.swift */; };
 		453E31B22379BC3200A05EAB /* CIImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 453E31B12379BC3200A05EAB /* CIImageView.swift */; };
+		4541E1A0248657A4003A47C3 /* OverviewViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4541E19F248657A4003A47C3 /* OverviewViewController.swift */; };
+		4541E1A224865873003A47C3 /* OverviewViewController+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4541E1A124865873003A47C3 /* OverviewViewController+Setup.swift */; };
+		4541E1A524866239003A47C3 /* OverviewRenderNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4541E1A424866239003A47C3 /* OverviewRenderNode.swift */; };
+		4541E1A724867565003A47C3 /* ModuleViewController+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4541E1A624867565003A47C3 /* ModuleViewController+Setup.swift */; };
+		4541E1A924868057003A47C3 /* EditorModuleVCDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4541E1A824868057003A47C3 /* EditorModuleVCDelegate.swift */; };
 		454D7DAB236AF3D5004B2898 /* EditorViewController+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DAA236AF3D5004B2898 /* EditorViewController+Setup.swift */; };
 		454D7DAD236AF88E004B2898 /* CIImage+Transformations.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DAC236AF88E004B2898 /* CIImage+Transformations.swift */; };
 		454D7DB1236B0D8D004B2898 /* Config.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB0236B0D8D004B2898 /* Config.swift */; };
 		454D7DB3236B0DAB004B2898 /* TransformationsUIDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB2236B0DAB004B2898 /* TransformationsUIDelegate.swift */; };
-		454D7DB8236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB7236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift */; };
+		454D7DB8236B19D6004B2898 /* TransformViewController+ToolbarDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 454D7DB7236B19D6004B2898 /* TransformViewController+ToolbarDelegate.swift */; };
 		4560B20E239BA688004D9FBC /* ToolbarScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4560B20D239BA688004D9FBC /* ToolbarScrollView.swift */; };
 		4570AE0F237AD3BA00F1B24F /* Editable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4570AE0E237AD3BA00F1B24F /* Editable.swift */; };
 		4574D713237DBF09006A6D15 /* CenteredScrollView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4574D712237DBF09006A6D15 /* CenteredScrollView.swift */; };
@@ -50,12 +54,15 @@
 		4579358C235F008300938CEF /* TransformationsUI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4579358B235F008300938CEF /* TransformationsUI.swift */; };
 		4579358F235F010A00938CEF /* Icons.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 4579358E235F010A00938CEF /* Icons.xcassets */; };
 		457935E6235F2B4100938CEF /* MetalImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 457935E5235F2B4100938CEF /* MetalImageView.swift */; };
+		4597F50824854E1D0044091C /* SegmentedToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4597F50724854E1D0044091C /* SegmentedToolbar.swift */; };
+		4597F50A2485601C0044091C /* DiscardApplyToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 4597F5092485601C0044091C /* DiscardApplyToolbar.swift */; };
 		459F32CD23A8B99D0099A4B3 /* ModuleViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459F32CC23A8B99D0099A4B3 /* ModuleViewController.swift */; };
 		459F32CF23A8BC620099A4B3 /* CIImageViewDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 459F32CE23A8BC620099A4B3 /* CIImageViewDelegate.swift */; };
-		45B335D723687B87008BD64F /* TransformsViewController+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335D623687B87008BD64F /* TransformsViewController+Setup.swift */; };
+		45B335D723687B87008BD64F /* TransformViewController+Setup.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335D623687B87008BD64F /* TransformViewController+Setup.swift */; };
 		45B335DB23687BEB008BD64F /* EditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335DA23687BEB008BD64F /* EditDataSource.swift */; };
-		45B335DD23687C1E008BD64F /* TransformsViewController+EditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335DC23687C1E008BD64F /* TransformsViewController+EditDataSource.swift */; };
+		45B335DD23687C1E008BD64F /* TransformViewController+EditDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335DC23687C1E008BD64F /* TransformViewController+EditDataSource.swift */; };
 		45B335DF236880D2008BD64F /* ModuleToolbar.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B335DE236880D2008BD64F /* ModuleToolbar.swift */; };
+		45B8E771247FC14300254025 /* TitledImageButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45B8E770247FC14300254025 /* TitledImageButton.swift */; };
 		45BEE24F237D68B6007DB750 /* StandardModules.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE24E237D68B6007DB750 /* StandardModules.swift */; };
 		45BEE254237D6927007DB750 /* DescriptibleEditorItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE253237D6927007DB750 /* DescriptibleEditorItem.swift */; };
 		45BEE256237D6942007DB750 /* EditorModule.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE255237D6942007DB750 /* EditorModule.swift */; };
@@ -63,7 +70,7 @@
 		45BEE25A237D6987007DB750 /* EditorModuleCommand.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45BEE259237D6987007DB750 /* EditorModuleCommand.swift */; };
 		45F10AC0237EBE0900DCBF52 /* UIGeometry+Rounding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10ABE237EBE0900DCBF52 /* UIGeometry+Rounding.swift */; };
 		45F10AC1237EBE0900DCBF52 /* CoreGraphics+Rounding.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10ABF237EBE0900DCBF52 /* CoreGraphics+Rounding.swift */; };
-		45F10AC5237ED5CD00DCBF52 /* StandardModules+Transforms.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10AC4237ED5CD00DCBF52 /* StandardModules+Transforms.swift */; };
+		45F10AC5237ED5CD00DCBF52 /* StandardModules+Transform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 45F10AC4237ED5CD00DCBF52 /* StandardModules+Transform.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,10 +81,9 @@
 		45121A45236852F800798073 /* EditorModuleVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModuleVC.swift; sourceTree = "<group>"; };
 		45121A48236853FA00798073 /* BasicRenderPipeline.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasicRenderPipeline.swift; sourceTree = "<group>"; };
 		45121A4B2368543000798073 /* LinkedList.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LinkedList.swift; sourceTree = "<group>"; };
-		45121A4E236854F900798073 /* TransformsRenderNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformsRenderNode.swift; sourceTree = "<group>"; };
-		45121A512368554700798073 /* TransformsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformsViewController.swift; sourceTree = "<group>"; };
+		45121A4E236854F900798073 /* TransformRenderNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformRenderNode.swift; sourceTree = "<group>"; };
+		45121A512368554700798073 /* TransformViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformViewController.swift; sourceTree = "<group>"; };
 		45121A542368574A00798073 /* RenderPipelineDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RenderPipelineDelegate.swift; sourceTree = "<group>"; };
-		451F929E2369AE2C006D47DE /* EditorToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorToolbarDelegate.swift; sourceTree = "<group>"; };
 		4530BCD323900575007D7B41 /* BoundedRangeCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BoundedRangeCommand.swift; sourceTree = "<group>"; };
 		453E319123795F7B00A05EAB /* L18.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = L18.swift; sourceTree = "<group>"; };
 		453E319423795FA400A05EAB /* ArrangeableViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ArrangeableViewController.swift; sourceTree = "<group>"; };
@@ -87,11 +93,16 @@
 		453E319923795FF000A05EAB /* ModulesToolbar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ModulesToolbar.swift; sourceTree = "<group>"; };
 		453E31AA2379B66700A05EAB /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		453E31B12379BC3200A05EAB /* CIImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIImageView.swift; sourceTree = "<group>"; };
+		4541E19F248657A4003A47C3 /* OverviewViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewViewController.swift; sourceTree = "<group>"; };
+		4541E1A124865873003A47C3 /* OverviewViewController+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "OverviewViewController+Setup.swift"; sourceTree = "<group>"; };
+		4541E1A424866239003A47C3 /* OverviewRenderNode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OverviewRenderNode.swift; sourceTree = "<group>"; };
+		4541E1A624867565003A47C3 /* ModuleViewController+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ModuleViewController+Setup.swift"; sourceTree = "<group>"; };
+		4541E1A824868057003A47C3 /* EditorModuleVCDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModuleVCDelegate.swift; sourceTree = "<group>"; };
 		454D7DAA236AF3D5004B2898 /* EditorViewController+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "EditorViewController+Setup.swift"; sourceTree = "<group>"; };
 		454D7DAC236AF88E004B2898 /* CIImage+Transformations.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CIImage+Transformations.swift"; sourceTree = "<group>"; };
 		454D7DB0236B0D8D004B2898 /* Config.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Config.swift; sourceTree = "<group>"; };
 		454D7DB2236B0DAB004B2898 /* TransformationsUIDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationsUIDelegate.swift; sourceTree = "<group>"; };
-		454D7DB7236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+ToolbarDelegate.swift"; sourceTree = "<group>"; };
+		454D7DB7236B19D6004B2898 /* TransformViewController+ToolbarDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformViewController+ToolbarDelegate.swift"; sourceTree = "<group>"; };
 		4560B20D239BA688004D9FBC /* ToolbarScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ToolbarScrollView.swift; sourceTree = "<group>"; };
 		4570AE0E237AD3BA00F1B24F /* Editable.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Editable.swift; sourceTree = "<group>"; };
 		4574D712237DBF09006A6D15 /* CenteredScrollView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CenteredScrollView.swift; sourceTree = "<group>"; };
@@ -112,12 +123,15 @@
 		4579358B235F008300938CEF /* TransformationsUI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TransformationsUI.swift; sourceTree = "<group>"; };
 		4579358E235F010A00938CEF /* Icons.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Icons.xcassets; sourceTree = "<group>"; };
 		457935E5235F2B4100938CEF /* MetalImageView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MetalImageView.swift; sourceTree = "<group>"; };
+		4597F50724854E1D0044091C /* SegmentedToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedToolbar.swift; sourceTree = "<group>"; };
+		4597F5092485601C0044091C /* DiscardApplyToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DiscardApplyToolbar.swift; sourceTree = "<group>"; };
 		459F32CC23A8B99D0099A4B3 /* ModuleViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleViewController.swift; sourceTree = "<group>"; };
 		459F32CE23A8BC620099A4B3 /* CIImageViewDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CIImageViewDelegate.swift; sourceTree = "<group>"; };
-		45B335D623687B87008BD64F /* TransformsViewController+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+Setup.swift"; sourceTree = "<group>"; };
+		45B335D623687B87008BD64F /* TransformViewController+Setup.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformViewController+Setup.swift"; sourceTree = "<group>"; };
 		45B335DA23687BEB008BD64F /* EditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditDataSource.swift; sourceTree = "<group>"; };
-		45B335DC23687C1E008BD64F /* TransformsViewController+EditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformsViewController+EditDataSource.swift"; sourceTree = "<group>"; };
+		45B335DC23687C1E008BD64F /* TransformViewController+EditDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "TransformViewController+EditDataSource.swift"; sourceTree = "<group>"; };
 		45B335DE236880D2008BD64F /* ModuleToolbar.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ModuleToolbar.swift; sourceTree = "<group>"; };
+		45B8E770247FC14300254025 /* TitledImageButton.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TitledImageButton.swift; sourceTree = "<group>"; };
 		45BEE24E237D68B6007DB750 /* StandardModules.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StandardModules.swift; sourceTree = "<group>"; };
 		45BEE253237D6927007DB750 /* DescriptibleEditorItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DescriptibleEditorItem.swift; sourceTree = "<group>"; };
 		45BEE255237D6942007DB750 /* EditorModule.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModule.swift; sourceTree = "<group>"; };
@@ -125,7 +139,7 @@
 		45BEE259237D6987007DB750 /* EditorModuleCommand.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EditorModuleCommand.swift; sourceTree = "<group>"; };
 		45F10ABE237EBE0900DCBF52 /* UIGeometry+Rounding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "UIGeometry+Rounding.swift"; sourceTree = "<group>"; };
 		45F10ABF237EBE0900DCBF52 /* CoreGraphics+Rounding.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "CoreGraphics+Rounding.swift"; sourceTree = "<group>"; };
-		45F10AC4237ED5CD00DCBF52 /* StandardModules+Transforms.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StandardModules+Transforms.swift"; sourceTree = "<group>"; };
+		45F10AC4237ED5CD00DCBF52 /* StandardModules+Transform.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "StandardModules+Transform.swift"; sourceTree = "<group>"; };
 		45FDF6C223607A0600888E62 /* README.md */ = {isa = PBXFileReference; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -160,6 +174,7 @@
 				45BEE259237D6987007DB750 /* EditorModuleCommand.swift */,
 				45BEE257237D6976007DB750 /* EditorModules.swift */,
 				45121A45236852F800798073 /* EditorModuleVC.swift */,
+				4541E1A824868057003A47C3 /* EditorModuleVCDelegate.swift */,
 				45121A412368528F00798073 /* RenderNode.swift */,
 				45121A43236852BD00798073 /* RenderPipeline.swift */,
 				45121A542368574A00798073 /* RenderPipelineDelegate.swift */,
@@ -180,12 +195,13 @@
 		45121A502368552000798073 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				45121A532368566300798073 /* Transforms */,
+				4541E19D24865784003A47C3 /* Overview */,
+				45121A532368566300798073 /* Transform */,
 			);
 			path = Modules;
 			sourceTree = "<group>";
 		};
-		45121A532368566300798073 /* Transforms */ = {
+		45121A532368566300798073 /* Transform */ = {
 			isa = PBXGroup;
 			children = (
 				4502AD5023741EB000152A5C /* Extensions */,
@@ -194,7 +210,7 @@
 				453E31AF2379B98F00A05EAB /* Render Nodes */,
 				454D7DAF236B082C004B2898 /* View Controllers */,
 			);
-			path = Transforms;
+			path = Transform;
 			sourceTree = "<group>";
 		};
 		453E319023795F6C00A05EAB /* Support */ = {
@@ -210,6 +226,7 @@
 			children = (
 				453E319423795FA400A05EAB /* ArrangeableViewController.swift */,
 				459F32CC23A8B99D0099A4B3 /* ModuleViewController.swift */,
+				4541E1A624867565003A47C3 /* ModuleViewController+Setup.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -229,6 +246,8 @@
 				453E319823795FF000A05EAB /* ArrangeableToolbar.swift */,
 				453E319723795FF000A05EAB /* EditorToolbar.swift */,
 				45B335DE236880D2008BD64F /* ModuleToolbar.swift */,
+				4597F50724854E1D0044091C /* SegmentedToolbar.swift */,
+				4597F5092485601C0044091C /* DiscardApplyToolbar.swift */,
 			);
 			path = Toolbars;
 			sourceTree = "<group>";
@@ -236,7 +255,7 @@
 		453E31AF2379B98F00A05EAB /* Render Nodes */ = {
 			isa = PBXGroup;
 			children = (
-				45121A4E236854F900798073 /* TransformsRenderNode.swift */,
+				45121A4E236854F900798073 /* TransformRenderNode.swift */,
 			);
 			path = "Render Nodes";
 			sourceTree = "<group>";
@@ -249,11 +268,36 @@
 			path = Views;
 			sourceTree = "<group>";
 		};
+		4541E19D24865784003A47C3 /* Overview */ = {
+			isa = PBXGroup;
+			children = (
+				4541E1A32486622E003A47C3 /* Render Nodes */,
+				4541E19E2486578F003A47C3 /* View Controllers */,
+			);
+			path = Overview;
+			sourceTree = "<group>";
+		};
+		4541E19E2486578F003A47C3 /* View Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				4541E19F248657A4003A47C3 /* OverviewViewController.swift */,
+				4541E1A124865873003A47C3 /* OverviewViewController+Setup.swift */,
+			);
+			path = "View Controllers";
+			sourceTree = "<group>";
+		};
+		4541E1A32486622E003A47C3 /* Render Nodes */ = {
+			isa = PBXGroup;
+			children = (
+				4541E1A424866239003A47C3 /* OverviewRenderNode.swift */,
+			);
+			path = "Render Nodes";
+			sourceTree = "<group>";
+		};
 		454D7DAE236B0752004B2898 /* Protocols */ = {
 			isa = PBXGroup;
 			children = (
 				45B335DA23687BEB008BD64F /* EditDataSource.swift */,
-				451F929E2369AE2C006D47DE /* EditorToolbarDelegate.swift */,
 			);
 			path = Protocols;
 			sourceTree = "<group>";
@@ -261,10 +305,10 @@
 		454D7DAF236B082C004B2898 /* View Controllers */ = {
 			isa = PBXGroup;
 			children = (
-				45121A512368554700798073 /* TransformsViewController.swift */,
-				45B335DC23687C1E008BD64F /* TransformsViewController+EditDataSource.swift */,
-				45B335D623687B87008BD64F /* TransformsViewController+Setup.swift */,
-				454D7DB7236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift */,
+				45121A512368554700798073 /* TransformViewController.swift */,
+				45B335DC23687C1E008BD64F /* TransformViewController+EditDataSource.swift */,
+				45B335D623687B87008BD64F /* TransformViewController+Setup.swift */,
+				454D7DB7236B19D6004B2898 /* TransformViewController+ToolbarDelegate.swift */,
 			);
 			path = "View Controllers";
 			sourceTree = "<group>";
@@ -294,6 +338,7 @@
 			isa = PBXGroup;
 			children = (
 				4574D712237DBF09006A6D15 /* CenteredScrollView.swift */,
+				45B8E770247FC14300254025 /* TitledImageButton.swift */,
 				4560B20D239BA688004D9FBC /* ToolbarScrollView.swift */,
 			);
 			path = Views;
@@ -408,7 +453,7 @@
 				454D7DB0236B0D8D004B2898 /* Config.swift */,
 				453E31AA2379B66700A05EAB /* Constants.swift */,
 				45BEE24E237D68B6007DB750 /* StandardModules.swift */,
-				45F10AC4237ED5CD00DCBF52 /* StandardModules+Transforms.swift */,
+				45F10AC4237ED5CD00DCBF52 /* StandardModules+Transform.swift */,
 				4579358B235F008300938CEF /* TransformationsUI.swift */,
 			);
 			path = Classes;
@@ -497,10 +542,13 @@
 				453E319C23795FF000A05EAB /* ArrangeableToolbar.swift in Sources */,
 				45121A422368528F00798073 /* RenderNode.swift in Sources */,
 				45793587235F001E00938CEF /* Math+Clamp.swift in Sources */,
-				45B335DD23687C1E008BD64F /* TransformsViewController+EditDataSource.swift in Sources */,
+				4541E1A224865873003A47C3 /* OverviewViewController+Setup.swift in Sources */,
+				45B335DD23687C1E008BD64F /* TransformViewController+EditDataSource.swift in Sources */,
 				453E31B22379BC3200A05EAB /* CIImageView.swift in Sources */,
+				45B8E771247FC14300254025 /* TitledImageButton.swift in Sources */,
 				453E319B23795FF000A05EAB /* EditorToolbar.swift in Sources */,
 				45BEE24F237D68B6007DB750 /* StandardModules.swift in Sources */,
+				4541E1A0248657A4003A47C3 /* OverviewViewController.swift in Sources */,
 				45121A4C2368543000798073 /* LinkedList.swift in Sources */,
 				45BEE25A237D6987007DB750 /* EditorModuleCommand.swift in Sources */,
 				459F32CF23A8BC620099A4B3 /* CIImageViewDelegate.swift in Sources */,
@@ -512,11 +560,11 @@
 				454D7DAB236AF3D5004B2898 /* EditorViewController+Setup.swift in Sources */,
 				4530BCD423900575007D7B41 /* BoundedRangeCommand.swift in Sources */,
 				45793571235EFF1400938CEF /* CircleGesturesHandler.swift in Sources */,
-				45121A522368554700798073 /* TransformsViewController.swift in Sources */,
+				45121A522368554700798073 /* TransformViewController.swift in Sources */,
 				45793589235F004600938CEF /* UIView+Constraints.swift in Sources */,
-				451F929F2369AE2C006D47DE /* EditorToolbarDelegate.swift in Sources */,
 				457935E6235F2B4100938CEF /* MetalImageView.swift in Sources */,
 				4579356D235EFF1400938CEF /* EditorViewController.swift in Sources */,
+				4541E1A524866239003A47C3 /* OverviewRenderNode.swift in Sources */,
 				45793583235EFFC600938CEF /* CGPoint+Distance.swift in Sources */,
 				453E319D23795FF000A05EAB /* ModulesToolbar.swift in Sources */,
 				45793582235EFFC600938CEF /* CGRect+Transforms.swift in Sources */,
@@ -525,7 +573,7 @@
 				453E319A23795FF000A05EAB /* TitleToolbar.swift in Sources */,
 				453E319523795FA400A05EAB /* ArrangeableViewController.swift in Sources */,
 				453E319223795F7B00A05EAB /* L18.swift in Sources */,
-				454D7DB8236B19D6004B2898 /* TransformsViewController+ToolbarDelegate.swift in Sources */,
+				454D7DB8236B19D6004B2898 /* TransformViewController+ToolbarDelegate.swift in Sources */,
 				454D7DB3236B0DAB004B2898 /* TransformationsUIDelegate.swift in Sources */,
 				4560B20E239BA688004D9FBC /* ToolbarScrollView.swift in Sources */,
 				454D7DB1236B0D8D004B2898 /* Config.swift in Sources */,
@@ -537,18 +585,22 @@
 				450B806C236AE0C60097F091 /* EditorUndoManager.swift in Sources */,
 				45121A552368574A00798073 /* RenderPipelineDelegate.swift in Sources */,
 				45793570235EFF1400938CEF /* CropGesturesHandler.swift in Sources */,
+				4597F50824854E1D0044091C /* SegmentedToolbar.swift in Sources */,
 				45BEE256237D6942007DB750 /* EditorModule.swift in Sources */,
-				45B335D723687B87008BD64F /* TransformsViewController+Setup.swift in Sources */,
+				45B335D723687B87008BD64F /* TransformViewController+Setup.swift in Sources */,
 				45F10AC0237EBE0900DCBF52 /* UIGeometry+Rounding.swift in Sources */,
 				4579357F235EFFC600938CEF /* UIImage+Copy.swift in Sources */,
 				4570AE0F237AD3BA00F1B24F /* Editable.swift in Sources */,
 				45BEE254237D6927007DB750 /* DescriptibleEditorItem.swift in Sources */,
-				45F10AC5237ED5CD00DCBF52 /* StandardModules+Transforms.swift in Sources */,
+				45F10AC5237ED5CD00DCBF52 /* StandardModules+Transform.swift in Sources */,
 				45121A44236852BD00798073 /* RenderPipeline.swift in Sources */,
+				4541E1A724867565003A47C3 /* ModuleViewController+Setup.swift in Sources */,
+				4597F50A2485601C0044091C /* DiscardApplyToolbar.swift in Sources */,
 				45121A49236853FA00798073 /* BasicRenderPipeline.swift in Sources */,
 				4579358C235F008300938CEF /* TransformationsUI.swift in Sources */,
 				45BEE258237D6976007DB750 /* EditorModules.swift in Sources */,
-				45121A4F236854F900798073 /* TransformsRenderNode.swift in Sources */,
+				4541E1A924868057003A47C3 /* EditorModuleVCDelegate.swift in Sources */,
+				45121A4F236854F900798073 /* TransformRenderNode.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

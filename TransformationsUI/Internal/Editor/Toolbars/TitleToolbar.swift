@@ -9,7 +9,7 @@
 import UIKit
 
 @objc protocol TitleToolbarDelegate: class {
-    func doneSelected(sender: UIButton)
+    func saveSelected(sender: UIButton)
     func cancelSelected(sender: UIButton)
     func undoSelected(sender: UIButton)
     func redoSelected(sender: UIButton)
@@ -20,39 +20,18 @@ class TitleToolbar: EditorToolbar {
 
     weak var delegate: TitleToolbarDelegate?
 
-    var title: String? {
-        didSet {
-            if let title = title {
-                setItems([label(titled: title.uppercased(), textAlignment: .center)])
-            } else {
-                setItems([])
-            }
-        }
-    }
-
-    var isEditing: Bool = false {
-        willSet { removeItem(finishButton) }
-        didSet { setItems(items) }
-    }
-
     // MARK: - Private Properties
 
+    private var undoRedoToolbar = ArrangeableToolbar()
+    private var saveButtonToolbar = ArrangeableToolbar()
     private var innerToolbar = ArrangeableToolbar()
-    private var finishButtonWidthConstraint: NSLayoutConstraint?
 
-    private lazy var doneButton: UIButton = {
-        return button(using: L18.done)
-    }()
-
-    private lazy var applyButton: UIButton = {
-        return button(using: .fromFrameworkBundle("icon-apply"))
-    }()
-
-    private var finishButton: UIButton {
-        let button = isEditing ? applyButton : doneButton
+    private var saveButton: UIButton {
+        let button = self.button(using: L18.save.uppercased())
 
         button.tintColor = Constants.doneColor
-        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.doneSelected), for: .touchUpInside)
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: UIFont.buttonFontSize)
+        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.saveSelected), for: .touchUpInside)
 
         return button
     }
@@ -89,11 +68,20 @@ class TitleToolbar: EditorToolbar {
     override func setItems(_ items: [UIView] = []) {
         shouldAutoAdjustAxis = false
 
+        undoRedoToolbar = ArrangeableToolbar(items: [undo, redo])
+        undoRedoToolbar.spacing = Constants.toolbarSpacing
+        undoRedoToolbar.shouldAutoAdjustAxis = false
+
         innerToolbar = ArrangeableToolbar(items: items)
         innerToolbar.spacing = Constants.toolbarSpacing
         innerToolbar.shouldAutoAdjustAxis = false
 
-        super.setItems([cancelButton, undo, innerToolbar, redo, finishButton])
+        saveButtonToolbar = ArrangeableToolbar(items: [UIView(), saveButton])
+        saveButtonToolbar.spacing = 0
+        saveButtonToolbar.shouldAutoAdjustAxis = false
+        saveButtonToolbar.alignment = .trailing
+
+        super.setItems([undoRedoToolbar, innerToolbar, saveButtonToolbar])
     }
 }
 
@@ -101,22 +89,6 @@ extension TitleToolbar {
     override func layoutSubviews() {
         super.layoutSubviews()
 
-        switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass) {
-        case (_, .regular):
-            cancelButton.removeFromSuperview()
-            finishButton.removeFromSuperview()
-        case (_, .compact):
-            insertItem(cancelButton, at: 0)
-            addItem(finishButton)
-        default:
-            break
-        }
-
-        if items.contains(finishButton) && items.contains(cancelButton) {
-            // Keep the finish button the same width as the cancel button
-            finishButton.removeConstraints([finishButtonWidthConstraint].compactMap { $0 })
-            finishButtonWidthConstraint = finishButton.widthAnchor.constraint(equalTo: cancelButton.widthAnchor)
-            finishButtonWidthConstraint?.isActive = true
-        }
+        saveButtonToolbar.widthAnchor.constraint(equalTo: undoRedoToolbar.widthAnchor).isActive = true
     }
 }

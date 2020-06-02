@@ -31,14 +31,6 @@ class ViewController: UIViewController {
         guard let image = imageView.image else { return }
 
         let modules = StandardModules()
-        typealias TransformCommands = StandardModules.Transforms.Commands
-
-        modules.transforms.commands = [
-            TransformCommands.Rotate(),
-            TransformCommands.Crop(type: .rect),
-            TransformCommands.Crop(type: .circle)
-        ]
-
         let transformationsUI = TransformationsUI(with: Config(modules: modules))
 
         transformationsUI.delegate = self

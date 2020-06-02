@@ -41,6 +41,10 @@ open class ArrangeableToolbar: UIView {
         didSet { setupViews() }
     }
 
+    public func setCustomSpacing(_ spacing: CGFloat, after arrangedSubview: UIView) {
+        stackView.setCustomSpacing(spacing, after: arrangedSubview)
+    }
+
     // MARK: - Private Properties
 
     private lazy var stackView = UIStackView()

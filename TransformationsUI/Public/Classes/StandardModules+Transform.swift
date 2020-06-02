@@ -1,5 +1,5 @@
 //
-//  StandardModules+Transforms.swift
+//  StandardModules+Transform.swift
 //  TransformationsUI
 //
 //  Created by Ruben Nine on 15/11/2019.
@@ -8,19 +8,27 @@
 
 import UIKit
 
+public protocol ExtraModuleCommand: EditorModuleCommand {}
+public protocol CropModuleCommand: EditorModuleCommand {}
+
 extension StandardModules {
-    public class Transforms: NSObject, EditorModule {
-        public var title: String = "Transforms"
-        public var icon: UIImage? = .fromFrameworkBundle("icon-module-transforms")
+    public class Transform: NSObject, EditorModule {
+        public var title: String = "Transform"
+        public var icon: UIImage? = .fromFrameworkBundle("icon-module-transform")
         public var isEnabled: Bool = true
 
         public lazy var viewController: EditorModuleVC = {
-            return TransformsViewController(config: self)
+            return TransformViewController(config: self)
         }()
 
-        /// Commands available in `Transforms` module.
-        public var commands: [EditorModuleCommand] = [
+        /// Extra Commands available in `Transform` module.
+        public var extraCommands: [ExtraModuleCommand] = [
             Commands.Rotate(),
+        ]
+
+        /// Crop Commands available in `Transform` module.
+        public var cropCommands: [CropModuleCommand] = [
+            Commands.Crop(type: .none),
             Commands.Crop(type: .rect),
             Commands.Crop(type: .circle)
         ]
@@ -28,17 +36,19 @@ extension StandardModules {
         /// All available commands.
         public class Commands: NSObject {
             /// Rotate command.
-            public class Rotate: NSObject, EditorModuleCommand {
+            public class Rotate: NSObject, ExtraModuleCommand {
                 public var title: String = "Rotate"
                 public lazy var icon: UIImage? = UIImage.fromFrameworkBundle("icon-rotate")
             }
 
             /// Crop command.
-            public class Crop: NSObject, EditorModuleCommand {
+            public class Crop: NSObject, CropModuleCommand {
                 public lazy var title: String = {
                     switch type {
+                    case .none:
+                        return "None"
                     case .rect:
-                        return "Crop"
+                        return "Freefrom"
                     case .circle:
                         return "Circle"
                     }
@@ -46,6 +56,8 @@ extension StandardModules {
 
                 public lazy var icon: UIImage? = {
                     switch type {
+                    case .none:
+                        return nil
                     case .rect:
                         return .fromFrameworkBundle("icon-crop")
                     case .circle:
@@ -55,6 +67,7 @@ extension StandardModules {
 
                 /// Crop type.
                 public enum CropType {
+                    case none
                     case rect
                     case circle
                 }

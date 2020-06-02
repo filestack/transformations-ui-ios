@@ -1,5 +1,5 @@
 //
-//  TransformsRenderNode.swift
+//  TransformRenderNode.swift
 //  TransformationsUI
 //
 //  Created by Ruben Nine on 29/10/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransformsRenderNode: RenderNode {
+class TransformRenderNode: RenderNode {
     weak var pipeline: RenderPipeline?
 
     let uuid = UUID()
@@ -25,6 +25,12 @@ class TransformsRenderNode: RenderNode {
         didSet { pipeline?.nodeChanged(node: self) }
     }
 
+    func discardChanges() {
+        renderedImage = nil
+    }
+}
+
+extension TransformRenderNode {
     func rotate(clockwise: Bool) {
         renderedImage = outputImage.rotated(clockwise: clockwise)
     }
@@ -38,7 +44,7 @@ class TransformsRenderNode: RenderNode {
     }
 }
 
-extension TransformsRenderNode: Snapshotable {
+extension TransformRenderNode: Snapshotable {
     public func snapshot() -> Snapshot {
         return [
             "renderedImage": renderedImage

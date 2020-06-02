@@ -9,7 +9,7 @@
 import Foundation
 
 public struct L18 {
-    static let done = l18("Done")
+    static let save = l18("Save")
     static let cancel = l18("Cancel")
 }
 

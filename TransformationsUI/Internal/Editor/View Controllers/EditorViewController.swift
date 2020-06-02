@@ -2,8 +2,8 @@
 //  EditorViewController.swift
 //  TransformationsUI
 //
-//  Created by Mihály Papp on 03/07/2018.
-//  Copyright © 2018 Mihály Papp. All rights reserved.
+//  Created by Ruben Nine on 29/10/2019.
+//  Copyright © 2019 Filestack. All rights reserved.
 //
 
 import UIKit
@@ -12,22 +12,23 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
     // MARK: - Internal Properties
 
     let titleToolbar = TitleToolbar()
-    let modulesToolbar = ModulesToolbar()
-
     let renderPipeline: BasicRenderPipeline
     let modules: [EditorModule]
-    let containerView = UIView()
+    let canvasView = UIView()
     var editorUndoManager: EditorUndoManager?
+
+    lazy var overviewModule: StandardModules.Overview = {
+        let viewController = OverviewViewController(modules: modules)
+        viewController.delegate = self
+
+        return StandardModules.Overview(using: viewController)
+    }()
 
     // MARK: - Private Properties
 
     private let config: Config
     private var completion: ((UIImage?) -> Void)?
-    private var isEditingObserver: NSKeyValueObservation?
-
-    private var activeModule: EditorModule? {
-        didSet { setupEditingObserver() }
-    }
+    private var activeModule: EditorModule?
 
     private var activeEditableModuleVC: Editable? {
         activeModule?.viewController as? Editable
@@ -54,6 +55,15 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
 
     // MARK: - View Overrides
 
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        switch UIScreen.main.traitCollection.userInterfaceIdiom {
+        case .pad:
+            return .all
+        default:
+            return [.portrait, .portraitUpsideDown]
+        }
+    }
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -65,45 +75,41 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
     // MARK: - Public Functions
 
     func activate(module: EditorModule) {
-        // Remove any previously added module vc's.
+        // Remove any previously added module VC's.
         for child in (children.compactMap { $0 as? EditorModuleVC }) {
             child.removeFromParent()
             child.view.removeFromSuperview()
         }
 
-        // Add module as a child vc.
+        // Add module as a child VC.
         addChild(module.viewController)
 
-        titleToolbar.title = module.title
-        containerView.fill(with: module.viewController.view, activate: true)
+        canvasView.fill(with: module.viewController.view, activate: true)
         activeModule = module
 
-        // Notify that module vc moved to a new parent.
+        // Notify that module VC moved to a new parent.
         module.viewController.didMove(toParent: self)
-    }
-}
+        module.viewController.delegate = self
 
-private extension EditorViewController {
-    func setupEditingObserver() {
-        guard let vc: UIViewController = activeModule?.viewController else { return }
-
-        isEditingObserver = vc.observe(\.isEditing, options: [.new]) { _, change in
-            guard let isEditing = change.newValue else { return }
-
-            self.titleToolbar.isEditing = isEditing
-            self.modulesToolbar.isEditing = isEditing
+        // If module VC has a custom title view, let's add it to the title toolbar.
+        if let titleView = module.viewController.getTitleView() {
+            titleToolbar.setItems([titleView])
+        } else {
+            titleToolbar.setItems([])
         }
     }
 }
 
 extension EditorViewController: RenderPipelineDelegate {
     func outputChanged(pipeline: RenderPipeline) {
+        // Update active module VC's image view.
         DispatchQueue.main.async {
             self.activeModule?.viewController.updateImageView()
         }
     }
 
     func outputFinishedChanging(pipeline: RenderPipeline) {
+        // Take a snapshot from rendering pipeline and register undo step.
         guard let snapshot = (pipeline as? Snapshotable)?.snapshot() else { return }
 
         editorUndoManager?.register(step: snapshot)
@@ -116,18 +122,13 @@ extension EditorViewController: EditorUndoManagerDelegate {
     }
 }
 
-extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
-    func doneSelected(sender: UIButton) {
-        switch activeEditableModuleVC?.isEditing {
-        case true:
-            activeEditableModuleVC?.applyEditing()
-        case false:
-            fallthrough
-        default:
-            dismiss(animated: true) {
-                let editedImage = UIImage(ciImage: self.renderPipeline.outputImage).cgImageBackedCopy()
-                self.completion?(editedImage)
-            }
+extension EditorViewController: TitleToolbarDelegate {
+    func saveSelected(sender: UIButton) {
+        activeEditableModuleVC?.applyEditing()
+
+        dismiss(animated: true) {
+            let editedImage = UIImage(ciImage: self.renderPipeline.outputImage).cgImageBackedCopy()
+            self.completion?(editedImage)
         }
     }
 
@@ -137,13 +138,9 @@ extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
         }
     }
 
-    func moduleSelected(sender: UIButton) {
-        activate(module: modules[sender.tag])
-    }
-
     func undoSelected(sender: UIButton) {
         editorUndoManager?.undo()
-        activeEditableModuleVC?.applyEditing()
+        activeEditableModuleVC?.cancelEditing()
 
         if let state = editorUndoManager?.current {
             renderPipeline.restore(from: state)
@@ -156,7 +153,7 @@ extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
 
     func redoSelected(sender: UIButton) {
         editorUndoManager?.redo()
-        activeEditableModuleVC?.applyEditing()
+        activeEditableModuleVC?.cancelEditing()
 
         if let state = editorUndoManager?.current {
             renderPipeline.restore(from: state)
@@ -165,5 +162,21 @@ extension EditorViewController: ModulesToolbarDelegate, TitleToolbarDelegate {
                 self.activeModule?.viewController.editorRestoredSnapshot()
             }
         }
+    }
+}
+
+extension EditorViewController: OverviewViewControllerDelegate, EditorModuleVCDelegate {
+    func moduleSelected(module: EditorModule) {
+        activate(module: module)
+    }
+
+    func moduleWantsToApplyChanges(module: EditorModule) {
+        (module.viewController as? Editable)?.applyEditing()
+        activate(module: overviewModule)
+    }
+
+    func moduleWantsToDiscardChanges(module: EditorModule) {
+        (module.viewController as? Editable)?.cancelEditing()
+        activate(module: overviewModule)
     }
 }

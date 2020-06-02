@@ -1,5 +1,5 @@
 //
-//  TransformsViewController+ToolbarDelegate.swift
+//  TransformViewController+ToolbarDelegate.swift
 //  TransformationsUI
 //
 //  Created by Ruben Nine on 31/10/2019.
@@ -8,7 +8,7 @@
 
 import UIKit
 
-extension TransformsViewController: ModuleToolbarDelegate {
+extension TransformViewController: ModuleToolbarDelegate {
     private enum NodeCommand {
         case rotate(clockwise: Bool)
         case cropRect(insets: UIEdgeInsets)
@@ -16,32 +16,32 @@ extension TransformsViewController: ModuleToolbarDelegate {
     }
 
     func toolbarItemSelected(sender: UIButton) {
-        let command = config.commands[sender.tag]
+        let command = config.extraCommands[sender.tag]
 
         switch command {
         case is Config.Commands.Rotate:
             perform(command: .rotate(clockwise: false))
-        case let crop as Config.Commands.Crop:
-            editMode = editMode == .crop(mode: crop) ? .none : .crop(mode: crop)
         default:
             break
         }
     }
 
-    func saveSelected() {
+    func applyPendingChanges() {
         switch editMode {
         case .crop(let mode):
             switch mode.type {
+            case .none:
+                break
             case .rect:
                 perform(command: .cropRect(insets: cropHandler.actualEdgeInsets))
             case .circle:
                 perform(command: .cropCircle(center: circleHandler.actualCenter, radius: circleHandler.actualRadius))
             }
         case .none:
-            return
+            break
         }
 
-        editMode = .none
+        renderNode.pipeline?.nodeFinishedChanging(node: renderNode)
     }
 
     // MARK: - Private Functions
@@ -60,6 +60,19 @@ extension TransformsViewController: ModuleToolbarDelegate {
         cropHandler.reset()
         circleHandler.reset()
 
-        renderNode.pipeline?.nodeFinishedChanging(node: renderNode)
+        renderNode.pipeline?.nodeChanged(node: renderNode)
+    }
+}
+
+extension TransformViewController: SegmentedToolbarDelegate {
+    func segmentedToolbarItemSelected(sender: UISegmentedControl) {
+        let command = config.cropCommands[sender.selectedSegmentIndex]
+
+        switch command {
+        case let crop as Config.Commands.Crop:
+            editMode = editMode == .crop(mode: crop) ? .none : .crop(mode: crop)
+        default:
+            break
+        }
     }
 }

@@ -40,6 +40,19 @@ open class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
+    open func titledImageButton(using title: String, image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
+        let buttonRect = CGRect(origin: .zero, size: Constants.toolbarSize)
+        let button = TitledImageButton(frame: buttonRect)
+
+        button.padding = 0
+        button.setImage(image, for: .normal)
+        button.titleLabel?.font = .systemFont(ofSize: UIFont.smallSystemFontSize)
+        button.setTitle(title, for: .normal)
+        button.addTarget(self, action: #selector(delayedStopHighlighting), for: .touchUpInside)
+
+        return button
+    }
+
     open func label(titled title: String, tintColor: UIColor = Constants.labelColor, textAlignment: NSTextAlignment = .left) -> UILabel {
         let label = UILabel()
 
