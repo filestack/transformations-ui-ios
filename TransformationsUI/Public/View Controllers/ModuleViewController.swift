@@ -9,9 +9,10 @@
 import UIKit
 
 open class ModuleViewController: ArrangeableViewController {
-    weak var delegate: EditorModuleVCDelegate?
     private var lastImage: CIImage? = nil
     private var lastViewFrame: CGRect? = nil
+
+    open weak var delegate: EditorModuleVCDelegate?
 
     open var maximumZoomScale: CGFloat = .infinity {
         didSet { scrollView.maximumZoomScale = maximumZoomScale }
@@ -30,6 +31,14 @@ open class ModuleViewController: ArrangeableViewController {
         return scrollView
     }()
 
+    open lazy var imageView: CIImageView = {
+        let imageView = MetalImageView()
+
+        imageView.imageViewDelegate = self
+
+        return imageView
+    }()
+
     public let stackView: UIStackView = {
         let stackView = UIStackView()
 
@@ -37,14 +46,6 @@ open class ModuleViewController: ArrangeableViewController {
         stackView.distribution = .fill
 
         return stackView
-    }()
-
-    open lazy var imageView: CIImageView = {
-        let imageView = MetalImageView()
-
-        imageView.imageViewDelegate = self
-
-        return imageView
     }()
 
     public lazy var discardApplyToolbar: DiscardApplyToolbar? = {
