@@ -12,6 +12,7 @@ public struct Constants {
     public static let toolbarInset: CGFloat = 12
     public static let toolbarSpacing: CGFloat = 6
     public static let toolbarSize: CGSize = CGSize(width: 60, height: 60)
+    public static let toolbarIconSize: CGSize = CGSize(width: 36, height: 36)
 
     public static let toolbarColor = UIColor.black.withAlphaComponent(0.1)
     public static let backgroundColor = UIColor(white: 31 / 255, alpha: 1)

@@ -35,6 +35,6 @@ class ModulesToolbar: EditorToolbar {
         innerToolbar = ArrangeableToolbar(items: items)
         innerToolbar.spacing = Constants.toolbarSpacing
 
-        super.setItems([innerToolbar])
+        super.setItems([UIView(), innerToolbar, UIView()])
     }
 }
