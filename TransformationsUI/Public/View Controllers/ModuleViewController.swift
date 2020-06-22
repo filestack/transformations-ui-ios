@@ -93,26 +93,26 @@ open class ModuleViewController: ArrangeableViewController {
         return stackView
     }()
 
-    // MARK: - Overridable Functions
+    // MARK: - Open Overridable Functions
 
     /// Called right before the `imageView` is updated.
     ///
     /// - Parameter imageView: The `imageView` that is about to be updated.
     ///
     /// Should be implemented by subclasses interested in receiving this notification.
-    func willUpdateImageView(imageView: CIImageView) { }
+    open func willUpdateImageView(imageView: CIImageView) { }
 
     /// Called right after the `imageView` is updated.
     ///
     /// - Parameter imageView: The `imageView` that was just updated.
     ///
     /// Should be implemented by subclasses interested in receiving this notification.
-    func didUpdateImageView(imageView: CIImageView)  { }
+    open func didUpdateImageView(imageView: CIImageView)  { }
 
     /// Returns the module represented by this class.
     ///
     /// Should be implemented by subclasses that contain an `EditorModule`.
-    func getModule() -> EditorModule? { return nil }
+    open func getModule() -> EditorModule? { return nil }
 }
 
 // MARK: - View Overrides
