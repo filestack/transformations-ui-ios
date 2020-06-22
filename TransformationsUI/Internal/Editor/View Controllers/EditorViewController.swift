@@ -8,7 +8,7 @@
 
 import UIKit
 
-final class EditorViewController: ArrangeableViewController, UIGestureRecognizerDelegate {
+final class EditorViewController: ArrangeableViewController {
     // MARK: - Internal Properties
 
     let titleToolbar = TitleToolbar()
@@ -34,7 +34,7 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
         activeModule?.viewController as? Editable
     }
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     init?(image: UIImage, config: Config, completion: @escaping (UIImage?) -> Void) {
         guard let ciImage = image.ciImageBackedCopy()?.ciImage else { return nil }
@@ -104,7 +104,7 @@ extension EditorViewController: RenderPipelineDelegate {
     func outputChanged(pipeline: RenderPipeline) {
         // Update active module VC's image view.
         DispatchQueue.main.async {
-            self.activeModule?.viewController.updateImageView()
+            self.activeModule?.viewController.imageView.image = pipeline.outputImage
         }
     }
 
@@ -146,7 +146,7 @@ extension EditorViewController: TitleToolbarDelegate {
             renderPipeline.restore(from: state)
             
             DispatchQueue.main.async {
-                self.activeModule?.viewController.editorRestoredSnapshot()
+                self.activeModule?.viewController.editorDidRestoreSnapshot()
             }
         }
     }
@@ -159,7 +159,7 @@ extension EditorViewController: TitleToolbarDelegate {
             renderPipeline.restore(from: state)
             
             DispatchQueue.main.async {
-                self.activeModule?.viewController.editorRestoredSnapshot()
+                self.activeModule?.viewController.editorDidRestoreSnapshot()
             }
         }
     }

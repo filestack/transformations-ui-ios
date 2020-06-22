@@ -36,7 +36,7 @@ class MetalImageView: MTKView, CIImageView {
         return CIContext(mtlDevice: device!)
     }()
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     override init(frame frameRect: CGRect, device: MTLDevice?) {
         super.init(frame: frameRect, device: device ?? MTLCreateSystemDefaultDevice())

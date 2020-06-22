@@ -26,7 +26,7 @@ public class DiscardApplyToolbar: EditorToolbar {
 
     private lazy var innerToolbar = ArrangeableToolbar()
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     public required init(delegate: DiscardApplyToolbarDelegate? = nil) {
         super.init()

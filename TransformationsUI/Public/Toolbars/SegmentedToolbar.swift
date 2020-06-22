@@ -28,7 +28,7 @@ public class SegmentedToolbar: EditorToolbar {
     private let buttonType: UIButton.ButtonType
     private let segmentedControl: UISegmentedControl
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     public required init(commands: [EditorModuleCommand], buttonType: UIButton.ButtonType = .system) {
         self.commands = commands

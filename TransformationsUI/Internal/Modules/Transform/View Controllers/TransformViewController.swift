@@ -8,7 +8,7 @@
 
 import UIKit
 
-class TransformViewController: ModuleViewController, EditorModuleVC, Editable, UIGestureRecognizerDelegate {
+class TransformViewController: ModuleViewController {
     typealias Module = StandardModules.Transform
 
     enum EditMode: Hashable {
@@ -19,7 +19,6 @@ class TransformViewController: ModuleViewController, EditorModuleVC, Editable, U
     // MARK: - Internal Properties
     
     let module: Module
-
     lazy var renderNode = TransformRenderNode()
 
     var editMode = EditMode.none {
@@ -39,14 +38,8 @@ class TransformViewController: ModuleViewController, EditorModuleVC, Editable, U
     }
 
     var panGestureRecognizer = UIPanGestureRecognizer()
-
-    var extraToolbarCommands: [EditorModuleCommand] {
-        module.extraCommands
-    }
-
-    var cropToolbarCommands: [EditorModuleCommand] {
-        module.cropCommands
-    }
+    var extraToolbarCommands: [EditorModuleCommand] { module.extraCommands }
+    var cropToolbarCommands: [EditorModuleCommand] { module.cropCommands }
 
     lazy var extraToolbar = ModuleToolbar(commands: extraToolbarCommands)
     lazy var cropToolbar = SegmentedToolbar(commands: cropToolbarCommands)
@@ -59,36 +52,6 @@ class TransformViewController: ModuleViewController, EditorModuleVC, Editable, U
     private let cropLayer = RectCropLayer()
     private let circleLayer = CircleCropLayer()
 
-    // MARK: - Lifecycle Functions
-
-    required init(module: Module) {
-        self.module = module
-        super.init(nibName: nil, bundle: nil)
-    }
-
-    required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Internal Functions
-
-    func getRenderNode() -> RenderNode {
-        return renderNode
-    }
-
-    override func getModule() -> EditorModule? {
-        return module
-    }
-
-    func applyEditing() {
-        applyPendingChanges()
-        editMode = .none
-    }
-
-    func cancelEditing() {
-        editMode = .none
-    }
-
     // MARK: - View Overrides
 
     override func viewDidLoad() {
@@ -100,7 +63,8 @@ class TransformViewController: ModuleViewController, EditorModuleVC, Editable, U
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        updateImageView()
+
+        imageView.image = getRenderNode().pipeline?.outputImage
     }
 
     override func viewDidLayoutSubviews() {
@@ -109,6 +73,42 @@ class TransformViewController: ModuleViewController, EditorModuleVC, Editable, U
         DispatchQueue.main.async() {
             self.updatePaths()
         }
+    }
+
+    // MARK: - Lifecycle
+
+    required init(module: Module) {
+        self.module = module
+        super.init(nibName: nil, bundle: nil)
+    }
+
+    required init?(coder _: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+}
+
+// MARK: - EditorModuleVC Protocol
+
+extension TransformViewController: EditorModuleVC {
+    func getRenderNode() -> RenderNode {
+        return renderNode
+    }
+
+    func getModule() -> EditorModule? {
+        return module
+    }
+}
+
+// MARK: - Editable Protocol
+
+extension TransformViewController: Editable {
+    func applyEditing() {
+        applyPendingChanges()
+        editMode = .none
+    }
+
+    func cancelEditing() {
+        editMode = .none
     }
 }
 
@@ -199,7 +199,7 @@ private extension TransformViewController {
 
 // MARK: - Gesture Handler Functions
 
-extension TransformViewController {
+extension TransformViewController: UIGestureRecognizerDelegate {
     @objc func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         switch editMode {
         case .crop(let mode):

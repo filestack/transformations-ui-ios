@@ -34,7 +34,7 @@ class TitledImageButton: UIButton {
         return bounds.size
     }
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     override init(frame: CGRect) {
         super.init(frame: frame)

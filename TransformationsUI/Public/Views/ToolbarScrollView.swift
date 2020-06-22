@@ -9,7 +9,7 @@
 import UIKit
 
 public class ToolbarScrollView: CenteredScrollView {
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     public init() {
         super.init(frame: .zero)

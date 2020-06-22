@@ -15,7 +15,7 @@ import UIKit
 
     public let config: Config
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     public init(with config: Config) {
         self.config = config

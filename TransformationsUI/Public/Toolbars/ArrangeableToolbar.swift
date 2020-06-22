@@ -51,7 +51,7 @@ open class ArrangeableToolbar: UIView {
     private var shouldSetupViews = true
     private var stackViewConstraints = [NSLayoutConstraint]()
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
     
     public init() {
         super.init(frame: .infinite)

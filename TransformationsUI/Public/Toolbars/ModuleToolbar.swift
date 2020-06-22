@@ -27,7 +27,7 @@ public class ModuleToolbar: EditorToolbar {
     private let commands: [EditorModuleCommand]
     private let buttonType: UIButton.ButtonType
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     public required init(commands: [EditorModuleCommand], buttonType: UIButton.ButtonType = .system) {
         self.commands = commands

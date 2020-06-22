@@ -21,7 +21,7 @@ open class EditorToolbar: ArrangeableToolbar {
         setNeedsLayout()
     }
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     public override init() {
         super.init()

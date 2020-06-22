@@ -58,10 +58,10 @@ open class ModuleViewController: ArrangeableViewController {
         let observer = imageView.observe(\.image, options: [.new, .prior]) { imageView, change in
             if change.isPrior {
                 // Notify that imageView's image is about to be updated.
-                self.willUpdateImageView(imageView: imageView)
+                (self as? EditorModuleVC)?.willUpdateImageView(imageView: imageView)
             } else {
                 // Notify that imageView's image was just updated.
-                self.didUpdateImageView(imageView: imageView)
+                (self as? EditorModuleVC)?.didUpdateImageView(imageView: imageView)
 
                 // Recalculate scroll view's zoom scale if dimensions changed.
                 if change.oldValue??.extent != change.newValue??.extent {
@@ -92,27 +92,6 @@ open class ModuleViewController: ArrangeableViewController {
 
         return stackView
     }()
-
-    // MARK: - Open Overridable Functions
-
-    /// Called right before the `imageView` is updated.
-    ///
-    /// - Parameter imageView: The `imageView` that is about to be updated.
-    ///
-    /// Should be implemented by subclasses interested in receiving this notification.
-    open func willUpdateImageView(imageView: CIImageView) { }
-
-    /// Called right after the `imageView` is updated.
-    ///
-    /// - Parameter imageView: The `imageView` that was just updated.
-    ///
-    /// Should be implemented by subclasses interested in receiving this notification.
-    open func didUpdateImageView(imageView: CIImageView)  { }
-
-    /// Returns the module represented by this class.
-    ///
-    /// Should be implemented by subclasses that contain an `EditorModule`.
-    open func getModule() -> EditorModule? { return nil }
 }
 
 // MARK: - View Overrides
@@ -148,13 +127,13 @@ extension ModuleViewController: UIScrollViewDelegate {
 
 extension ModuleViewController: DiscardApplyToolbarDelegate {
     public func discardSelected(sender: UIButton) {
-        if let module = getModule() {
+        if let module = (self as? EditorModuleVC)?.getModule() {
             delegate?.moduleWantsToDiscardChanges(module: module)
         }
     }
 
     public func applySelected(sender: UIButton) {
-        if let module = getModule() {
+        if let module = (self as? EditorModuleVC)?.getModule() {
             delegate?.moduleWantsToApplyChanges(module: module)
         }
     }

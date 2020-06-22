@@ -26,7 +26,7 @@ class BasicRenderPipeline: RenderPipeline {
     private var shouldNotifyFinishedChanging = false
     private var count: Int = 0
 
-    // MARK: - Lifecycle Functions
+    // MARK: - Lifecycle
 
     init(inputImage: CIImage) {
         self.inputImage = inputImage
