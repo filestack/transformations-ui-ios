@@ -7,9 +7,19 @@
 //
 
 import UIKit
+import AVFoundation
 
 public protocol RectCropGesturesHandlerDelegate: EditDataSource {
     func updateCropInset(_ inset: UIEdgeInsets)
+}
+
+private extension UIEdgeInsets {
+    func adding(edgeInset: UIEdgeInsets) -> UIEdgeInsets {
+        return UIEdgeInsets(top: top + edgeInset.top,
+                            left: left + edgeInset.left,
+                            bottom: bottom + edgeInset.bottom,
+                            right: right + edgeInset.right)
+    }
 }
 
 public class RectCropGesturesHandler {
@@ -32,16 +42,26 @@ public class RectCropGesturesHandler {
                             right: delegate.imageFrame.maxX - actualImageRect.maxX)
     }
 
+    public var keepAspectRatio: Bool = false {
+        didSet { reset() }
+    }
+
+    public var aspectRatio: CGSize {
+        didSet { reset() }
+    }
+
     // MARK: - Private Properties
 
-    private var beginInset: RelativeInsets?
+    private var beginInset: UIEdgeInsets?
     private var movingCorner: Corner?
-    private lazy var relativeCropInsets = initialInsets()
+    private lazy var relativeCropInsets = UIEdgeInsets.zero
 
     // MARK: - Lifecycle
 
     public init(delegate: RectCropGesturesHandlerDelegate) {
         self.delegate = delegate
+        self.aspectRatio = delegate.imageSize
+        reset()
     }
 }
 
@@ -49,7 +69,19 @@ public class RectCropGesturesHandler {
 
 public extension RectCropGesturesHandler {
     func reset() {
-        relativeCropInsets = initialInsets()
+        if keepAspectRatio {
+            let frame = delegate?.imageFrame ?? .zero
+            let aspectAdjustedFrame = AVMakeRect(aspectRatio: aspectRatio, insideRect: frame)
+
+            let insets = UIEdgeInsets(top: abs(frame.minY - aspectAdjustedFrame.minY),
+                                      left: abs(frame.minX - aspectAdjustedFrame.minX),
+                                      bottom: abs(frame.maxY - aspectAdjustedFrame.maxY),
+                                      right: abs(frame.maxX - aspectAdjustedFrame.maxX))
+
+            relativeCropInsets = keepAspectRatio ? relativeInsets(from: insets) : .zero
+        } else {
+            relativeCropInsets = .zero
+        }
     }
 
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
@@ -81,7 +113,7 @@ private extension RectCropGesturesHandler {
         }
     }
 
-    func edgeInsets(from relativeInsets: RelativeInsets?) -> UIEdgeInsets {
+    func edgeInsets(from relativeInsets: UIEdgeInsets?) -> UIEdgeInsets {
         guard let delegate = delegate, let relativeInsets = relativeInsets else { return .zero }
 
         return UIEdgeInsets(top: relativeInsets.top * delegate.virtualFrame.height,
@@ -90,19 +122,13 @@ private extension RectCropGesturesHandler {
                             right: relativeInsets.right * delegate.virtualFrame.width)
     }
 
-    func relativeInsets(from edgeInsets: UIEdgeInsets?) -> RelativeInsets {
-        guard let delegate = delegate, let edgeInsets = edgeInsets else {
-            return RelativeInsets(top: 0, left: 0, bottom: 0, right: 0)
-        }
+    func relativeInsets(from edgeInsets: UIEdgeInsets?) -> UIEdgeInsets {
+        guard let delegate = delegate, let edgeInsets = edgeInsets else { return .zero }
 
-        return RelativeInsets(top: edgeInsets.top / delegate.virtualFrame.height,
-                              left: edgeInsets.left / delegate.virtualFrame.width,
-                              bottom: edgeInsets.bottom / delegate.virtualFrame.height,
-                              right: edgeInsets.right / delegate.virtualFrame.width)
-    }
-
-    func initialInsets() -> RelativeInsets {
-        return RelativeInsets(top: 0, left: 0, bottom: 0, right: 0)
+        return UIEdgeInsets(top: edgeInsets.top / delegate.virtualFrame.height,
+                            left: edgeInsets.left / delegate.virtualFrame.width,
+                            bottom: edgeInsets.bottom / delegate.virtualFrame.height,
+                            right: edgeInsets.right / delegate.virtualFrame.width)
     }
 }
 
@@ -180,44 +206,74 @@ private extension RectCropGesturesHandler {
         guard let delegate = delegate, let beginInset = beginInset, let movingCorner = movingCorner else { return }
 
         let startInset = edgeInsets(from: beginInset)
-        var top = startInset.top
-        var left = startInset.left
-        var right = startInset.right
-        var bottom = startInset.bottom
+        var insetOffset = UIEdgeInsets.zero
+        let top = startInset.top
+        let left = startInset.left
+        let right = startInset.right
+        let bottom = startInset.bottom
         let minHeight = delegate.virtualFrame.height - top - bottom
         let minWidth = delegate.virtualFrame.width - left - right
+        let ratio = delegate.imageFrame.height / delegate.imageFrame.width
 
         switch movingCorner {
+        // Corner regions
         case .topLeft:
-            top += min(translation.y, minHeight)
-            left += min(translation.x, minWidth)
+            insetOffset.top = min(translation.y, minHeight)
+            insetOffset.left = min(translation.x, minWidth)
+
+            if keepAspectRatio {
+                let offset = max(max(-startInset.top, insetOffset.top), max(-startInset.left, insetOffset.left))
+                insetOffset.top = offset * ratio
+                insetOffset.left = offset
+            }
         case .topRight:
-            top += min(translation.y, minHeight)
-            right += min(-translation.x, minWidth)
+            insetOffset.top = min(translation.y, minHeight)
+            insetOffset.right = min(-translation.x, minWidth)
+
+            if keepAspectRatio {
+                let offset = max(max(-startInset.top, insetOffset.top), max(-startInset.right, insetOffset.right))
+                insetOffset.top = offset * ratio
+                insetOffset.right = offset
+            }
         case .bottomLeft:
-            bottom += min(-translation.y, minHeight)
-            left += min(translation.x, minWidth)
+            insetOffset.bottom = min(-translation.y, minHeight)
+            insetOffset.left = min(translation.x, minWidth)
+
+            if keepAspectRatio {
+                let offset = max(max(-startInset.bottom, insetOffset.bottom), max(-startInset.left, insetOffset.left))
+                insetOffset.bottom = offset * ratio
+                insetOffset.left = offset
+            }
         case .bottomRight:
-            bottom += min(-translation.y, minHeight)
-            right += min(-translation.x, minWidth)
+            insetOffset.bottom = min(-translation.y, minHeight)
+            insetOffset.right = min(-translation.x, minWidth)
+
+            if keepAspectRatio {
+                let offset = max(max(-startInset.bottom, insetOffset.bottom), max(-startInset.right, insetOffset.right))
+                insetOffset.bottom = offset * ratio
+                insetOffset.right = offset
+            }
+        // Edge regions
         case .top:
-            top += min(translation.y, minHeight)
+            insetOffset.top = keepAspectRatio ? 0 : min(translation.y, minHeight)
         case .bottom:
-            bottom += min(-translation.y, minHeight)
+            insetOffset.bottom = keepAspectRatio ? 0 : min(-translation.y, minHeight)
         case .left:
-            left += min(translation.x, minWidth)
+            insetOffset.left = keepAspectRatio ? 0 : min(translation.x, minWidth)
         case .right:
-            right += min(-translation.x, minWidth)
+            insetOffset.right = keepAspectRatio ? 0 : min(-translation.x, minWidth)
+        // Center region
         case .center:
-            let moveVertical = clamp(translation.y, min: -top, max: bottom)
-            let moveHorizontal = clamp(translation.x, min: -left, max: right)
-            top += moveVertical
-            left += moveHorizontal
-            right += -moveHorizontal
-            bottom += -moveVertical
+            let moveVertical = clamp(translation.y, min: -startInset.top, max: startInset.bottom)
+            let moveHorizontal = clamp(translation.x, min: -startInset.left, max: startInset.right)
+
+            insetOffset.top = moveVertical
+            insetOffset.left = moveHorizontal
+            insetOffset.right = -moveHorizontal
+            insetOffset.bottom = -moveVertical
         }
 
-        cropInsets = UIEdgeInsets(top: max(0, top), left: max(0, left), bottom: max(0, bottom), right: max(0, right))
+        cropInsets = startInset.adding(edgeInset: insetOffset).clipped()
     }
 
     func reset(to insets: UIEdgeInsets?) {
