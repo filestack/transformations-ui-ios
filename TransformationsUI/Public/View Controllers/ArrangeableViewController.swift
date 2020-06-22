@@ -9,7 +9,7 @@
 import UIKit
 
 /// Adds the ability to define constraints based on pairs of `UIUserInterfaceSizeClass` traits.
-public class ArrangeableViewController: UIViewController {
+open class ArrangeableViewController: UIViewController {
     private struct VariationPair: Hashable {
         var width: UIUserInterfaceSizeClass
         var height: UIUserInterfaceSizeClass

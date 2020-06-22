@@ -8,40 +8,40 @@
 
 import UIKit
 
-public class ArrangeableToolbar: UIView {
-    // MARK: - Public Properties
+open class ArrangeableToolbar: UIView {
+    // MARK: - Open Properties
 
-    public var shouldAutoAdjustAxis: Bool = true
+    open var shouldAutoAdjustAxis: Bool = true
 
-    public var distribution: UIStackView.Distribution {
+    open var distribution: UIStackView.Distribution {
         get { stackView.distribution }
         set { stackView.distribution = newValue }
     }
 
-    public var alignment: UIStackView.Alignment {
+    open var alignment: UIStackView.Alignment {
         get { stackView.alignment }
         set { stackView.alignment = newValue }
     }
 
-    public var axis: NSLayoutConstraint.Axis {
+    open var axis: NSLayoutConstraint.Axis {
         get { stackView.axis }
         set { stackView.axis = newValue }
     }
 
-    public var spacing: CGFloat {
+    open var spacing: CGFloat {
         get { stackView.spacing }
         set { stackView.spacing = newValue }
     }
 
-    public var items: [UIView] {
+    open var items: [UIView] {
         return stackView.arrangedSubviews
     }
 
-    public var innerInset: CGFloat = 0 {
+    open var innerInset: CGFloat = 0 {
         didSet { setupViews() }
     }
 
-    public func setCustomSpacing(_ spacing: CGFloat, after arrangedSubview: UIView) {
+    open func setCustomSpacing(_ spacing: CGFloat, after arrangedSubview: UIView) {
         stackView.setCustomSpacing(spacing, after: arrangedSubview)
     }
 
@@ -92,7 +92,7 @@ public class ArrangeableToolbar: UIView {
 }
 
 extension ArrangeableToolbar {
-    public override func layoutSubviews() {
+    open override func layoutSubviews() {
         super.layoutSubviews()
 
         if shouldSetupViews {

@@ -47,7 +47,7 @@ public class RectCropGesturesHandler {
 
 // MARK: - Public Functions
 
-extension RectCropGesturesHandler {
+public extension RectCropGesturesHandler {
     func reset() {
         relativeCropInsets = initialInsets()
     }

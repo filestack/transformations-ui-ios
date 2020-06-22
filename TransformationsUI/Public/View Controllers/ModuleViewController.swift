@@ -8,7 +8,7 @@
 
 import UIKit
 
-public class ModuleViewController: ArrangeableViewController {
+open class ModuleViewController: ArrangeableViewController {
     // MARK: - Private Properties
 
     private var imageViewImageObserver: NSKeyValueObservation?
@@ -25,31 +25,20 @@ public class ModuleViewController: ArrangeableViewController {
         return view
     }()
 
-    // MARK: - Public Properties
+    // MARK: - Open Properties
 
-    public weak var delegate: EditorModuleVCDelegate?
+    open weak var delegate: EditorModuleVCDelegate?
 
-    public var zoomEnabled: Bool = false {
+    open var zoomEnabled: Bool = false {
         didSet { scrollView.bouncesZoom = zoomEnabled }
     }
 
-    public let stackView: UIStackView = {
-        let stackView = UIStackView()
-
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-        stackView.backgroundColor = .blue
-
-        return stackView
-    }()
-
-    public var contentLayoutMargins: UIEdgeInsets {
+    open var contentLayoutMargins: UIEdgeInsets {
         get { scrollWrapperView.layoutMargins }
         set { scrollWrapperView.layoutMargins = newValue }
     }
 
-    public private(set) lazy var scrollView: CenteredScrollView = {
+    open private(set) lazy var scrollView: CenteredScrollView = {
         let scrollView = CenteredScrollView()
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
@@ -62,7 +51,7 @@ public class ModuleViewController: ArrangeableViewController {
         return scrollView
     }()
 
-    public private(set) lazy var imageView: CIImageView = {
+    open private(set) lazy var imageView: CIImageView = {
         let imageView = MetalImageView()
 
         // Start observing changes in `image` property from `imageView`.
@@ -87,8 +76,21 @@ public class ModuleViewController: ArrangeableViewController {
         return imageView
     }()
 
-    public private(set) lazy var discardApplyToolbar: DiscardApplyToolbar? = {
+    open private(set) lazy var discardApplyToolbar: DiscardApplyToolbar? = {
         self is Editable ? DiscardApplyToolbar(delegate: self) : nil
+    }()
+
+    // MARK: - Public Properties
+
+    public let stackView: UIStackView = {
+        let stackView = UIStackView()
+
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.backgroundColor = .blue
+
+        return stackView
     }()
 
     // MARK: - Overridable Functions

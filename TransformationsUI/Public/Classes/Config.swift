@@ -8,7 +8,7 @@
 
 import Foundation
 
-public class Config: NSObject {
+open class Config: NSObject {
     public let modules: EditorModules
 
     public init(modules: EditorModules = StandardModules()) {

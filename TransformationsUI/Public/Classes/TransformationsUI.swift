@@ -21,9 +21,9 @@ import UIKit
         self.config = config
     }
 
-    // MARK: - Public Functions
+    // MARK: - Open Functions
 
-    public func editor(with image: UIImage) -> UIViewController? {
+    open func editor(with image: UIImage) -> UIViewController? {
         return EditorViewController(image: image, config: config) { image in
             self.delegate?.editorDismissed(with: image)
         }

@@ -8,7 +8,19 @@
 
 import UIKit
 
-public class EditorToolbar: ArrangeableToolbar {
+open class EditorToolbar: ArrangeableToolbar {
+    // MARK: - Overridable Functions
+
+    open func setItems(_ items: [UIView] = []) {
+        removeAllItems()
+
+        for item in items {
+            addItem(item)
+        }
+
+        setNeedsLayout()
+    }
+
     // MARK: - Lifecycle Functions
 
     public override init() {
@@ -20,10 +32,12 @@ public class EditorToolbar: ArrangeableToolbar {
     public required init(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+}
 
-    // MARK: - Public Functions
+// MARK: - Open Functions
 
-    public func button(using image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
+extension EditorToolbar {
+    open func button(using image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
         let button = UIButton(type: type)
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(delayedStopHighlighting), for: .touchUpInside)
@@ -31,7 +45,7 @@ public class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
-    public func button(using title: String, type: UIButton.ButtonType = .system) -> UIButton {
+    open func button(using title: String, type: UIButton.ButtonType = .system) -> UIButton {
         let button = UIButton(type: type)
         button.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
         button.setTitle(title, for: .normal)
@@ -40,7 +54,7 @@ public class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
-    public func titledImageButton(using title: String, image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
+    open func titledImageButton(using title: String, image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
         let buttonRect = CGRect(origin: .zero, size: Constants.Size.toolbar)
         let button = TitledImageButton(frame: buttonRect)
 
@@ -53,7 +67,7 @@ public class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
-    public func label(titled title: String, tintColor: UIColor = Constants.Color.label, textAlignment: NSTextAlignment = .left) -> UILabel {
+    open func label(titled title: String, tintColor: UIColor = Constants.Color.label, textAlignment: NSTextAlignment = .left) -> UILabel {
         let label = UILabel()
 
         label.text = title
@@ -63,19 +77,11 @@ public class EditorToolbar: ArrangeableToolbar {
 
         return label
     }
+}
 
-    public func setItems(_ items: [UIView] = []) {
-        removeAllItems()
+// MARK: - Actions
 
-        for item in items {
-            addItem(item)
-        }
-
-        setNeedsLayout()
-    }
-
-    // MARK: - Actions
-
+private extension EditorToolbar {
     @objc func delayedStopHighlighting(sender: UIButton) {
         DispatchQueue.main.async {
             sender.isHighlighted = true
@@ -86,6 +92,8 @@ public class EditorToolbar: ArrangeableToolbar {
         }
     }
 }
+
+// MARK: - Private Functions
 
 private extension EditorToolbar {
     func setup() {
