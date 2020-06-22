@@ -118,13 +118,13 @@ open class ModuleViewController: ArrangeableViewController {
 // MARK: - View Overrides
 
 extension ModuleViewController {
-    public override func viewDidLoad() {
+    open override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
     }
 
-    public override func viewDidLayoutSubviews() {
+    open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
         stackView.layoutIfNeeded()
