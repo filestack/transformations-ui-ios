@@ -70,7 +70,7 @@ public class RectCropGesturesHandler {
 public extension RectCropGesturesHandler {
     func reset() {
         if keepAspectRatio {
-            let frame = delegate?.imageFrame ?? .zero
+            let frame = delegate?.virtualFrame ?? .zero
             let aspectAdjustedFrame = AVMakeRect(aspectRatio: aspectRatio, insideRect: frame)
 
             let insets = UIEdgeInsets(top: abs(frame.minY - aspectAdjustedFrame.minY),
