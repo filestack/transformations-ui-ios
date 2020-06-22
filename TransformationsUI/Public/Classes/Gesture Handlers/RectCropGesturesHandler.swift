@@ -46,7 +46,7 @@ public class RectCropGesturesHandler {
         didSet { reset() }
     }
 
-    public var aspectRatio: CGSize {
+    public var aspectRatio: CGSize = .zero {
         didSet { reset() }
     }
 
@@ -60,8 +60,6 @@ public class RectCropGesturesHandler {
 
     public init(delegate: RectCropGesturesHandlerDelegate) {
         self.delegate = delegate
-        self.aspectRatio = delegate.imageSize
-        reset()
     }
 }
 
