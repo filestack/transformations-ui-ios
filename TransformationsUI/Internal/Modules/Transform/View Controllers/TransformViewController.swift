@@ -61,12 +61,6 @@ class TransformViewController: ModuleViewController {
         setupView()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        imageView.image = getRenderNode().pipeline?.outputImage
-    }
-
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 

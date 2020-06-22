@@ -39,11 +39,6 @@ class OverviewViewController: ModuleViewController {
         setupView()
     }
 
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-
-        imageView.image = getRenderNode().pipeline?.outputImage
-    }
 
     // MARK: - Lifecycle
 

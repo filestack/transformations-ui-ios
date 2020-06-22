@@ -103,6 +103,14 @@ extension ModuleViewController {
         setup()
     }
 
+    open override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        if let editorModuleVC = self as? EditorModuleVC {
+            imageView.image = editorModuleVC.getRenderNode().pipeline?.outputImage
+        }
+    }
+
     open override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
 
