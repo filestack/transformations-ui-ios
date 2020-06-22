@@ -14,6 +14,7 @@ public protocol EditorModuleVC: UIViewController {
 
     func getTitleView() -> UIView?
     func getRenderNode() -> RenderNode
+
     func editorRestoredSnapshot()
 }
 

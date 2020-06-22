@@ -17,16 +17,10 @@ class TransformRenderNode: RenderNode {
         didSet { renderedImage = inputImage }
     }
 
-    var outputImage: CIImage {
-        return renderedImage ?? inputImage
-    }
+    var outputImage: CIImage { renderedImage ?? inputImage }
 
     var renderedImage: CIImage? = nil {
         didSet { pipeline?.nodeChanged(node: self) }
-    }
-
-    func discardChanges() {
-        renderedImage = nil
     }
 }
 
@@ -46,9 +40,7 @@ extension TransformRenderNode {
 
 extension TransformRenderNode: Snapshotable {
     public func snapshot() -> Snapshot {
-        return [
-            "renderedImage": renderedImage
-        ]
+        return ["renderedImage": renderedImage]
     }
 
     public func restore(from snapshot: Snapshot) {

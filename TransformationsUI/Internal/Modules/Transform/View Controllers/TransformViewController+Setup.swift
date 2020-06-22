@@ -12,8 +12,6 @@ extension TransformViewController {
     func setupGestureRecognizer() {
         panGestureRecognizer.delegate = self
         panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture(recognizer:)))
-        pinchGestureRecognizer.delegate = self
-        pinchGestureRecognizer.addTarget(self, action: #selector(handlePinchGesture(recognizer:)))
     }
 
     func setupView() {
@@ -25,19 +23,21 @@ extension TransformViewController {
 
 private extension TransformViewController {
     func addViews() {
+        contentLayoutMargins = Constants.Spacing.contentLayout
+
         stackView.insertArrangedSubview(extraToolbar, at: 0)
         stackView.insertArrangedSubview(cropToolbar, at: max(0, stackView.arrangedSubviews.count - 1))
 
-        extraToolbar.backgroundColor = Constants.toolbarColor
-        cropToolbar.backgroundColor = Constants.toolbarColor
+        extraToolbar.backgroundColor = Constants.Color.toolbar
+        cropToolbar.backgroundColor = Constants.Color.toolbar
 
         extraToolbar.innerInset = 0
         cropToolbar.innerInset = 0
 
         var constraints = [NSLayoutConstraint]()
 
-        constraints.append(extraToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize.height))
-        constraints.append(cropToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize.height))
+        constraints.append(extraToolbar.heightAnchor.constraint(equalToConstant: Constants.Size.toolbar.height))
+        constraints.append(cropToolbar.heightAnchor.constraint(equalToConstant: Constants.Size.toolbar.height))
 
         for constraint in constraints {
             constraint.isActive = true

@@ -19,18 +19,24 @@ extension ModuleViewController {
 
 private extension ModuleViewController {
     func addViews() {
-        view.addSubview(scrollView)
         scrollView.addSubview(imageView)
-        stackView.addArrangedSubview(scrollView)
+
+        scrollWrapperView.addSubview(scrollView)
+        scrollWrapperView.layoutMarginsGuide.leadingAnchor.constraint(equalTo: scrollView.leadingAnchor).isActive = true
+        scrollWrapperView.layoutMarginsGuide.trailingAnchor.constraint(equalTo: scrollView.trailingAnchor).isActive = true
+        scrollWrapperView.layoutMarginsGuide.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
+        scrollWrapperView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
+
+        stackView.addArrangedSubview(scrollWrapperView)
 
         if let discardApplyToolbar = discardApplyToolbar {
             stackView.addArrangedSubview(discardApplyToolbar)
 
-            discardApplyToolbar.backgroundColor = Constants.backgroundColor
+            discardApplyToolbar.backgroundColor = Constants.Color.background
 
             var constraints = [NSLayoutConstraint]()
 
-            constraints.append(discardApplyToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize.height))
+            constraints.append(discardApplyToolbar.heightAnchor.constraint(equalToConstant: Constants.Size.toolbar.height))
 
             for constraint in constraints {
                 constraint.isActive = true

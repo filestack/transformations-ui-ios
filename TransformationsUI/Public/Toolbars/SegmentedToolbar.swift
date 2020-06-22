@@ -51,7 +51,7 @@ public class SegmentedToolbar: EditorToolbar {
 
     public override func setItems(_ items: [UIView] = []) {
         innerToolbar = ArrangeableToolbar(items: items)
-        innerToolbar.spacing = Constants.toolbarSpacing
+        innerToolbar.spacing = Constants.Spacing.toolbar
 
         let scrollView = ToolbarScrollView()
 

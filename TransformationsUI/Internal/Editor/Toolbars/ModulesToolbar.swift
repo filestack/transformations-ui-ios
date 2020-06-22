@@ -24,7 +24,7 @@ class ModulesToolbar: EditorToolbar {
         let button = self.titledImageButton(using: title, image: image)
 
         button.addTarget(delegate, action: #selector(ModulesToolbarDelegate.moduleSelected), for: .touchUpInside)
-        button.tintColor = Constants.iconColor
+        button.tintColor = Constants.Color.icon
 
         return button
     }
@@ -33,7 +33,7 @@ class ModulesToolbar: EditorToolbar {
 
     override func setItems(_ items: [UIView] = []) {
         innerToolbar = ArrangeableToolbar(items: items)
-        innerToolbar.spacing = Constants.toolbarSpacing
+        innerToolbar.spacing = Constants.Spacing.toolbar
 
         super.setItems([UIView(), innerToolbar, UIView()])
     }

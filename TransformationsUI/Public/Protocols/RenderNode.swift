@@ -13,8 +13,6 @@ public protocol RenderNode: class {
     var uuid: UUID { get }
     var inputImage: CIImage { get set }
     var outputImage: CIImage { get }
-
-    func discardChanges()
 }
 
 public func ==(lhs: RenderNode, rhs: RenderNode) -> Bool {

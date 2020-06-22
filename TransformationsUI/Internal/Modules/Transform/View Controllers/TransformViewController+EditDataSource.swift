@@ -10,29 +10,10 @@ import AVFoundation
 import Foundation
 
 extension TransformViewController: EditDataSource {
-    var imageFrame: CGRect {
-        return AVMakeRect(aspectRatio: imageActualSize, insideRect: imageView.bounds)
-    }
-
-    var imageSize: CGSize {
-        return imageFrame.size
-    }
-
-    var imageOrigin: CGPoint {
-        return imageFrame.origin
-    }
-
-    var imageActualSize: CGSize {
-        return renderNode.outputImage.extent.size
-    }
-
-    var zoomScale: CGFloat {
-        return scrollView.zoomScale
-    }
-
-    var virtualFrame: CGRect {
-        return AVMakeRect(aspectRatio: imageActualSize, insideRect: scrollView.bounds)
-    }
+    var imageFrame: CGRect { imageView.bounds }
+    var imageSize: CGSize { renderNode.outputImage.extent.size }
+    var zoomScale: CGFloat { scrollView.zoomScale }
+    var virtualFrame: CGRect { AVMakeRect(aspectRatio: imageSize, insideRect: scrollView.bounds) }
 
     func convertPointFromVirtualFrameToImageFrame(_ point: CGPoint) -> CGPoint {
         return scrollView.convert(point, to: imageView)

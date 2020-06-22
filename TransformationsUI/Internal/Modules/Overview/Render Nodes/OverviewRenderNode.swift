@@ -14,18 +14,8 @@ class OverviewRenderNode: RenderNode {
     let uuid = UUID()
 
     var inputImage: CIImage = CIImage() {
-        didSet { renderedImage = inputImage }
-    }
-
-    var outputImage: CIImage {
-        return renderedImage ?? inputImage
-    }
-
-    var renderedImage: CIImage? = nil {
         didSet { pipeline?.nodeChanged(node: self) }
     }
 
-    func discardChanges() {
-        renderedImage = nil
-    }
+    var outputImage: CIImage { inputImage }
 }

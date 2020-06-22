@@ -13,8 +13,6 @@ protocol OverviewViewControllerDelegate: EditorModuleVCDelegate {
 }
 
 class OverviewViewController: ModuleViewController, EditorModuleVC, UIGestureRecognizerDelegate {
-    //weak var delegate: OverviewViewControllerDelegate?
-
     private weak var subDelegate: OverviewViewControllerDelegate?
 
     override var delegate: EditorModuleVCDelegate? {
@@ -55,6 +53,7 @@ class OverviewViewController: ModuleViewController, EditorModuleVC, UIGestureRec
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
+
         updateImageView()
     }
 }

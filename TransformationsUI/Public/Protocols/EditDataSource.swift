@@ -8,11 +8,9 @@
 
 import UIKit
 
-protocol EditDataSource: AnyObject {
+public protocol EditDataSource: AnyObject {
     var imageFrame: CGRect { get }
     var imageSize: CGSize { get }
-    var imageOrigin: CGPoint { get }
-    var imageActualSize: CGSize { get }
     var zoomScale: CGFloat { get }
     var virtualFrame: CGRect { get }
 

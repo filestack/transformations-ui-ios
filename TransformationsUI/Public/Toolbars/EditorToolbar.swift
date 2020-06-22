@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class EditorToolbar: ArrangeableToolbar {
+public class EditorToolbar: ArrangeableToolbar {
     // MARK: - Lifecycle Functions
 
     public override init() {
@@ -21,9 +21,9 @@ open class EditorToolbar: ArrangeableToolbar {
         fatalError("init(coder:) has not been implemented")
     }
 
-    // MARK: - Open Functions
+    // MARK: - Public Functions
 
-    open func button(using image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
+    public func button(using image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
         let button = UIButton(type: type)
         button.setImage(image, for: .normal)
         button.addTarget(self, action: #selector(delayedStopHighlighting), for: .touchUpInside)
@@ -31,7 +31,7 @@ open class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
-    open func button(using title: String, type: UIButton.ButtonType = .system) -> UIButton {
+    public func button(using title: String, type: UIButton.ButtonType = .system) -> UIButton {
         let button = UIButton(type: type)
         button.titleLabel?.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
         button.setTitle(title, for: .normal)
@@ -40,8 +40,8 @@ open class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
-    open func titledImageButton(using title: String, image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
-        let buttonRect = CGRect(origin: .zero, size: Constants.toolbarSize)
+    public func titledImageButton(using title: String, image: UIImage, type: UIButton.ButtonType = .system) -> UIButton {
+        let buttonRect = CGRect(origin: .zero, size: Constants.Size.toolbar)
         let button = TitledImageButton(frame: buttonRect)
 
         button.padding = 0
@@ -53,7 +53,7 @@ open class EditorToolbar: ArrangeableToolbar {
         return button
     }
 
-    open func label(titled title: String, tintColor: UIColor = Constants.labelColor, textAlignment: NSTextAlignment = .left) -> UILabel {
+    public func label(titled title: String, tintColor: UIColor = Constants.Color.label, textAlignment: NSTextAlignment = .left) -> UILabel {
         let label = UILabel()
 
         label.text = title
@@ -64,7 +64,7 @@ open class EditorToolbar: ArrangeableToolbar {
         return label
     }
 
-    open func setItems(_ items: [UIView] = []) {
+    public func setItems(_ items: [UIView] = []) {
         removeAllItems()
 
         for item in items {
@@ -89,7 +89,7 @@ open class EditorToolbar: ArrangeableToolbar {
 
 private extension EditorToolbar {
     func setup() {
-        innerInset = Constants.toolbarInset
+        innerInset = Constants.Spacing.toolbarInset
         distribution = .equalSpacing
     }
 }

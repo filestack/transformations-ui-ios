@@ -9,13 +9,16 @@
 import UIKit
 
 class TransformViewController: ModuleViewController, EditorModuleVC, Editable, UIGestureRecognizerDelegate {
-    typealias Config = StandardModules.Transform
-    let config: Config
+    typealias Module = StandardModules.Transform
 
     enum EditMode: Hashable {
         case none
-        case crop(mode: Config.Commands.Crop)
+        case crop(mode: Module.Commands.Crop)
     }
+
+    // MARK: - Internal Properties
+    
+    let module: Module
 
     lazy var renderNode = TransformRenderNode()
 
@@ -36,41 +39,35 @@ class TransformViewController: ModuleViewController, EditorModuleVC, Editable, U
     }
 
     var panGestureRecognizer = UIPanGestureRecognizer()
-    var pinchGestureRecognizer = UIPinchGestureRecognizer()
 
-    var extraToolsCommands: [EditorModuleCommand] {
-        config.extraCommands
+    var extraToolbarCommands: [EditorModuleCommand] {
+        module.extraCommands
     }
 
-    var cropToolsCommands: [EditorModuleCommand] {
-        config.cropCommands
+    var cropToolbarCommands: [EditorModuleCommand] {
+        module.cropCommands
     }
 
-    lazy var extraToolbar = ModuleToolbar(commands: extraToolsCommands)
-    lazy var cropToolbar = SegmentedToolbar(commands: cropToolsCommands)
+    lazy var extraToolbar = ModuleToolbar(commands: extraToolbarCommands)
+    lazy var cropToolbar = SegmentedToolbar(commands: cropToolbarCommands)
 
-    lazy var cropHandler = CropGesturesHandler(delegate: self)
-    lazy var circleHandler = CircleGesturesHandler(delegate: self)
+    lazy var cropHandler = RectCropGesturesHandler(delegate: self)
+    lazy var circleHandler = CircleCropGesturesHandler(delegate: self)
 
-    private let cropLayer = CropLayer()
-    private let circleLayer = CircleLayer()
+    // MARK: - Private Properties
+
+    private let cropLayer = RectCropLayer()
+    private let circleLayer = CircleCropLayer()
 
     // MARK: - Lifecycle Functions
 
-    required init(config: Config) {
-        self.config = config
-
+    required init(module: Module) {
+        self.module = module
         super.init(nibName: nil, bundle: nil)
     }
 
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
-    }
-
-    // MARK: - Function Overrides
-
-    override func getModule() -> EditorModule? {
-        return config
     }
 
     // MARK: - Internal Functions
@@ -79,17 +76,20 @@ class TransformViewController: ModuleViewController, EditorModuleVC, Editable, U
         return renderNode
     }
 
+    override func getModule() -> EditorModule? {
+        return module
+    }
+
     func applyEditing() {
         applyPendingChanges()
         editMode = .none
     }
 
     func cancelEditing() {
-        renderNode.discardChanges()
         editMode = .none
     }
 
-    // MARK: - View overrides
+    // MARK: - View Overrides
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -111,6 +111,8 @@ class TransformViewController: ModuleViewController, EditorModuleVC, Editable, U
         }
     }
 }
+
+// MARK: - Private Functions
 
 private extension TransformViewController {
     func turnOff(mode: EditMode) {
@@ -135,9 +137,7 @@ private extension TransformViewController {
             break
         }
     }
-}
 
-private extension TransformViewController {
     func layer(for mode: EditMode) -> CALayer? {
         switch mode {
         case .crop(let mode):
@@ -190,14 +190,14 @@ private extension TransformViewController {
 
     func addCropGestureRecognizers() {
         scrollView.addGestureRecognizer(panGestureRecognizer)
-        scrollView.addGestureRecognizer(pinchGestureRecognizer)
     }
 
     func removeCropGestoreRecognizers() {
         scrollView.removeGestureRecognizer(panGestureRecognizer)
-        scrollView.removeGestureRecognizer(pinchGestureRecognizer)
     }
 }
+
+// MARK: - Gesture Handler Functions
 
 extension TransformViewController {
     @objc func handlePanGesture(recognizer: UIPanGestureRecognizer) {
@@ -212,32 +212,19 @@ extension TransformViewController {
             break
         }
     }
-
-    @objc func handlePinchGesture(recognizer: UIPinchGestureRecognizer) {
-        switch editMode {
-        case .crop(let mode):
-            switch mode.type {
-            case .none: break
-            case .rect: break
-            case .circle: circleHandler.handlePinchGesture(recognizer: recognizer)
-            }
-        case .none:
-            break
-        }
-    }
 }
 
-// MARK: - EditCropDelegate
+// MARK: - RectCropGesturesHandler Delegate
 
-extension TransformViewController: EditCropDelegate {
+extension TransformViewController: RectCropGesturesHandlerDelegate {
     func updateCropInset(_: UIEdgeInsets) {
         updateCropPaths()
     }
 }
 
-// MARK: - EditCircleDelegate
+// MARK: - CircleCropGesturesHandler Delegate Delegate
 
-extension TransformViewController: EditCircleDelegate {
+extension TransformViewController: CircleCropGesturesHandlerDelegate {
     func updateCircle(_: CGPoint, radius _: CGFloat) {
         updateCirclePaths()
     }

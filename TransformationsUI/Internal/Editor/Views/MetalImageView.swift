@@ -13,9 +13,7 @@ import CoreImage
 class MetalImageView: MTKView, CIImageView {
     // MARK: - Internal Properties
 
-    var imageViewDelegate: CIImageViewDelegate?
-
-    var image: CIImage? {
+    @objc dynamic var image: CIImage? {
         didSet {
             guard let image = image else { return }
 
@@ -23,10 +21,6 @@ class MetalImageView: MTKView, CIImageView {
             frame = CGRect(origin: .zero, size: frame.size)
 
             setNeedsDisplay()
-
-            DispatchQueue.main.async {
-                self.imageViewDelegate?.imageChanged(image: self.image)
-            }
         }
     }
 

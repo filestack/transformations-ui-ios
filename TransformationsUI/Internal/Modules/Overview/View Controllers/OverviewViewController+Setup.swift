@@ -27,7 +27,7 @@ private extension OverviewViewController {
         view.addSubview(scrollView)
         view.sendSubviewToBack(scrollView)
 
-        modulesToolbar.backgroundColor = Constants.backgroundColor
+        modulesToolbar.backgroundColor = Constants.Color.background
 
         setupModulesToolbarConstraints()
         setupScrollViewConstraints()
@@ -55,7 +55,7 @@ private extension OverviewViewController {
         var constraints = [NSLayoutConstraint]()
 
         constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.left, .right, .bottom]))
-        constraints.append(modulesToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize.height))
+        constraints.append(modulesToolbar.heightAnchor.constraint(equalToConstant: Constants.Size.toolbar.height))
 
         for constraint in constraints {
             constraint.isActive = true

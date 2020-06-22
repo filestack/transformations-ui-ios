@@ -8,7 +8,7 @@
 
 import UIKit
 
-open class ArrangeableToolbar: UIView {
+public class ArrangeableToolbar: UIView {
     // MARK: - Public Properties
 
     public var shouldAutoAdjustAxis: Bool = true
@@ -33,7 +33,7 @@ open class ArrangeableToolbar: UIView {
         set { stackView.spacing = newValue }
     }
 
-    open var items: [UIView] {
+    public var items: [UIView] {
         return stackView.arrangedSubviews
     }
 
@@ -92,7 +92,7 @@ open class ArrangeableToolbar: UIView {
 }
 
 extension ArrangeableToolbar {
-    open override func layoutSubviews() {
+    public override func layoutSubviews() {
         super.layoutSubviews()
 
         if shouldSetupViews {

@@ -29,7 +29,7 @@ class TitleToolbar: EditorToolbar {
     private var saveButton: UIButton {
         let button = self.button(using: L18.save.uppercased())
 
-        button.tintColor = Constants.doneColor
+        button.tintColor = Constants.Color.done
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: UIFont.buttonFontSize)
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.saveSelected), for: .touchUpInside)
 
@@ -39,7 +39,7 @@ class TitleToolbar: EditorToolbar {
     private lazy var cancelButton: UIButton = {
         let button = self.button(using: L18.cancel)
 
-        button.tintColor = Constants.cancelColor
+        button.tintColor = Constants.Color.cancel
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.cancelSelected), for: .touchUpInside)
 
         return button
@@ -49,7 +49,7 @@ class TitleToolbar: EditorToolbar {
         let button = self.button(using: .fromFrameworkBundle("icon-undo"))
 
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.undoSelected), for: .touchUpInside)
-        button.tintColor = Constants.doneColor
+        button.tintColor = Constants.Color.done
 
         return button
     }()
@@ -58,7 +58,7 @@ class TitleToolbar: EditorToolbar {
         let button = self.button(using: .fromFrameworkBundle("icon-redo"))
 
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.redoSelected), for: .touchUpInside)
-        button.tintColor = Constants.doneColor
+        button.tintColor = Constants.Color.done
 
         return button
     }()
@@ -69,11 +69,11 @@ class TitleToolbar: EditorToolbar {
         shouldAutoAdjustAxis = false
 
         undoRedoToolbar = ArrangeableToolbar(items: [undo, redo])
-        undoRedoToolbar.spacing = Constants.toolbarSpacing
+        undoRedoToolbar.spacing = Constants.Spacing.toolbar
         undoRedoToolbar.shouldAutoAdjustAxis = false
 
         innerToolbar = ArrangeableToolbar(items: items)
-        innerToolbar.spacing = Constants.toolbarSpacing
+        innerToolbar.spacing = Constants.Spacing.toolbar
         innerToolbar.shouldAutoAdjustAxis = false
 
         saveButtonToolbar = ArrangeableToolbar(items: [UIView(), saveButton])

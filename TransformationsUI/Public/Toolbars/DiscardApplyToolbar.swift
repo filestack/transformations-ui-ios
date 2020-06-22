@@ -28,8 +28,9 @@ public class DiscardApplyToolbar: EditorToolbar {
 
     // MARK: - Lifecycle Functions
 
-    public required override init() {
+    public required init(delegate: DiscardApplyToolbarDelegate? = nil) {
         super.init()
+        self.delegate = delegate
         setup()
     }
 
@@ -41,7 +42,7 @@ public class DiscardApplyToolbar: EditorToolbar {
 
     public override func setItems(_ items: [UIView] = []) {
         innerToolbar = ArrangeableToolbar(items: items)
-        innerToolbar.spacing = Constants.toolbarSpacing
+        innerToolbar.spacing = Constants.Spacing.toolbar
 
         super.setItems([innerToolbar])
     }
@@ -60,10 +61,10 @@ private extension DiscardApplyToolbar {
         let discardButton = button(using: .fromFrameworkBundle("icon-discard"))
         let applyButton = button(using: .fromFrameworkBundle("icon-apply"))
 
-        discardButton.tintColor = Constants.cancelColor
+        discardButton.tintColor = Constants.Color.cancel
         discardButton.addTarget(delegate, action: #selector(DiscardApplyToolbarDelegate.discardSelected), for: .touchUpInside)
 
-        applyButton.tintColor = Constants.doneColor
+        applyButton.tintColor = Constants.Color.done
         applyButton.addTarget(delegate, action: #selector(DiscardApplyToolbarDelegate.applySelected), for: .touchUpInside)
 
         setItems([discardButton, UIView(), applyButton])

@@ -8,76 +8,124 @@
 
 import UIKit
 
-open class ModuleViewController: ArrangeableViewController {
-    private var lastImage: CIImage? = nil
+public class ModuleViewController: ArrangeableViewController {
+    // MARK: - Private Properties
+
+    private var imageViewImageObserver: NSKeyValueObservation?
     private var lastViewFrame: CGRect? = nil
 
-    open weak var delegate: EditorModuleVCDelegate?
+    // MARK: - Internal Properties
 
-    open var maximumZoomScale: CGFloat = .infinity {
-        didSet { scrollView.maximumZoomScale = maximumZoomScale }
+    let scrollWrapperView: UIView = {
+        let view = UIView()
+
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.clipsToBounds = true
+
+        return view
+    }()
+
+    // MARK: - Public Properties
+
+    public weak var delegate: EditorModuleVCDelegate?
+
+    public var zoomEnabled: Bool = false {
+        didSet { scrollView.bouncesZoom = zoomEnabled }
     }
 
-    open lazy var scrollView: CenteredScrollView = {
+    public let stackView: UIStackView = {
+        let stackView = UIStackView()
+
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+        stackView.backgroundColor = .blue
+
+        return stackView
+    }()
+
+    public var contentLayoutMargins: UIEdgeInsets {
+        get { scrollWrapperView.layoutMargins }
+        set { scrollWrapperView.layoutMargins = newValue }
+    }
+
+    public private(set) lazy var scrollView: CenteredScrollView = {
         let scrollView = CenteredScrollView()
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
         scrollView.showsHorizontalScrollIndicator = false
         scrollView.showsVerticalScrollIndicator = false
-        scrollView.maximumZoomScale = maximumZoomScale
         scrollView.delegate = self
-        scrollView.clipsToBounds = true
+        scrollView.clipsToBounds = false
+        scrollView.bouncesZoom = zoomEnabled
 
         return scrollView
     }()
 
-    open lazy var imageView: CIImageView = {
+    public private(set) lazy var imageView: CIImageView = {
         let imageView = MetalImageView()
 
-        imageView.imageViewDelegate = self
+        // Start observing changes in `image` property from `imageView`.
+        let observer = imageView.observe(\.image, options: [.new, .prior]) { imageView, change in
+            if change.isPrior {
+                // Notify that imageView's image is about to be updated.
+                self.willUpdateImageView(imageView: imageView)
+            } else {
+                // Notify that imageView's image was just updated.
+                self.didUpdateImageView(imageView: imageView)
+
+                // Recalculate scroll view's zoom scale if dimensions changed.
+                if change.oldValue??.extent != change.newValue??.extent {
+                    self.recalculateZoomScale()
+                }
+            }
+        }
+
+        // Keep a strong reference to observer
+        imageViewImageObserver = observer
 
         return imageView
     }()
 
-    public let stackView: UIStackView = {
-        let stackView = UIStackView()
-
-        stackView.axis = .vertical
-        stackView.distribution = .fill
-
-        return stackView
+    public private(set) lazy var discardApplyToolbar: DiscardApplyToolbar? = {
+        self is Editable ? DiscardApplyToolbar(delegate: self) : nil
     }()
 
-    public lazy var discardApplyToolbar: DiscardApplyToolbar? = {
-        if self is Editable {
-            let toolbar = DiscardApplyToolbar()
+    // MARK: - Overridable Functions
 
-            toolbar.delegate = self
+    /// Called right before the `imageView` is updated.
+    ///
+    /// - Parameter imageView: The `imageView` that is about to be updated.
+    ///
+    /// Should be implemented by subclasses interested in receiving this notification.
+    func willUpdateImageView(imageView: CIImageView) { }
 
-            return toolbar
-        } else {
-            return nil
-        }
-    }()
+    /// Called right after the `imageView` is updated.
+    ///
+    /// - Parameter imageView: The `imageView` that was just updated.
+    ///
+    /// Should be implemented by subclasses interested in receiving this notification.
+    func didUpdateImageView(imageView: CIImageView)  { }
 
-    open func getModule() -> EditorModule? {
-        return nil
-    }
+    /// Returns the module represented by this class.
+    ///
+    /// Should be implemented by subclasses that contain an `EditorModule`.
+    func getModule() -> EditorModule? { return nil }
+}
 
-    open override func viewDidLoad() {
+// MARK: - View Overrides
+
+extension ModuleViewController {
+    public override func viewDidLoad() {
         super.viewDidLoad()
 
         setup()
     }
 
-    open override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-
-        recalculateZoomScale()
-    }
-
-    open override func viewDidLayoutSubviews() {
+    public override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews()
+
+        stackView.layoutIfNeeded()
 
         if lastViewFrame != view.frame {
             lastViewFrame = view.frame
@@ -86,38 +134,15 @@ open class ModuleViewController: ArrangeableViewController {
     }
 }
 
+// MARK: - UIScrollView Delegate
+
 extension ModuleViewController: UIScrollViewDelegate {
-    open func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+    public func viewForZooming(in scrollView: UIScrollView) -> UIView? {
         return imageView
     }
 }
 
-extension ModuleViewController: CIImageViewDelegate {
-    open func imageChanged(image: CIImage?) {
-        if lastImage?.extent != image?.extent {
-            recalculateZoomScale()
-        }
-
-        lastImage = image
-    }
-}
-
-private extension ModuleViewController {
-    func recalculateZoomScale() {
-        guard let zoomedView = scrollView.delegate?.viewForZooming?(in: scrollView) else { return }
-        guard scrollView.bounds.size != .zero && zoomedView.bounds.size != .zero else { return }
-
-        // Reset minimum zoom scale
-        if scrollView.bounds.width <= scrollView.bounds.height {
-            scrollView.minimumZoomScale = scrollView.bounds.width / zoomedView.bounds.width
-        } else {
-            scrollView.minimumZoomScale = scrollView.bounds.height / zoomedView.bounds.height
-        }
-
-        // Reset zoom scale
-        scrollView.zoomScale = scrollView.minimumZoomScale
-    }
-}
+// MARK: - DiscardApplyToolbar Delegate
 
 extension ModuleViewController: DiscardApplyToolbarDelegate {
     public func discardSelected(sender: UIButton) {
@@ -130,5 +155,24 @@ extension ModuleViewController: DiscardApplyToolbarDelegate {
         if let module = getModule() {
             delegate?.moduleWantsToApplyChanges(module: module)
         }
+    }
+}
+
+// MARK: - Private Functions
+
+private extension ModuleViewController {
+    func recalculateZoomScale() {
+        guard let zoomedView = scrollView.delegate?.viewForZooming?(in: scrollView) else { return }
+        guard scrollView.bounds.size != .zero && zoomedView.bounds.size != .zero else { return }
+
+        let scaleX = scrollView.bounds.width / zoomedView.bounds.width
+        let scaleY = scrollView.bounds.height / zoomedView.bounds.height
+        let scale = min(scaleX, scaleY)
+
+        scrollView.minimumZoomScale = scale
+        scrollView.maximumZoomScale = zoomEnabled ? .infinity : scale
+        scrollView.zoomScale = scale
+
+        scrollView.setNeedsLayout()
     }
 }

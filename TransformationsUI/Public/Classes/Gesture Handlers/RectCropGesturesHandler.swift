@@ -1,5 +1,5 @@
 //
-//  CropGesturesHandler.swift
+//  RectCropGesturesHandler.swift
 //  TransformationsUI
 //
 //  Created by Mihály Papp on 12/07/2018.
@@ -8,11 +8,11 @@
 
 import UIKit
 
-protocol EditCropDelegate: EditDataSource {
+protocol RectCropGesturesHandlerDelegate: EditDataSource {
     func updateCropInset(_ inset: UIEdgeInsets)
 }
 
-class CropGesturesHandler {
+class RectCropGesturesHandler {
     typealias RelativeInsets = (top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat)
 
     enum Corner {
@@ -20,13 +20,13 @@ class CropGesturesHandler {
         static var all: [Corner] = [.topLeft, .topRight, .bottomLeft, .bottomRight, .center, .top, .bottom, .left, .right]
     }
 
-    weak var delegate: EditCropDelegate?
+    weak var delegate: RectCropGesturesHandlerDelegate?
 
     private var beginInset: RelativeInsets?
     private var movingCorner: Corner?
-    private var relativeCropInsets = CropGesturesHandler.initialInsets
+    private var relativeCropInsets = RectCropGesturesHandler.initialInsets
 
-    init(delegate: EditCropDelegate) {
+    init(delegate: RectCropGesturesHandlerDelegate) {
         self.delegate = delegate
     }
 
@@ -46,13 +46,13 @@ class CropGesturesHandler {
     }
 
     func reset() {
-        relativeCropInsets = CropGesturesHandler.initialInsets
+        relativeCropInsets = RectCropGesturesHandler.initialInsets
     }
 
     private static var initialInsets: RelativeInsets = RelativeInsets(top: 0, left: 0, bottom: 0, right: 0)
 }
 
-extension CropGesturesHandler {
+extension RectCropGesturesHandler {
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: recognizer.view)
         let origin = recognizer.location(in: recognizer.view).movedBy(x: -translation.x, y: -translation.y)
@@ -70,7 +70,7 @@ extension CropGesturesHandler {
     }
 }
 
-private extension CropGesturesHandler {
+private extension RectCropGesturesHandler {
     var cropInsets: UIEdgeInsets {
         get {
             return edgeInsets(from: relativeCropInsets)
@@ -103,7 +103,7 @@ private extension CropGesturesHandler {
     }
 }
 
-private extension CropGesturesHandler {
+private extension RectCropGesturesHandler {
     func handle(translation: CGPoint, from origin: CGPoint, forState state: UIGestureRecognizer.State) {
         guard let delegate = delegate else { return }
 

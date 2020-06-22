@@ -23,7 +23,7 @@ import UIKit
 
     // MARK: - Public Functions
 
-    open func editor(with image: UIImage) -> UIViewController? {
+    public func editor(with image: UIImage) -> UIViewController? {
         return EditorViewController(image: image, config: config) { image in
             self.delegate?.editorDismissed(with: image)
         }

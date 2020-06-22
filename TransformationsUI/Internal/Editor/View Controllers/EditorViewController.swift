@@ -14,7 +14,7 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
     let titleToolbar = TitleToolbar()
     let renderPipeline: BasicRenderPipeline
     let modules: [EditorModule]
-    let canvasView = UIView()
+    let moduleContainerView = UIView()
     var editorUndoManager: EditorUndoManager?
 
     lazy var overviewModule: StandardModules.Overview = {
@@ -84,7 +84,7 @@ final class EditorViewController: ArrangeableViewController, UIGestureRecognizer
         // Add module as a child VC.
         addChild(module.viewController)
 
-        canvasView.fill(with: module.viewController.view, activate: true)
+        moduleContainerView.fill(with: module.viewController.view, activate: true)
         activeModule = module
 
         // Notify that module VC moved to a new parent.
@@ -172,11 +172,18 @@ extension EditorViewController: OverviewViewControllerDelegate, EditorModuleVCDe
 
     func moduleWantsToApplyChanges(module: EditorModule) {
         (module.viewController as? Editable)?.applyEditing()
+
         activate(module: overviewModule)
     }
 
     func moduleWantsToDiscardChanges(module: EditorModule) {
         (module.viewController as? Editable)?.cancelEditing()
+
+        // Restore last state from undo manager.
+        if let state = editorUndoManager?.current {
+            renderPipeline.restore(from: state)
+        }
+
         activate(module: overviewModule)
     }
 }

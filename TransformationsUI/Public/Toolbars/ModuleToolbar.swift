@@ -44,7 +44,7 @@ public class ModuleToolbar: EditorToolbar {
 
     public override func setItems(_ items: [UIView] = []) {
         innerToolbar = ArrangeableToolbar(items: items)
-        innerToolbar.spacing = Constants.toolbarSpacing
+        innerToolbar.spacing = Constants.Spacing.toolbar
 
         let scrollView = ToolbarScrollView()
 
@@ -75,7 +75,7 @@ private extension ModuleToolbar {
     func commandButton(titled title: String, image: UIImage, tag: Int) -> UIButton {
         let button = self.titledImageButton(using: title, image: image)
 
-        button.tintColor = Constants.iconColor
+        button.tintColor = Constants.Color.icon
         button.addTarget(delegate, action: #selector(ModuleToolbarDelegate.toolbarItemSelected), for: .touchUpInside)
         button.tag = tag
 

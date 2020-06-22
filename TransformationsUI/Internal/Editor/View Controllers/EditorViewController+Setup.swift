@@ -41,8 +41,8 @@ private extension EditorViewController {
     }
 
     func setupView() {
-        view.backgroundColor = Constants.backgroundColor
-        canvasView.backgroundColor = Constants.canvasBackgroundColor
+        view.backgroundColor = Constants.Color.background
+        moduleContainerView.backgroundColor = Constants.Color.canvasBackground
 
         setupCanvasViewConstraints()
         setupTitleToolbarConstraints()
@@ -51,17 +51,17 @@ private extension EditorViewController {
     func setupCanvasViewConstraints() {
         var constraints = [NSLayoutConstraint]()
 
-        constraints.append(contentsOf: view.fill(with: canvasView,
+        constraints.append(contentsOf: view.fill(with: moduleContainerView,
                                                  connectingEdges: [.left, .right],
                                                  inset: 0,
                                                  withSafeAreaRespecting: true))
 
-        constraints.append(contentsOf: view.fill(with: canvasView,
+        constraints.append(contentsOf: view.fill(with: moduleContainerView,
                                                  connectingEdges: [.top],
-                                                 inset: Constants.toolbarSize.height,
+                                                 inset: Constants.Size.toolbar.height,
                                                  withSafeAreaRespecting: true))
 
-        constraints.append(contentsOf: view.fill(with: canvasView,
+        constraints.append(contentsOf: view.fill(with: moduleContainerView,
                                                  connectingEdges: [.bottom],
                                                  inset: 0,
                                                  withSafeAreaRespecting: true))
@@ -82,7 +82,7 @@ private extension EditorViewController {
                                                  inset: 0,
                                                  withSafeAreaRespecting: true))
 
-        constraints.append(titleToolbar.heightAnchor.constraint(equalToConstant: Constants.toolbarSize.width))
+        constraints.append(titleToolbar.heightAnchor.constraint(equalToConstant: Constants.Size.toolbar.width))
 
         for constraint in constraints {
             constraint.isActive = true
