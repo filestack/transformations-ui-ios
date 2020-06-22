@@ -8,33 +8,20 @@
 
 import UIKit
 
-protocol RectCropGesturesHandlerDelegate: EditDataSource {
+public protocol RectCropGesturesHandlerDelegate: EditDataSource {
     func updateCropInset(_ inset: UIEdgeInsets)
 }
 
-class RectCropGesturesHandler {
-    typealias RelativeInsets = (top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat)
+public class RectCropGesturesHandler {
+    // MARK: - Public Properties
 
-    enum Corner {
-        case topLeft, topRight, bottomLeft, bottomRight, center, top, bottom, left, right
-        static var all: [Corner] = [.topLeft, .topRight, .bottomLeft, .bottomRight, .center, .top, .bottom, .left, .right]
-    }
+    public weak var delegate: RectCropGesturesHandlerDelegate?
 
-    weak var delegate: RectCropGesturesHandlerDelegate?
-
-    private var beginInset: RelativeInsets?
-    private var movingCorner: Corner?
-    private var relativeCropInsets = RectCropGesturesHandler.initialInsets
-
-    init(delegate: RectCropGesturesHandlerDelegate) {
-        self.delegate = delegate
-    }
-
-    var croppedRect: CGRect {
+    public var croppedRect: CGRect {
         return delegate?.virtualFrame.inset(by: cropInsets) ?? .zero
     }
 
-    var actualEdgeInsets: UIEdgeInsets {
+    public var actualEdgeInsets: UIEdgeInsets {
         guard let delegate = delegate else { return .zero }
 
         let actualImageRect = delegate.convertRectFromVirtualFrameToImageFrame(croppedRect)
@@ -45,32 +32,44 @@ class RectCropGesturesHandler {
                             right: delegate.imageFrame.maxX - actualImageRect.maxX)
     }
 
-    func reset() {
-        relativeCropInsets = RectCropGesturesHandler.initialInsets
-    }
+    // MARK: - Private Properties
 
-    private static var initialInsets: RelativeInsets = RelativeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    private var beginInset: RelativeInsets?
+    private var movingCorner: Corner?
+    private lazy var relativeCropInsets = initialInsets()
+
+    // MARK: - Lifecycle
+
+    public init(delegate: RectCropGesturesHandlerDelegate) {
+        self.delegate = delegate
+    }
 }
 
+// MARK: - Public Functions
+
 extension RectCropGesturesHandler {
+    func reset() {
+        relativeCropInsets = initialInsets()
+    }
+
     func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         let translation = recognizer.translation(in: recognizer.view)
         let origin = recognizer.location(in: recognizer.view).movedBy(x: -translation.x, y: -translation.y)
 
         handle(translation: translation, from: origin, forState: recognizer.state)
     }
-
-    func rotateCounterClockwise() {
-        let rotatedInsets = RelativeInsets(top: relativeCropInsets.right,
-                                           left: relativeCropInsets.top,
-                                           bottom: relativeCropInsets.left,
-                                           right: relativeCropInsets.bottom)
-
-        relativeCropInsets = rotatedInsets
-    }
 }
 
+// MARK: - Private Functions and Computed Properties
+
 private extension RectCropGesturesHandler {
+    typealias RelativeInsets = (top: CGFloat, left: CGFloat, bottom: CGFloat, right: CGFloat)
+
+    enum Corner {
+        case topLeft, topRight, bottomLeft, bottomRight, center, top, bottom, left, right
+        static var all: [Corner] = [.topLeft, .topRight, .bottomLeft, .bottomRight, .center, .top, .bottom, .left, .right]
+    }
+
     var cropInsets: UIEdgeInsets {
         get {
             return edgeInsets(from: relativeCropInsets)
@@ -101,7 +100,13 @@ private extension RectCropGesturesHandler {
                               bottom: edgeInsets.bottom / delegate.virtualFrame.height,
                               right: edgeInsets.right / delegate.virtualFrame.width)
     }
+
+    func initialInsets() -> RelativeInsets {
+        return RelativeInsets(top: 0, left: 0, bottom: 0, right: 0)
+    }
 }
+
+// MARK: - Translation and Scaling Handling Functions
 
 private extension RectCropGesturesHandler {
     func handle(translation: CGPoint, from origin: CGPoint, forState state: UIGestureRecognizer.State) {
@@ -120,7 +125,7 @@ private extension RectCropGesturesHandler {
             beginInset = nil
         case .cancelled,
              .failed:
-            resetTranslation(to: edgeInsets(from: beginInset))
+            reset(to: edgeInsets(from: beginInset))
         case .possible:
             fallthrough
         @unknown default:
@@ -171,12 +176,6 @@ private extension RectCropGesturesHandler {
         return distances.first?.corner
     }
 
-    func resetTranslation(to insets: UIEdgeInsets?) {
-        guard let insets = insets else { return }
-
-        cropInsets = insets
-    }
-
     func move(by translation: CGPoint) {
         guard let delegate = delegate, let beginInset = beginInset, let movingCorner = movingCorner else { return }
 
@@ -219,5 +218,11 @@ private extension RectCropGesturesHandler {
         }
 
         cropInsets = UIEdgeInsets(top: max(0, top), left: max(0, left), bottom: max(0, bottom), right: max(0, right))
+    }
+
+    func reset(to insets: UIEdgeInsets?) {
+        guard let insets = insets else { return }
+
+        cropInsets = insets
     }
 }
