@@ -10,6 +10,6 @@ import UIKit
 
 extension UIImage {
     static func fromFrameworkBundle(_ name: String) -> UIImage {
-        return UIImage(named: name, in: Bundle.module, compatibleWith: nil) ?? UIImage()
+        return UIImage(named: name, in: bundle, compatibleWith: nil) ?? UIImage()
     }
 }
