@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 52;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -12,8 +12,7 @@
 		457935A6235F02BD00938CEF /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 457935A5235F02BD00938CEF /* Assets.xcassets */; };
 		457935A9235F02BD00938CEF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 457935A7235F02BD00938CEF /* LaunchScreen.storyboard */; };
 		457935BB235F06DD00938CEF /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 457935B9235F06DD00938CEF /* Main.storyboard */; };
-		457935DC235F086C00938CEF /* TransformationsUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 457935B7235F030900938CEF /* TransformationsUI.framework */; };
-		457935DD235F086C00938CEF /* TransformationsUI.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 457935B7235F030900938CEF /* TransformationsUI.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		4598512524A2244100DA2EBA /* TransformationsUI in Frameworks */ = {isa = PBXBuildFile; productRef = 4598512424A2244100DA2EBA /* TransformationsUI */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -23,7 +22,6 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				457935DD235F086C00938CEF /* TransformationsUI.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -37,8 +35,8 @@
 		457935A5235F02BD00938CEF /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		457935A8235F02BD00938CEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		457935AA235F02BD00938CEF /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		457935B7235F030900938CEF /* TransformationsUI.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; path = TransformationsUI.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		457935BA235F06DD00938CEF /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		4598512224A222B700DA2EBA /* transformations-ui-ios */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "transformations-ui-ios"; path = ..; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -46,7 +44,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				457935DC235F086C00938CEF /* TransformationsUI.framework in Frameworks */,
+				4598512524A2244100DA2EBA /* TransformationsUI in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,7 +54,8 @@
 		45793590235F02BB00938CEF = {
 			isa = PBXGroup;
 			children = (
-				457935B6235F030900938CEF /* Frameworks */,
+				4598512224A222B700DA2EBA /* transformations-ui-ios */,
+				4598512324A2244100DA2EBA /* Frameworks */,
 				4579359A235F02BB00938CEF /* Products */,
 				4579359B235F02BB00938CEF /* TransformationsUI-Demo */,
 			);
@@ -83,10 +82,9 @@
 			path = "TransformationsUI-Demo";
 			sourceTree = "<group>";
 		};
-		457935B6235F030900938CEF /* Frameworks */ = {
+		4598512324A2244100DA2EBA /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				457935B7235F030900938CEF /* TransformationsUI.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -108,6 +106,9 @@
 			dependencies = (
 			);
 			name = "TransformationsUI-Demo";
+			packageProductDependencies = (
+				4598512424A2244100DA2EBA /* TransformationsUI */,
+			);
 			productName = "TransformationsUI-Demo";
 			productReference = 45793599235F02BB00938CEF /* TransformationsUI-Demo.app */;
 			productType = "com.apple.product-type.application";
@@ -119,7 +120,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 1110;
-				LastUpgradeCheck = 1110;
+				LastUpgradeCheck = 1200;
 				ORGANIZATIONNAME = Filestack;
 				TargetAttributes = {
 					45793598235F02BB00938CEF = {
@@ -216,6 +217,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -240,7 +242,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
 				MTL_FAST_MATH = YES;
 				ONLY_ACTIVE_ARCH = YES;
@@ -276,6 +278,7 @@
 				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
 				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
 				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
 				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
@@ -294,7 +297,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 13.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				MTL_FAST_MATH = YES;
 				SDKROOT = iphoneos;
@@ -364,6 +367,13 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		4598512424A2244100DA2EBA /* TransformationsUI */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = TransformationsUI;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 45793591235F02BB00938CEF /* Project object */;
 }
