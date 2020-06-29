@@ -8,33 +8,15 @@
 
 import Foundation
 
-internal class Node<T> {
-    var value: T
-    var next: Node<T>?
-    weak var previous: Node<T>?
+struct LinkedList<Element> {
+    fileprivate var head: Node?
+    private var tail: Node?
 
-    init(value: T) {
-        self.value = value
-    }
-}
+    var isEmpty: Bool { head == nil }
+    var first: Node? { head }
+    var last: Node? { tail }
 
-internal class LinkedList<T> {
-    fileprivate var head: Node<T>?
-    private var tail: Node<T>?
-
-    var isEmpty: Bool {
-        return head == nil
-    }
-
-    var first: Node<T>? {
-        return head
-    }
-
-    var last: Node<T>? {
-        return tail
-    }
-
-    func append(value: T) {
+    mutating func append(value: Element) {
         let newNode = Node(value: value)
 
         if let tailNode = tail {
@@ -47,27 +29,7 @@ internal class LinkedList<T> {
         tail = newNode
     }
 
-    func nodeAt(index: Int) -> Node<T>? {
-        if index >= 0 {
-            var node = head
-            var i = index
-
-            while node != nil {
-                if i == 0 { return node }
-                i -= 1
-                node = node!.next
-            }
-        }
-
-        return nil
-    }
-
-    func removeAll() {
-        head = nil
-        tail = nil
-    }
-
-    func remove(node: Node<T>) -> T {
+    @discardableResult mutating func remove(node: Node) -> Element {
         let prev = node.previous
         let next = node.next
 
@@ -76,6 +38,7 @@ internal class LinkedList<T> {
         } else {
             head = next
         }
+
         next?.previous = prev
 
         if next == nil {
@@ -86,5 +49,50 @@ internal class LinkedList<T> {
         node.next = nil
 
         return node.value
+    }
+
+    mutating func removeAll() {
+        head = nil
+        tail = nil
+    }
+}
+
+// MARK: - LinkedList Node
+
+extension LinkedList {
+    class Node {
+        var value: Element
+        var next: Node?
+        weak var previous: Node?
+
+        init(value: Element) {
+            self.value = value
+        }
+    }
+}
+
+// MARK: - Sequence Conformance
+
+extension LinkedList: Sequence {
+    typealias Element = Node
+
+    __consuming func makeIterator() -> Iterator {
+        return Iterator(node: head)
+    }
+
+    struct Iterator: IteratorProtocol {
+        private var currentNode: Node?
+
+        fileprivate init(node: Node?) {
+            currentNode = node
+        }
+
+        mutating func next() -> Node? {
+            guard let node = currentNode else { return nil }
+
+            currentNode = node.next
+
+            return node
+        }
     }
 }
