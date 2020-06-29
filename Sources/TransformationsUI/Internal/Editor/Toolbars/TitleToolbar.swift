@@ -47,7 +47,7 @@ class TitleToolbar: EditorToolbar {
     }()
 
     lazy var undo: UIButton = {
-        let button = self.button(using: .fromFrameworkBundle("icon-undo"))
+        let button = self.button(using: .fromBundle("icon-undo"))
 
         button.tintColor = Constants.Color.primaryActionTint
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.undoSelected), for: .touchUpInside)
@@ -56,7 +56,7 @@ class TitleToolbar: EditorToolbar {
     }()
 
     lazy var redo: UIButton = {
-        let button = self.button(using: .fromFrameworkBundle("icon-redo"))
+        let button = self.button(using: .fromBundle("icon-redo"))
 
         button.tintColor = Constants.Color.primaryActionTint
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.redoSelected), for: .touchUpInside)

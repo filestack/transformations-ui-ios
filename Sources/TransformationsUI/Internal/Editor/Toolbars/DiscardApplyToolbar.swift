@@ -53,8 +53,8 @@ class DiscardApplyToolbar: EditorToolbar {
 
 private extension DiscardApplyToolbar {
     func setup() {
-        let discardButton = button(using: .fromFrameworkBundle("icon-discard"))
-        let applyButton = button(using: .fromFrameworkBundle("icon-apply"))
+        let discardButton = button(using: .fromBundle("icon-discard"))
+        let applyButton = button(using: .fromBundle("icon-apply"))
 
         discardButton.tintColor = style.itemStyle.tintColor
         discardButton.addTarget(delegate, action: #selector(DiscardApplyToolbarDelegate.discardSelected), for: .touchUpInside)

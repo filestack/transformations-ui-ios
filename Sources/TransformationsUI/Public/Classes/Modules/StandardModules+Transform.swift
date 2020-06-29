@@ -15,7 +15,7 @@ public protocol CropModuleCommand: EditorModuleCommand {}
 extension StandardModules {
     public class Transform: NSObject, EditorModule {
         public var title: String = "Transform"
-        public var icon: UIImage? = .fromFrameworkBundle("icon-module-transform")
+        public var icon: UIImage? = .fromBundle("icon-module-transform")
         public var isEnabled: Bool = true
 
         private(set) public lazy var viewController: EditorModuleVC = {
@@ -44,7 +44,7 @@ extension StandardModules.Transform {
         /// Rotate command.
         public class Rotate: NSObject, ExtraModuleCommand {
             public var title: String = "Rotate"
-            public lazy var icon: UIImage? = UIImage.fromFrameworkBundle("icon-rotate")
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-rotate")
         }
 
         /// Crop command.
@@ -65,9 +65,9 @@ extension StandardModules.Transform {
                 case .none:
                     return nil
                 case .rect:
-                    return .fromFrameworkBundle("icon-crop")
+                    return .fromBundle("icon-crop")
                 case .circle:
-                    return .fromFrameworkBundle("icon-circle")
+                    return .fromBundle("icon-circle")
                 }
             }()
 
