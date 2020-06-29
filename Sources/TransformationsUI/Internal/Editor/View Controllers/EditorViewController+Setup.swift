@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
 extension EditorViewController {
     func setup() {
@@ -17,7 +18,7 @@ extension EditorViewController {
         titleToolbar.delegate = self
         renderPipeline.delegate = self
 
-        editorUndoManager = EditorUndoManager(state: renderPipeline.snapshot())
+        editorUndoManager = EditorUndoManager(initialStep: renderPipeline.snapshot())
         editorUndoManager?.delegate = self
         updateUndoRedoButtons()
     }
@@ -42,50 +43,11 @@ private extension EditorViewController {
 
     func setupView() {
         view.backgroundColor = Constants.Color.background
-        moduleContainerView.backgroundColor = Constants.Color.canvasBackground
+        moduleContainerView.backgroundColor = Constants.Color.moduleBackground
 
-        setupCanvasViewConstraints()
-        setupTitleToolbarConstraints()
-    }
+        stackView.addArrangedSubview(titleToolbar)
+        stackView.addArrangedSubview(moduleContainerView)
 
-    func setupCanvasViewConstraints() {
-        var constraints = [NSLayoutConstraint]()
-
-        constraints.append(contentsOf: view.fill(with: moduleContainerView,
-                                                 connectingEdges: [.left, .right],
-                                                 inset: 0,
-                                                 withSafeAreaRespecting: true))
-
-        constraints.append(contentsOf: view.fill(with: moduleContainerView,
-                                                 connectingEdges: [.top],
-                                                 inset: Constants.Size.toolbar.height,
-                                                 withSafeAreaRespecting: true))
-
-        constraints.append(contentsOf: view.fill(with: moduleContainerView,
-                                                 connectingEdges: [.bottom],
-                                                 inset: 0,
-                                                 withSafeAreaRespecting: true))
-
-        for constraint in constraints {
-            constraint.isActive = true
-        }
-    }
-
-    func setupTitleToolbarConstraints() {
-        var constraints = [NSLayoutConstraint]()
-
-        constraints.append(contentsOf: view.fill(with: titleToolbar, connectingEdges: [.top],
-                                                 inset: 0,
-                                                 withSafeAreaRespecting: true))
-
-        constraints.append(contentsOf: view.fill(with: titleToolbar, connectingEdges: [.left, .right],
-                                                 inset: 0,
-                                                 withSafeAreaRespecting: true))
-
-        constraints.append(titleToolbar.heightAnchor.constraint(equalToConstant: Constants.Size.toolbar.width))
-
-        for constraint in constraints {
-            constraint.isActive = true
-        }
+        view.fill(with: stackView, withSafeAreaRespecting: true, activate: true)
     }
 }

@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
 class TransformViewController: ModuleViewController {
     typealias Module = StandardModules.Transform
@@ -41,10 +42,22 @@ class TransformViewController: ModuleViewController {
     var extraToolbarCommands: [EditorModuleCommand] { module.extraCommands }
     var cropToolbarCommands: [EditorModuleCommand] { module.cropCommands }
 
-    lazy var extraToolbar = ModuleToolbar(commands: extraToolbarCommands)
-    lazy var cropToolbar = SegmentedToolbar(commands: cropToolbarCommands)
+    lazy var extraToolbar: StandardToolbar = {
+        let toolbar = StandardToolbar(items: extraToolbarCommands, style: .commands)
+        toolbar.delegate = self
 
-    lazy var cropHandler = RectCropGesturesHandler(delegate: self)
+        return toolbar
+    }()
+
+    lazy var cropToolbar: SegmentedControlToolbar = {
+        let toolbar = SegmentedControlToolbar(items: cropToolbarCommands, style: .segments)
+
+        toolbar.delegate = self
+
+        return toolbar
+    }()
+
+    lazy var cropHandler = RectCropGesturesHandler(delegate: self, allowDraggingFromSides: false)
     lazy var circleHandler = CircleCropGesturesHandler(delegate: self)
 
     // MARK: - Private Properties
@@ -69,6 +82,11 @@ class TransformViewController: ModuleViewController {
         }
     }
 
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        cropLayer.updateColors()
+        circleLayer.updateColors()
+    }
+
     // MARK: - Lifecycle
 
     required init(module: Module) {
@@ -81,34 +99,19 @@ class TransformViewController: ModuleViewController {
     }
 }
 
-// MARK: - EditorModuleVC Protocol
-
-extension TransformViewController: EditorModuleVC {
-    func getRenderNode() -> RenderNode {
-        return renderNode
-    }
-
-    func getModule() -> EditorModule? {
-        return module
-    }
-}
-
-// MARK: - Editable Protocol
-
-extension TransformViewController: Editable {
-    func applyEditing() {
-        applyPendingChanges()
-        editMode = .none
-    }
-
-    func cancelEditing() {
-        editMode = .none
-    }
-}
-
 // MARK: - Private Functions
 
 private extension TransformViewController {
+    func setupGestureRecognizer() {
+        panGestureRecognizer.delegate = self
+        panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture(recognizer:)))
+    }
+
+    func setupView() {
+        stackView.insertArrangedSubview(extraToolbar, at: 0)
+        stackView.addArrangedSubview(cropToolbar)
+    }
+
     func turnOff(mode: EditMode) {
         hideLayer(for: mode)
     }
@@ -183,11 +186,36 @@ private extension TransformViewController {
     }
 
     func addCropGestureRecognizers() {
-        scrollView.addGestureRecognizer(panGestureRecognizer)
+        canvasView.addGestureRecognizer(panGestureRecognizer)
     }
 
     func removeCropGestoreRecognizers() {
-        scrollView.removeGestureRecognizer(panGestureRecognizer)
+        canvasView.removeGestureRecognizer(panGestureRecognizer)
+    }
+}
+
+// MARK: - EditorModuleVC Protocol
+
+extension TransformViewController: EditorModuleVC {
+    func getRenderNode() -> RenderNode {
+        return renderNode
+    }
+
+    func getModule() -> EditorModule? {
+        return module
+    }
+}
+
+// MARK: - Editable Protocol
+
+extension TransformViewController: Editable {
+    func applyEditing() {
+        applyPendingChanges()
+        editMode = .none
+    }
+
+    func cancelEditing() {
+        editMode = .none
     }
 }
 
@@ -199,8 +227,8 @@ extension TransformViewController: UIGestureRecognizerDelegate {
         case .crop(let mode):
             switch mode.type {
             case .none: break
-            case .rect: cropHandler.handlePanGesture(recognizer: recognizer)
-            case .circle: circleHandler.handlePanGesture(recognizer: recognizer)
+            case .rect: cropHandler.handlePanGesture(recognizer: recognizer, in: scrollView)
+            case .circle: circleHandler.handlePanGesture(recognizer: recognizer, in: scrollView)
             }
         case .none:
             break

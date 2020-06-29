@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
 final class EditorViewController: ArrangeableViewController {
     // MARK: - Internal Properties
@@ -18,10 +19,19 @@ final class EditorViewController: ArrangeableViewController {
     var editorUndoManager: EditorUndoManager?
 
     lazy var overviewModule: StandardModules.Overview = {
-        let viewController = OverviewViewController(modules: modules)
-        viewController.delegate = self
+        let viewController = OverviewViewController(modules: modules, delegate: self)
 
         return StandardModules.Overview(using: viewController)
+    }()
+
+    let stackView: UIStackView = {
+        let stackView = UIStackView()
+
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.distribution = .fill
+
+        return stackView
     }()
 
     // MARK: - Private Properties
@@ -29,10 +39,8 @@ final class EditorViewController: ArrangeableViewController {
     private let config: Config
     private var completion: ((UIImage?) -> Void)?
     private var activeModule: EditorModule?
-
-    private var activeEditableModuleVC: Editable? {
-        activeModule?.viewController as? Editable
-    }
+    private var activeEditableModuleVC: Editable? { activeModule?.viewController as? Editable }
+    private lazy var discardApplyToolbar: DiscardApplyToolbar? = nil
 
     // MARK: - Lifecycle
 
@@ -64,14 +72,6 @@ final class EditorViewController: ArrangeableViewController {
         }
     }
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-        
-        if #available(iOS 13.0, *) {
-            overrideUserInterfaceStyle = .dark
-        }
-    }
-
     // MARK: - Public Functions
 
     func activate(module: EditorModule) {
@@ -89,7 +89,6 @@ final class EditorViewController: ArrangeableViewController {
 
         // Notify that module VC moved to a new parent.
         module.viewController.didMove(toParent: self)
-        module.viewController.delegate = self
 
         // If module VC has a custom title view, let's add it to the title toolbar.
         if let titleView = module.viewController.getTitleView() {
@@ -97,8 +96,49 @@ final class EditorViewController: ArrangeableViewController {
         } else {
             titleToolbar.setItems([])
         }
+
+        // Add or remove "discard/apply" toolbar depending on whether module is editable.
+        if module.viewController is Editable {
+            let toolbar = DiscardApplyToolbar(delegate: self)
+            stackView.addArrangedSubview(toolbar)
+
+            self.discardApplyToolbar = toolbar
+        } else if let discardApplyToolbar = discardApplyToolbar {
+            stackView.removeArrangedSubview(discardApplyToolbar)
+            discardApplyToolbar.removeFromSuperview()
+
+            self.discardApplyToolbar = nil
+        }
     }
 }
+
+// MARK: - DiscardApplyToolbar Delegate
+
+extension EditorViewController: DiscardApplyToolbarDelegate {
+    func applySelected(sender: UIButton) {
+        activeEditableModuleVC?.applyEditing()
+
+        // Take a snapshot from rendering pipeline and register consolidated undo step.
+        editorUndoManager?.register(step: renderPipeline.snapshot())
+
+        activate(module: overviewModule)
+    }
+
+    func discardSelected(sender: UIButton) {
+        activeEditableModuleVC?.cancelEditing()
+
+        editorUndoManager?.removeTransitorySteps()
+
+        // Restore last state from undo manager.
+        if let state = editorUndoManager?.currentStep {
+            renderPipeline.restore(from: state)
+        }
+
+        activate(module: overviewModule)
+    }
+}
+
+// MARK: - RenderPipeline Delegate
 
 extension EditorViewController: RenderPipelineDelegate {
     func outputChanged(pipeline: RenderPipeline) {
@@ -109,18 +149,22 @@ extension EditorViewController: RenderPipelineDelegate {
     }
 
     func outputFinishedChanging(pipeline: RenderPipeline) {
-        // Take a snapshot from rendering pipeline and register undo step.
+        // Take a snapshot from rendering pipeline and register unconsolidated undo step.
         guard let snapshot = (pipeline as? Snapshotable)?.snapshot() else { return }
 
-        editorUndoManager?.register(step: snapshot)
+        editorUndoManager?.register(step: snapshot, transitory: true)
     }
 }
+
+// MARK: - EditorUndoManager Delegate
 
 extension EditorViewController: EditorUndoManagerDelegate {
     func undoManagerChanged(editorUndoManager: EditorUndoManager) {
         updateUndoRedoButtons()
     }
 }
+
+// MARK: - TitleToolbar Delegate
 
 extension EditorViewController: TitleToolbarDelegate {
     func saveSelected(sender: UIButton) {
@@ -142,7 +186,7 @@ extension EditorViewController: TitleToolbarDelegate {
         editorUndoManager?.undo()
         activeEditableModuleVC?.cancelEditing()
 
-        if let state = editorUndoManager?.current {
+        if let state = editorUndoManager?.currentStep {
             renderPipeline.restore(from: state)
             
             DispatchQueue.main.async {
@@ -155,7 +199,7 @@ extension EditorViewController: TitleToolbarDelegate {
         editorUndoManager?.redo()
         activeEditableModuleVC?.cancelEditing()
 
-        if let state = editorUndoManager?.current {
+        if let state = editorUndoManager?.currentStep {
             renderPipeline.restore(from: state)
             
             DispatchQueue.main.async {
@@ -165,25 +209,10 @@ extension EditorViewController: TitleToolbarDelegate {
     }
 }
 
-extension EditorViewController: OverviewViewControllerDelegate, EditorModuleVCDelegate {
+// MARK: - OverviewViewController Delegate
+
+extension EditorViewController: OverviewViewControllerDelegate {
     func moduleSelected(module: EditorModule) {
         activate(module: module)
-    }
-
-    func moduleWantsToApplyChanges(module: EditorModule) {
-        (module.viewController as? Editable)?.applyEditing()
-
-        activate(module: overviewModule)
-    }
-
-    func moduleWantsToDiscardChanges(module: EditorModule) {
-        (module.viewController as? Editable)?.cancelEditing()
-
-        // Restore last state from undo manager.
-        if let state = editorUndoManager?.current {
-            renderPipeline.restore(from: state)
-        }
-
-        activate(module: overviewModule)
     }
 }

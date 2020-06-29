@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
 class TransformRenderNode: RenderNode {
     weak var pipeline: RenderPipeline?

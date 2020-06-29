@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
 public protocol ExtraModuleCommand: EditorModuleCommand {}
 public protocol CropModuleCommand: EditorModuleCommand {}
@@ -17,7 +18,7 @@ extension StandardModules {
         public var icon: UIImage? = .fromFrameworkBundle("icon-module-transform")
         public var isEnabled: Bool = true
 
-        public lazy var viewController: EditorModuleVC = {
+        private(set) public lazy var viewController: EditorModuleVC = {
             return TransformViewController(module: self)
         }()
 

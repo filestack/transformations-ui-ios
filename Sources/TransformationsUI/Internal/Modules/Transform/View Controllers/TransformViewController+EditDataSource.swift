@@ -6,8 +6,9 @@
 //  Copyright © 2019 Filestack. All rights reserved.
 //
 
-import AVFoundation
+import AVFoundation.AVUtilities
 import Foundation
+import TransformationsUIShared
 
 extension TransformViewController: EditDataSource {
     var imageFrame: CGRect { imageView.bounds }

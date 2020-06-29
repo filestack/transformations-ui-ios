@@ -7,23 +7,19 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
-protocol OverviewViewControllerDelegate: EditorModuleVCDelegate {
+protocol OverviewViewControllerDelegate: class {
     func moduleSelected(module: EditorModule)
 }
 
 class OverviewViewController: ModuleViewController {
-    private weak var subDelegate: OverviewViewControllerDelegate?
-
-    override var delegate: EditorModuleVCDelegate? {
-        get { return self.subDelegate }
-        set { self.subDelegate = newValue as! OverviewViewControllerDelegate? }
-    }
+    weak var delegate: OverviewViewControllerDelegate?
 
     let modules: [EditorModule]
 
     lazy var renderNode = OverviewRenderNode()
-    lazy var modulesToolbar = ModulesToolbar()
+    lazy var modulesToolbar = StandardToolbar(items: modules, style: .modules)
 
     // MARK: - Internal Functions
 
@@ -39,11 +35,11 @@ class OverviewViewController: ModuleViewController {
         setupView()
     }
 
-
     // MARK: - Lifecycle
 
-    required init(modules: [EditorModule]) {
+    required init(modules: [EditorModule], delegate: OverviewViewControllerDelegate? = nil) {
         self.modules = modules
+        self.delegate = delegate
 
         super.init(nibName: nil, bundle: nil)
     }
@@ -59,8 +55,8 @@ extension OverviewViewController: EditorModuleVC {}
 
 // MARK: - ModulesToolbar Delegate
 
-extension OverviewViewController: ModulesToolbarDelegate {
-    func moduleSelected(sender: UIButton) {
-        subDelegate?.moduleSelected(module: modules[sender.tag])
+extension OverviewViewController: StandardToolbarDelegate {
+    func toolbarItemSelected(toolbar: StandardToolbar, item: DescriptibleEditorItem, control: UIControl) {
+        delegate?.moduleSelected(module: modules[control.tag])
     }
 }

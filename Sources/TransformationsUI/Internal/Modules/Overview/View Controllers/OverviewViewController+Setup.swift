@@ -10,56 +10,22 @@ import UIKit
 
 extension OverviewViewController {
     func setupView() {
-        setupModules()
-        setupImageView()
         connectViews()
         modulesToolbar.delegate = self
     }
 }
 
 private extension OverviewViewController {
-    func setupImageView() {
-        imageView.isOpaque = false
-        imageView.contentMode = .redraw
-    }
-
     func connectViews() {
         view.addSubview(scrollView)
         view.sendSubviewToBack(scrollView)
-
-        modulesToolbar.backgroundColor = Constants.Color.background
 
         setupModulesToolbarConstraints()
         setupScrollViewConstraints()
     }
 
-    func setupModules() {
-        var moduleItems = [UIView]()
-
-        for (idx, module) in modules.enumerated() {
-            guard let icon = module.icon else { continue }
-
-            let item = modulesToolbar.moduleButton(using: icon, titled: module.title)
-
-            item.tag = idx
-            item.tintColor = .white
-
-            moduleItems.append(item)
-        }
-
-        modulesToolbar.innerInset = 0
-        modulesToolbar.setItems(moduleItems)
-    }
-
     func setupModulesToolbarConstraints() {
-        var constraints = [NSLayoutConstraint]()
-
-        constraints.append(contentsOf: view.fill(with: modulesToolbar, connectingEdges: [.left, .right, .bottom]))
-        constraints.append(modulesToolbar.heightAnchor.constraint(equalToConstant: Constants.Size.toolbar.height))
-
-        for constraint in constraints {
-            constraint.isActive = true
-        }
+        view.fill(with: modulesToolbar, connectingEdges: [.left, .right, .bottom], activate: true)
     }
 
     func setupScrollViewConstraints() {

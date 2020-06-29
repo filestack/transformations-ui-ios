@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
 extension CIImage {
     /// Returns a 90 degree-rotated `CIImage`.

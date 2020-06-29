@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
 @objc protocol TitleToolbarDelegate: class {
     func saveSelected(sender: UIButton)
@@ -29,7 +30,7 @@ class TitleToolbar: EditorToolbar {
     private var saveButton: UIButton {
         let button = self.button(using: L18.save.uppercased())
 
-        button.tintColor = Constants.Color.done
+        button.setTitleColor(Constants.Color.primaryActionTint, for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: UIFont.buttonFontSize)
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.saveSelected), for: .touchUpInside)
 
@@ -39,7 +40,7 @@ class TitleToolbar: EditorToolbar {
     private lazy var cancelButton: UIButton = {
         let button = self.button(using: L18.cancel)
 
-        button.tintColor = Constants.Color.cancel
+        button.setTitleColor(Constants.Color.defaultTint, for: .normal)
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.cancelSelected), for: .touchUpInside)
 
         return button
@@ -48,8 +49,8 @@ class TitleToolbar: EditorToolbar {
     lazy var undo: UIButton = {
         let button = self.button(using: .fromFrameworkBundle("icon-undo"))
 
+        button.tintColor = Constants.Color.primaryActionTint
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.undoSelected), for: .touchUpInside)
-        button.tintColor = Constants.Color.done
 
         return button
     }()
@@ -57,8 +58,8 @@ class TitleToolbar: EditorToolbar {
     lazy var redo: UIButton = {
         let button = self.button(using: .fromFrameworkBundle("icon-redo"))
 
+        button.tintColor = Constants.Color.primaryActionTint
         button.addTarget(delegate, action: #selector(TitleToolbarDelegate.redoSelected), for: .touchUpInside)
-        button.tintColor = Constants.Color.done
 
         return button
     }()
@@ -69,11 +70,11 @@ class TitleToolbar: EditorToolbar {
         shouldAutoAdjustAxis = false
 
         undoRedoToolbar = ArrangeableToolbar(items: [undo, redo])
-        undoRedoToolbar.spacing = Constants.Spacing.toolbar
+        undoRedoToolbar.spacing = style.itemSpacing
         undoRedoToolbar.shouldAutoAdjustAxis = false
 
         innerToolbar = ArrangeableToolbar(items: items)
-        innerToolbar.spacing = Constants.Spacing.toolbar
+        innerToolbar.spacing = style.itemSpacing
         innerToolbar.shouldAutoAdjustAxis = false
 
         saveButtonToolbar = ArrangeableToolbar(items: [UIView(), saveButton])

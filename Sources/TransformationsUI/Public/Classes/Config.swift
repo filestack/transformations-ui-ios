@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import TransformationsUIShared
 
 open class Config: NSObject {
     public let modules: EditorModules

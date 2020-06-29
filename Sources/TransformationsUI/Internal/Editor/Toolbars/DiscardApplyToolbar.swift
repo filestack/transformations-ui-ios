@@ -7,19 +7,22 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
-@objc public protocol DiscardApplyToolbarDelegate: class {
-    func discardSelected(sender: UIButton)
+@objc protocol DiscardApplyToolbarDelegate: class {
     func applySelected(sender: UIButton)
+    func discardSelected(sender: UIButton)
 }
 
-public class DiscardApplyToolbar: EditorToolbar {
-    // MARK: - Public Properties
+class DiscardApplyToolbar: EditorToolbar {
+    // MARK: - Internal Properties
 
-    public weak var delegate: DiscardApplyToolbarDelegate?
+    weak var delegate: DiscardApplyToolbarDelegate?
+    override var items: [UIView] { innerToolbar.items }
 
-    public override var items: [UIView] {
-        return innerToolbar.items
+    override var spacing: CGFloat {
+        set { innerToolbar.spacing = newValue }
+        get { innerToolbar.spacing }
     }
 
     // MARK: - Private Properties
@@ -28,43 +31,35 @@ public class DiscardApplyToolbar: EditorToolbar {
 
     // MARK: - Lifecycle
 
-    public required init(delegate: DiscardApplyToolbarDelegate? = nil) {
-        super.init()
+    required init(delegate: DiscardApplyToolbarDelegate? = nil, style: EditorToolbarStyle = .default) {
         self.delegate = delegate
+        super.init(style: style)
         setup()
     }
 
-    public required init(coder _: NSCoder) {
+    required init(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
 
     // MARK: - Misc Overrides
 
-    public override func setItems(_ items: [UIView] = []) {
+    override func setItems(_ items: [UIView] = []) {
         innerToolbar = ArrangeableToolbar(items: items)
-        innerToolbar.spacing = Constants.Spacing.toolbar
+        innerToolbar.spacing = style.itemSpacing
 
         super.setItems([innerToolbar])
-    }
-
-    public override func layoutSubviews() {
-        super.layoutSubviews()
-
-        innerToolbar.setNeedsLayout()
     }
 }
 
 private extension DiscardApplyToolbar {
     func setup() {
-        distribution = .equalCentering
-
         let discardButton = button(using: .fromFrameworkBundle("icon-discard"))
         let applyButton = button(using: .fromFrameworkBundle("icon-apply"))
 
-        discardButton.tintColor = Constants.Color.cancel
+        discardButton.tintColor = style.itemStyle.tintColor
         discardButton.addTarget(delegate, action: #selector(DiscardApplyToolbarDelegate.discardSelected), for: .touchUpInside)
 
-        applyButton.tintColor = Constants.Color.done
+        applyButton.tintColor = Constants.Color.primaryActionTint
         applyButton.addTarget(delegate, action: #selector(DiscardApplyToolbarDelegate.applySelected), for: .touchUpInside)
 
         setItems([discardButton, UIView(), applyButton])

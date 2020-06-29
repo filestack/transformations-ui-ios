@@ -8,7 +8,14 @@
 
 import UIKit
 
-@objc(FSTransformationsUI) public class TransformationsUI: NSObject {
+public protocol TransformationsUIDelegate: class {
+    /// Called when the editor is dismissed.
+    ///
+    /// - Parameter image: Returns the resulting edited `UIImage`, if available.
+    func editorDismissed(with image: UIImage?)
+}
+
+public class TransformationsUI: NSObject {
     // MARK: - Public Properties
 
     public weak var delegate: TransformationsUIDelegate?

@@ -7,32 +7,17 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
-extension TransformViewController: ModuleToolbarDelegate {
-    func toolbarItemSelected(sender: UIButton) {
-        let command = extraToolbarCommands[sender.tag]
+extension TransformViewController: StandardToolbarDelegate {
+    func toolbarItemSelected(toolbar: StandardToolbar, item: DescriptibleEditorItem, control: UIControl) {
+        let command = item as? EditorModuleCommand
 
         switch command {
         case is Module.Commands.Rotate:
             perform(command: .rotate(clockwise: false))
-        default:
-            break
-        }
-    }
-}
-
-extension TransformViewController: SegmentedToolbarDelegate {
-    func segmentedToolbarItemSelected(sender: UISegmentedControl) {
-        let command = cropToolbarCommands[sender.selectedSegmentIndex]
-
-        switch command {
         case let crop as Module.Commands.Crop:
-            switch crop.type {
-            case .none:
-                editMode = .none
-            default:
-                editMode = .crop(mode: crop)
-            }
+            editMode = crop.type == .none ? .none : .crop(mode: crop)
         default:
             break
         }
@@ -60,7 +45,7 @@ extension TransformViewController {
         cropHandler.reset()
         circleHandler.reset()
 
-        renderNode.pipeline?.nodeChanged(node: renderNode)
+        renderNode.pipeline?.nodeFinishedChanging(node: renderNode)
     }
 
     func applyPendingChanges() {
@@ -77,7 +62,5 @@ extension TransformViewController {
         case .none:
             break
         }
-
-        renderNode.pipeline?.nodeFinishedChanging(node: renderNode)
     }
 }

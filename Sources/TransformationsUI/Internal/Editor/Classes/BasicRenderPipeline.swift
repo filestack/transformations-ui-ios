@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import TransformationsUIShared
 
 class BasicRenderPipeline: RenderPipeline {
     // MARK: - Internal Properties
