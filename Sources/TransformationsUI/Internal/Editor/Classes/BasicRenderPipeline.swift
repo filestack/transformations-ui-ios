@@ -25,7 +25,8 @@ class BasicRenderPipeline: RenderPipeline {
 
     private var linkedNodes = LinkedList<RenderNode>()
     private var shouldNotifyFinishedChanging = false
-    private var count: Int = 0
+    private var nodeToLinkNodeMap = NSMapTable<AnyObject, LinkedList<RenderNode>.Node>(keyOptions: .weakMemory,
+                                                                                       valueOptions: .weakMemory)
 
     // MARK: - Lifecycle
 
@@ -44,7 +45,10 @@ extension BasicRenderPipeline {
         node.inputImage = linkedNodes.last?.value.outputImage ?? inputImage
 
         // Add node to linked list
-        linkedNodes.append(value: node)
+        let linkedNode = linkedNodes.append(value: node)
+
+        // Add map from node to linkNode
+        nodeToLinkNodeMap.setObject(linkedNode, forKey: node)
     }
 
     func removeNode(node: RenderNode) {
@@ -55,6 +59,9 @@ extension BasicRenderPipeline {
 
         // Remove node from linked list
         linkedNodes.remove(node: linkedNode)
+
+        // Remove map from node to linkNode
+        nodeToLinkNodeMap.removeObject(forKey: node)
     }
 
     func nodeChanged(node: RenderNode) {
@@ -85,7 +92,7 @@ extension BasicRenderPipeline {
     }
 
     private func linkedNode(for node: RenderNode) -> LinkedList<RenderNode>.Node? {
-        return linkedNodes.first { $0.value == node }
+        return nodeToLinkNodeMap.object(forKey: node)
     }
 }
 

@@ -16,7 +16,7 @@ struct LinkedList<Element> {
     var first: Node? { head }
     var last: Node? { tail }
 
-    mutating func append(value: Element) {
+    @discardableResult mutating func append(value: Element) -> Node {
         let newNode = Node(value: value)
 
         if let tailNode = tail {
@@ -27,6 +27,8 @@ struct LinkedList<Element> {
         }
 
         tail = newNode
+
+        return newNode
     }
 
     @discardableResult mutating func remove(node: Node) -> Element {
