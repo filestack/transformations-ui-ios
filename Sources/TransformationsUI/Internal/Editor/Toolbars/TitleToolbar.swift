@@ -66,7 +66,7 @@ class TitleToolbar: EditorToolbar {
 
     // MARK: - Misc Overrides
 
-    override func setItems(_ items: [UIView] = []) {
+    override func setItems(_ items: [UIView] = [], animated: Bool = false) {
         shouldAutoAdjustAxis = false
 
         undoRedoToolbar = ArrangeableToolbar(items: [undo, redo])
@@ -82,7 +82,7 @@ class TitleToolbar: EditorToolbar {
         saveButtonToolbar.shouldAutoAdjustAxis = false
         saveButtonToolbar.alignment = .trailing
 
-        super.setItems([undoRedoToolbar, innerToolbar, saveButtonToolbar])
+        super.setItems([undoRedoToolbar, innerToolbar, saveButtonToolbar], animated: animated)
     }
 }
 
