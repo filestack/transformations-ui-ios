@@ -30,15 +30,24 @@ class TransformViewController: ModuleViewController {
             updatePaths()
 
             if isEditing {
+                canScrollAndZoom = false
                 addCropGestureRecognizers()
             } else {
+                canScrollAndZoom = true
                 removeCropGestoreRecognizers()
                 cropToolbar.resetSelectedSegment()
             }
         }
     }
 
-    var panGestureRecognizer = UIPanGestureRecognizer()
+    private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
+        let recognizer = UIPanGestureRecognizer()
+
+        recognizer.addTarget(self, action: #selector(handlePanGesture(recognizer:)))
+
+        return recognizer
+    }()
+
     var extraToolbarCommands: [EditorModuleCommand] { module.extraCommands }
     var cropToolbarCommands: [EditorModuleCommand] { module.cropCommands }
 
@@ -70,7 +79,6 @@ class TransformViewController: ModuleViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        setupGestureRecognizer()
         setupView()
     }
 
@@ -102,11 +110,6 @@ class TransformViewController: ModuleViewController {
 // MARK: - Private Functions
 
 private extension TransformViewController {
-    func setupGestureRecognizer() {
-        panGestureRecognizer.delegate = self
-        panGestureRecognizer.addTarget(self, action: #selector(handlePanGesture(recognizer:)))
-    }
-
     func setupView() {
         stackView.insertArrangedSubview(extraToolbar, at: 0)
         stackView.addArrangedSubview(cropToolbar)
@@ -186,24 +189,19 @@ private extension TransformViewController {
     }
 
     func addCropGestureRecognizers() {
-        canvasView.addGestureRecognizer(panGestureRecognizer)
+        contentView.addGestureRecognizer(panGestureRecognizer)
     }
 
     func removeCropGestoreRecognizers() {
-        canvasView.removeGestureRecognizer(panGestureRecognizer)
+        contentView.removeGestureRecognizer(panGestureRecognizer)
     }
 }
 
 // MARK: - EditorModuleVC Protocol
 
 extension TransformViewController: EditorModuleVC {
-    func getRenderNode() -> RenderNode {
-        return renderNode
-    }
-
-    func getModule() -> EditorModule? {
-        return module
-    }
+    func getModule() -> EditorModule? { module }
+    func getRenderNode() -> RenderNode { renderNode }
 }
 
 // MARK: - Editable Protocol
@@ -219,9 +217,9 @@ extension TransformViewController: Editable {
     }
 }
 
-// MARK: - Gesture Handler Functions
+// MARK: - Pan Gesture Handling
 
-extension TransformViewController: UIGestureRecognizerDelegate {
+extension TransformViewController {
     @objc func handlePanGesture(recognizer: UIPanGestureRecognizer) {
         switch editMode {
         case .crop(let mode):
@@ -236,7 +234,7 @@ extension TransformViewController: UIGestureRecognizerDelegate {
     }
 }
 
-// MARK: - RectCropGesturesHandler Delegate
+// MARK: - RectCropGesturesHandlerDelegate Conformance
 
 extension TransformViewController: RectCropGesturesHandlerDelegate {
     func updateCropInset(_: UIEdgeInsets) {
@@ -244,7 +242,7 @@ extension TransformViewController: RectCropGesturesHandlerDelegate {
     }
 }
 
-// MARK: - CircleCropGesturesHandler Delegate Delegate
+// MARK: - CircleCropGesturesHandlerDelegate Conformance
 
 extension TransformViewController: CircleCropGesturesHandlerDelegate {
     func updateCircle(_: CGPoint, radius _: CGFloat) {

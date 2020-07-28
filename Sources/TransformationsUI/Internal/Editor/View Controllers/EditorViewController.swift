@@ -129,7 +129,7 @@ extension EditorViewController: DiscardApplyToolbarDelegate {
     func applySelected(sender: UIButton) {
         activeEditableModuleVC?.applyEditing()
 
-        // Take a snapshot from rendering pipeline and register consolidated undo step.
+        // Take a snapshot from rendering pipeline and register permanent undo step.
         editorUndoManager?.register(step: renderPipeline.snapshot())
 
         activate(module: overviewModule)
@@ -160,7 +160,7 @@ extension EditorViewController: RenderPipelineDelegate {
     }
 
     func outputFinishedChanging(pipeline: RenderPipeline) {
-        // Take a snapshot from rendering pipeline and register unconsolidated undo step.
+        // Take a snapshot from rendering pipeline and register transitory undo step.
         guard let snapshot = (pipeline as? Snapshotable)?.snapshot() else { return }
 
         editorUndoManager?.register(step: snapshot, transitory: true)
