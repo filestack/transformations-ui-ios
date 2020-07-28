@@ -47,7 +47,7 @@ final class EditorViewController: ArrangeableViewController {
     private var completion: ((UIImage?) -> Void)?
     private var activeModule: EditorModule?
     private var activeEditableModuleVC: Editable? { activeModule?.viewController as? Editable }
-    private lazy var discardApplyToolbar: DiscardApplyToolbar? = nil
+    private var discardApplyToolbar: DiscardApplyToolbar? = nil
 
     // MARK: - Lifecycle
 
@@ -96,6 +96,7 @@ final class EditorViewController: ArrangeableViewController {
 
         // Notify that module VC moved to a new parent.
         module.viewController.didMove(toParent: self)
+        module.viewController.discardApplyDelegate = self
 
         // If module VC has a custom title view, let's add it to the title toolbar.
         if let titleView = module.viewController.getTitleView() {
@@ -106,10 +107,13 @@ final class EditorViewController: ArrangeableViewController {
 
         // Add or remove "discard/apply" toolbar depending on whether module is editable.
         if module.viewController is Editable {
-            let toolbar = DiscardApplyToolbar(delegate: self)
-            stackView.addArrangedSubview(toolbar)
+            if discardApplyToolbar == nil {
+                let toolbar = DiscardApplyToolbar()
 
-            self.discardApplyToolbar = toolbar
+                toolbar.delegate = self
+                stackView.addArrangedSubview(toolbar)
+                self.discardApplyToolbar = toolbar
+            }
         } else if let discardApplyToolbar = discardApplyToolbar {
             stackView.removeArrangedSubview(discardApplyToolbar)
             discardApplyToolbar.removeFromSuperview()
