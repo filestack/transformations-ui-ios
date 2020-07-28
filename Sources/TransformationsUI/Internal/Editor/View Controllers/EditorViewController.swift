@@ -12,7 +12,14 @@ import TransformationsUIShared
 final class EditorViewController: ArrangeableViewController {
     // MARK: - Internal Properties
 
-    let titleToolbar = TitleToolbar()
+    lazy var titleToolbar: TitleToolbar = {
+        let toolbar = TitleToolbar(style: .default)
+
+        toolbar.delegate = self
+
+        return toolbar
+    }()
+
     let renderPipeline: BasicRenderPipeline
     let modules: [EditorModule]
     let moduleContainerView = UIView()

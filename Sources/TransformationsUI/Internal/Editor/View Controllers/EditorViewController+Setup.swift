@@ -15,7 +15,6 @@ extension EditorViewController {
         setupView()
         setupAndActivateOverviewModule()
 
-        titleToolbar.delegate = self
         renderPipeline.delegate = self
 
         editorUndoManager = EditorUndoManager(initialStep: renderPipeline.snapshot())
