@@ -18,18 +18,27 @@ public protocol TransformationsUIDelegate: class {
 public class TransformationsUI: NSObject {
     // MARK: - Public Properties
 
+    /// The `TransformationsUI` delegate. Optional.
     public weak var delegate: TransformationsUIDelegate?
 
+    /// A `Config` object that configures `TransformationsUI`.
     public let config: Config
 
     // MARK: - Lifecycle
 
+    /// Designated initializer.
+    ///
+    /// - Parameter config: A `Config` object.
     public init(with config: Config) {
         self.config = config
     }
 
     // MARK: - Open Functions
 
+    /// Returns a view controller with the Transformations UI editor set up for editing a given
+    /// image.
+    ///
+    /// - Parameter image: The `UIImage` to edit.
     open func editor(with image: UIImage) -> UIViewController? {
         return EditorViewController(image: image, config: config) { image in
             self.delegate?.editorDismissed(with: image)

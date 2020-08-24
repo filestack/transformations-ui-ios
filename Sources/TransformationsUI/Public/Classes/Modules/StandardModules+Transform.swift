@@ -6,21 +6,23 @@
 //  Copyright © 2019 Filestack. All rights reserved.
 //
 
-import UIKit
 import TransformationsUIShared
+import UIKit
 
 public protocol ExtraModuleCommand: EditorModuleCommand {}
 public protocol CropModuleCommand: EditorModuleCommand {}
 
 extension StandardModules {
+    /// Transform module configuration object.
     public class Transform: NSObject, EditorModule {
+        /// :nodoc:
         public var title: String = "Transform"
+        /// :nodoc:
         public var icon: UIImage? = .fromBundle("icon-module-transform")
+        /// :nodoc:
         public var isEnabled: Bool = true
-
-        private(set) public lazy var viewController: EditorModuleVC = {
-            return TransformViewController(module: self)
-        }()
+        /// :nodoc:
+        private(set) public lazy var viewController: EditorModuleVC = { TransformViewController(module: self) }()
 
         /// Extra Commands available in `Transform` module.
         public var extraCommands: [ExtraModuleCommand] = [
@@ -43,23 +45,27 @@ extension StandardModules.Transform {
     public class Commands: NSObject {
         /// Rotate command.
         public class Rotate: NSObject, ExtraModuleCommand {
+            /// :nodoc:
             public var title: String = "Rotate"
+            /// :nodoc:
             public lazy var icon: UIImage? = UIImage.fromBundle("icon-rotate")
         }
 
         /// Crop command.
         public class Crop: NSObject, CropModuleCommand {
+            /// :nodoc:
             public lazy var title: String = {
                 switch type {
                 case .none:
                     return "None"
                 case .rect:
-                    return "Freefrom"
+                    return "Rect"
                 case .circle:
                     return "Circle"
                 }
             }()
 
+            /// :nodoc:
             public lazy var icon: UIImage? = {
                 switch type {
                 case .none:
@@ -78,10 +84,27 @@ extension StandardModules.Transform {
                 case circle
             }
 
+            /// Determines the `CropType` to use.
             let type: CropType
 
-            public init(type: CropType = .rect) {
+            /// Designated initializer for `Crop` command.
+            ///
+            /// - Parameters:
+            ///   - type: A `CropType`. Defaults to `rect`
+            ///   - title: A title representing this crop type. Overrides the default title *(optional)*.
+            ///   - icon: An icon representing this crop type. Overrides the default icon *(optional)*.
+            public init(type: CropType = .rect, title: String? = nil, icon: UIImage? = nil) {
                 self.type = type
+
+                super.init()
+
+                if let title = title {
+                    self.title = title
+                }
+
+                if let icon = icon {
+                    self.icon = icon
+                }
             }
         }
     }

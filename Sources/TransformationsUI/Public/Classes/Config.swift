@@ -9,9 +9,15 @@
 import Foundation
 import TransformationsUIShared
 
+/// Configuration object for `TransformationsUI`.
 open class Config: NSObject {
+    /// An object conforming to `EditorModules` that contains the modules and configuration for each
+    /// available module.
     public let modules: EditorModules
 
+    /// Designated initializer.
+    ///
+    /// - Parameter modules: An object conforming to `EditorModules`.
     public init(modules: EditorModules = StandardModules()) {
         self.modules = modules
     }
