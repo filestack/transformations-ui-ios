@@ -40,10 +40,12 @@ extension TransformRenderNode {
 }
 
 extension TransformRenderNode: Snapshotable {
+    /// :nodoc:
     public func snapshot() -> Snapshot {
         return ["renderedImage": renderedImage]
     }
 
+    /// :nodoc:
     public func restore(from snapshot: Snapshot) {
         for item in snapshot {
             switch item {

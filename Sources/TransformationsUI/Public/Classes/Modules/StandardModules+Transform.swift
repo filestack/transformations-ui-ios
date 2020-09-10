@@ -9,7 +9,9 @@
 import TransformationsUIShared
 import UIKit
 
+/// :nodoc:
 public protocol ExtraModuleCommand: EditorModuleCommand {}
+/// :nodoc:
 public protocol CropModuleCommand: EditorModuleCommand {}
 
 extension StandardModules {
@@ -79,8 +81,11 @@ extension StandardModules.Transform {
 
             /// Crop type.
             public enum CropType {
+                /// No crop.
                 case none
+                /// Rectangular crop.
                 case rect
+                /// Circular crop.
                 case circle
             }
 

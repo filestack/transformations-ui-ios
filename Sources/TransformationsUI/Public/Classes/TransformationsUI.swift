@@ -8,6 +8,7 @@
 
 import UIKit
 
+/// The delegate for `TransformationsUI`.
 public protocol TransformationsUIDelegate: class {
     /// Called when the editor is dismissed.
     ///
@@ -15,6 +16,8 @@ public protocol TransformationsUIDelegate: class {
     func editorDismissed(with image: UIImage?)
 }
 
+/// The `TransformationsUI` class provides the means to configure and instantiate the
+/// Transformations UI view controller set up for editing a given image.
 public class TransformationsUI: NSObject {
     // MARK: - Public Properties
 
