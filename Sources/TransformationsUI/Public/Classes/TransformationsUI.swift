@@ -29,6 +29,10 @@ public class TransformationsUI: NSObject {
 
     // MARK: - Lifecycle
 
+    override public init() {
+        self.config = Config()
+    }
+
     /// Designated initializer.
     ///
     /// - Parameter config: A `Config` object.

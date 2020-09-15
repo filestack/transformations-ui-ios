@@ -1,0 +1,4 @@
+github "filepicker/transformations-ui-shared-ios" ~> 1.0
+github "filepicker/transformations-ui-premium-addons-ios" ~> 1.0
+github "rnine/UberSegmentedControl" ~> 1.0
+github "rnine/pikko" ~> 1.0

@@ -15,6 +15,10 @@ open class Config: NSObject {
     /// available module.
     public let modules: EditorModules
 
+    override private init() {
+        self.modules = StandardModules()
+    }
+
     /// Designated initializer.
     ///
     /// - Parameter modules: An object conforming to `EditorModules`.

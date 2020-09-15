@@ -84,9 +84,7 @@ class TitleToolbar: EditorToolbar {
 
         super.setItems([undoRedoToolbar, innerToolbar, saveButtonToolbar], animated: animated)
     }
-}
 
-extension TitleToolbar {
     override func layoutSubviews() {
         super.layoutSubviews()
 

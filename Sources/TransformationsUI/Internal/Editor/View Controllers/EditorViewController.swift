@@ -9,7 +9,7 @@
 import UIKit
 import TransformationsUIShared
 
-final class EditorViewController: ArrangeableViewController {
+final class EditorViewController: ArrangeableViewController, DiscardApplyToolbarDelegate, TitleToolbarDelegate {
     // MARK: - Internal Properties
 
     lazy var titleToolbar: TitleToolbar = {
@@ -121,11 +121,9 @@ final class EditorViewController: ArrangeableViewController {
             self.discardApplyToolbar = nil
         }
     }
-}
 
-// MARK: - DiscardApplyToolbar Delegate
+    // MARK: - DiscardApplyToolbar Delegate
 
-extension EditorViewController: DiscardApplyToolbarDelegate {
     func applySelected(sender: UIButton) {
         activeEditableModuleVC?.applyEditing()
 
@@ -146,6 +144,49 @@ extension EditorViewController: DiscardApplyToolbarDelegate {
         }
 
         activate(module: overviewModule)
+    }
+
+    // MARK: - TitleToolbar Delegate
+
+    func saveSelected(sender: UIButton) {
+        activeEditableModuleVC?.applyEditing()
+
+        dismiss(animated: true) {
+            let editedImage = UIImage(ciImage: self.renderPipeline.outputImage).cgImageBackedCopy()
+            self.completion?(editedImage)
+        }
+    }
+
+    func cancelSelected(sender: UIButton) {
+        dismiss(animated: true) {
+            self.completion?(nil)
+        }
+    }
+
+    func undoSelected(sender: UIButton) {
+        editorUndoManager?.undo()
+        activeEditableModuleVC?.cancelEditing()
+
+        if let state = editorUndoManager?.currentStep {
+            renderPipeline.restore(from: state)
+
+            DispatchQueue.main.async {
+                self.activeModule?.viewController.editorDidRestoreSnapshot()
+            }
+        }
+    }
+
+    func redoSelected(sender: UIButton) {
+        editorUndoManager?.redo()
+        activeEditableModuleVC?.cancelEditing()
+
+        if let state = editorUndoManager?.currentStep {
+            renderPipeline.restore(from: state)
+
+            DispatchQueue.main.async {
+                self.activeModule?.viewController.editorDidRestoreSnapshot()
+            }
+        }
     }
 }
 
@@ -172,51 +213,6 @@ extension EditorViewController: RenderPipelineDelegate {
 extension EditorViewController: EditorUndoManagerDelegate {
     func undoManagerChanged(editorUndoManager: EditorUndoManager) {
         updateUndoRedoButtons()
-    }
-}
-
-// MARK: - TitleToolbar Delegate
-
-extension EditorViewController: TitleToolbarDelegate {
-    func saveSelected(sender: UIButton) {
-        activeEditableModuleVC?.applyEditing()
-
-        dismiss(animated: true) {
-            let editedImage = UIImage(ciImage: self.renderPipeline.outputImage).cgImageBackedCopy()
-            self.completion?(editedImage)
-        }
-    }
-
-    func cancelSelected(sender: UIButton) {
-        dismiss(animated: true) {
-            self.completion?(nil)
-        }
-    }
-
-    func undoSelected(sender: UIButton) {
-        editorUndoManager?.undo()
-        activeEditableModuleVC?.cancelEditing()
-
-        if let state = editorUndoManager?.currentStep {
-            renderPipeline.restore(from: state)
-            
-            DispatchQueue.main.async {
-                self.activeModule?.viewController.editorDidRestoreSnapshot()
-            }
-        }
-    }
-
-    func redoSelected(sender: UIButton) {
-        editorUndoManager?.redo()
-        activeEditableModuleVC?.cancelEditing()
-
-        if let state = editorUndoManager?.currentStep {
-            renderPipeline.restore(from: state)
-            
-            DispatchQueue.main.async {
-                self.activeModule?.viewController.editorDidRestoreSnapshot()
-            }
-        }
     }
 }
 

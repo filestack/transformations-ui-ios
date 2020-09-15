@@ -105,6 +105,21 @@ class TransformViewController: ModuleViewController {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+
+    // MARK: - Pan Gesture Handling
+
+    @objc func handlePanGesture(recognizer: UIPanGestureRecognizer) {
+        switch editMode {
+        case .crop(let mode):
+            switch mode.type {
+            case .none: break
+            case .rect: cropHandler.handlePanGesture(recognizer: recognizer, in: scrollView)
+            case .circle: circleHandler.handlePanGesture(recognizer: recognizer, in: scrollView)
+            }
+        case .none:
+            break
+        }
+    }
 }
 
 // MARK: - Private Functions
@@ -113,6 +128,7 @@ private extension TransformViewController {
     func setupView() {
         stackView.insertArrangedSubview(extraToolbar, at: 0)
         stackView.addArrangedSubview(cropToolbar)
+        contentView.directionalLayoutMargins = Constants.Spacing.insetContentLayout
     }
 
     func turnOff(mode: EditMode) {
@@ -214,23 +230,6 @@ extension TransformViewController: Editable {
 
     func cancelEditing() {
         editMode = .none
-    }
-}
-
-// MARK: - Pan Gesture Handling
-
-extension TransformViewController {
-    @objc func handlePanGesture(recognizer: UIPanGestureRecognizer) {
-        switch editMode {
-        case .crop(let mode):
-            switch mode.type {
-            case .none: break
-            case .rect: cropHandler.handlePanGesture(recognizer: recognizer, in: scrollView)
-            case .circle: circleHandler.handlePanGesture(recognizer: recognizer, in: scrollView)
-            }
-        case .none:
-            break
-        }
     }
 }
 

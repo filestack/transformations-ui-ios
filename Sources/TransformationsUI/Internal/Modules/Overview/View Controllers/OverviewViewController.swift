@@ -60,11 +60,9 @@ class OverviewViewController: ModuleViewController {
     required init?(coder _: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-}
 
-// MARK: - View overrides
+    // MARK: - View overrides
 
-extension OverviewViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -82,17 +80,13 @@ extension OverviewViewController {
 
         removeGestureRecognizers()
     }
-}
 
-// MARK: - EditorModuleVC Conformance
+    // MARK: - EditorModuleVC Conformance
 
-extension OverviewViewController {
     func getRenderNode() -> RenderNode { renderNode }
-}
 
-// MARK: - Gesture Handling
+    // MARK: - Gesture Handling
 
-extension OverviewViewController {
     @objc func handleTapGesture(recognizer: UITapGestureRecognizer) {
         for (module, node) in nodesAndModules {
             if let canvasItem = node.canvasItem(at: recognizer.location(in: imageView)) {
