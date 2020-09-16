@@ -4,7 +4,7 @@ Filestack's [Transformations UI](https://www.filestack.com/docs/concepts/transfo
 
 ## Requirements
 
-* Xcode 11+
+* Xcode 12+
 * Swift 4.2+ / Objective-C
 * iOS 11.0+ / iPadOS 13.0+
 
