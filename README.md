@@ -10,25 +10,28 @@ Filestack's [Transformations UI](https://www.filestack.com/docs/concepts/transfo
 
 ## Installation
 
-Transformations UI for iOS is available in 2 different flavors:
+**Transformations UI** for iOS is available in 2 different flavors:
 
-1. Transformations UI with Standard Modules.
-2. Transformations UI with Premium Modules (requires a Filestack API key with permission to use this feature.)
+1. Version with **Standard Modules**.
+2. Version with **Premium Modules** (requires a **Filestack API key** with permission to use this feature.)
 
 The installation procedure will be different depending on what flavor you would like to install.
 
 ### 1. Installing Transformations UI with Standard Modules
 
-- Add `https://github.com/filestack/transformations-ui-ios.git` as a Swift Package Manager dependency to your project.
+- Add `https://github.com/filestack/transformations-ui-ios.git` as a [Swift Package Manager](https://swift.org/package-manager/) dependency to your project.
 
-- Make sure that `TransformationsUI.framework` is set to `Embed & Sign` in your app's target.
+- Make sure that `TransformationsUI.framework` is set to **Embed & Sign** in your app's target.
 
 ### 2. Installing Transformations UI with Premium Modules
 
-- Go to `https://github.com/filestack/transformations-ui-ios/releases` and download the latest Transformations UI binary release in zip format.
-- Expand the zip file and copy all the XCFramework bundles somewhere inside your project's root folder (e.g. `/vendor`.)
-- Add all the XCFramework bundles you just copied into your Xcode project.
-- Make sure all the XCFrameworks are set to `Embed & Sign` in your app's target.
+- Go to `https://github.com/filestack/transformations-ui-ios/releases` and download the latest binary release available.
+
+- Unzip the file you just downloaded and select everything inside it from the Finder.
+
+- Drag & drop your selection into **Dependencies** making sure that **Copy items if needed** is checked.
+
+- Select your target, expand **Frameworks, Libraries, and Embedded Content** and set all the added frameworks to **Embed & Sign**.
 
 ## Usage
 
@@ -70,19 +73,19 @@ The installation procedure will be different depending on what flavor you would 
 
 ### Using Standard or Premium Modules
 
-A newly instantiated `TransformationsUI` object is configured to use standard modules by default.
+A newly instantiated `TransformationsUI` object is configured to use **Standard Modules** by default.
 
-In order to use premium modules instead, first make sure you have downloaded and installed the binary release of `TransformationsUI` into your project as explained above, and then follow these steps:
+In order to use **Premium Modules** instead, first make sure you have downloaded and installed the binary release of `TransformationsUI` into your project as explained above, and then follow these steps:
 
 1. Import `TransformationsUIShared` and `TransformationsUIPremiumAddOns`
 
     ```swift
     import TransformationsUI
-    import TransformationsUIShared // newly added
-    import TransformationsUIPremiumAddOns // newly added
+    import TransformationsUIShared /* newly added */
+    import TransformationsUIPremiumAddOns /* newly added */
     ```
 
-2. Get your Filestack API key ready, you will need for next step.
+2. Get your **Filestack API key** ready, you will need it for next step.
 
 3. Instantiate `TransformationsUI` using a custom `Config` object
 
@@ -115,41 +118,44 @@ This is the current list of features available per module depending on chosen ed
 
 #### Standard Modules
 
-- Transform:
-    - Rotate (clockwise)
-    - Crop
-        - Rect
-        - Circle
+##### Transform
+- Rotate (clockwise)
+- Crop
+    - Rect
+    - Circle
 
 #### Premium Modules
 
-- Transform:
-    - Flip
-    - Flop
-    - Rotate
-        - Clockwise
-        - Anticlockwise
-    - Crop
-        - Rect
-            - Freeform
-            - Fixed
-            - Custom
-        - Circle
-    - Resize
-        - Free/Locked ratio
-- Filters:
-    - Chrome, Fade, Instant, Mono, Noir, Process, Tonal, Transfer
-- Adjustments:
-    - Blur, Brightness, Contrast, Gamma (per RGB component), Hue
-- Text:
-    - Font Family
-    - Text Color
-    - Text Style
-        - bold, italic, underline
-    - Text Alignment:
-        - left, center, right, justify
+##### Transform
+- Flip
+- Flop
+- Rotate
+    - Clockwise
+    - Anticlockwise
+- Crop
+    - Rect
+        - Freeform
+        - Fixed
+        - Custom
+    - Circle
+- Resize
+    - Free/Locked ratio
 
-### Enabling or Disabling Modules
+##### Filters
+- Chrome, Fade, Instant, Mono, Noir, Process, Tonal, Transfer
+
+##### Adjustments
+- Blur, Brightness, Contrast, Gamma (per RGB component), Hue
+
+##### Text
+- Font Family
+- Text Color
+- Text Style
+    - bold, italic, underline
+- Text Alignment:
+    - left, center, right, justify
+
+## Enabling or Disabling Modules
 
 Modules may be enabled or disabled programmatically. Let's see an example:
 
@@ -165,7 +171,7 @@ Modules may be enabled or disabled programmatically. Let's see an example:
     ]
     ```
 
-### Enabling or Disabling Module Features
+## Enabling or Disabling Module Features
 
 Module features may be enabled or disabled programmatically. Let's see a few examples:
 
@@ -205,7 +211,6 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
     ```
 
 4. When using `PremiumModules`, you want to redefine the available filters in filters module.
-
     ```swift
     let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
 
@@ -234,7 +239,7 @@ To discover other module features that may be configured, enabled or disabled, t
 
 ## Demo
 
-Check the [demos](https://github.com/filestack/transformations-ui-demo-ios) showcasing using Transformations UI with either Standard or Premium modules.
+Check the [demos](https://github.com/filestack/transformations-ui-demo-ios) showcasing using **Transformations UI** with either **Standard** or **Premium modules**.
 
 ## Versioning
 
