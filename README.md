@@ -116,17 +116,17 @@ After that, you may follow the same steps as in the previous section (e.g., set 
 
 This is the current list of features available per module depending on chosen editor modules family.
 
-#### Standard Modules
+### Standard Modules
 
-##### Transform
+#### Transform
 - Rotate (clockwise)
 - Crop
     - Rect
     - Circle
 
-#### Premium Modules
+### Premium Modules
 
-##### Transform
+#### Transform
 - Flip
 - Flop
 - Rotate
@@ -141,13 +141,13 @@ This is the current list of features available per module depending on chosen ed
 - Resize
     - Free/Locked ratio
 
-##### Filters
+#### Filters
 - Chrome, Fade, Instant, Mono, Noir, Process, Tonal, Transfer
 
-##### Adjustments
+#### Adjustments
 - Blur, Brightness, Contrast, Gamma (per RGB component), Hue
 
-##### Text
+#### Text
 - Font Family
 - Text Color
 - Text Style
