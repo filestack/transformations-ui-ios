@@ -3,7 +3,7 @@
     "pins": [
       {
         "package": "TransformationsUIShared",
-        "repositoryURL": "https://github.com/filepicker/transformations-ui-shared-ios.git",
+        "repositoryURL": "https://github.com/filestack/transformations-ui-shared-ios.git",
         "state": {
           "branch": null,
           "revision": "41f59275d8637b18e0113c21f2d78f96aff26951",

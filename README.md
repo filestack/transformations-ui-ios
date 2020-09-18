@@ -19,13 +19,13 @@ The installation procedure will be different depending on what flavor you would 
 
 ### 1. Installing Transformations UI with Standard Modules
 
-- Add `https://github.com/filepicker/transformations-ui-ios.git` as a Swift Package Manager dependency to your project.
+- Add `https://github.com/filestack/transformations-ui-ios.git` as a Swift Package Manager dependency to your project.
 
 - Make sure that `TransformationsUI.framework` is set to `Embed & Sign` in your app's target.
 
 ### 2. Installing Transformations UI with Premium Modules
 
-- Go to `https://github.com/filepicker/transformations-ui-ios/releases` and download the latest Transformations UI binary release in zip format.
+- Go to `https://github.com/filestack/transformations-ui-ios/releases` and download the latest Transformations UI binary release in zip format.
 - Expand the zip file and copy all the XCFramework bundles somewhere inside your project's root folder (e.g. `/vendor`.)
 - Add all the XCFramework bundles you just copied into your Xcode project.
 - Make sure all the XCFrameworks are set to `Embed & Sign` in your app's target.
@@ -39,14 +39,14 @@ The installation procedure will be different depending on what flavor you would 
     ```swift
     import TransformationsUI
     ```
-    
+
 2. Instantiate `TransformationsUI` and set delegate
 
     ```swift
     let transformationsUI = TransformationsUI()
     transformationsUI.delegate = self
     ```
-    
+
 3. Add conformance to `TransformationsUIDelegate`
 
     ```swift
@@ -58,7 +58,7 @@ The installation procedure will be different depending on what flavor you would 
         }
     }
     ```
-    
+
 4. Present `TransformationsUI` view controller
 
     ```swift
@@ -93,16 +93,16 @@ In order to use premium modules instead, first make sure you have downloaded and
         let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
 
         modules = premiumModules
-    } catch { 
+    } catch {
         // Unable to instantiate `PremiumModules`.
         //
-        // You may want to double-check that your Filestack account has permissions 
+        // You may want to double-check that your Filestack account has permissions
         // to use Transformations UI for the API key you have used above.
         //
         // Falling back to `StandardModules`.
         modules = StandardModules()
     }
-    
+
     let config = Config(modules: modules)
     let transformationsUI = TransformationsUI(with: config)
     ```
@@ -115,7 +115,7 @@ This is the current list of features available per module depending on chosen ed
 
 #### Standard Modules
 
-- Transform: 
+- Transform:
     - Rotate (clockwise)
     - Crop
         - Rect
@@ -129,7 +129,7 @@ This is the current list of features available per module depending on chosen ed
     - Rotate
         - Clockwise
         - Anticlockwise
-    - Crop 
+    - Crop
         - Rect
             - Freeform
             - Fixed
@@ -146,7 +146,7 @@ This is the current list of features available per module depending on chosen ed
     - Text Color
     - Text Style
         - bold, italic, underline
-    - Text Alignment: 
+    - Text Alignment:
         - left, center, right, justify
 
 ### Enabling or Disabling Modules
@@ -154,10 +154,10 @@ This is the current list of features available per module depending on chosen ed
 Modules may be enabled or disabled programmatically. Let's see an example:
 
 1. Defining the available premium modules.
-    
+
     ```swift
     let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-    
+
     premiumModules.all = [
         premiumModules.transform,
         premiumModules.filters,
@@ -173,7 +173,7 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
 
     ```swift
     let standardModules = StandardModules()
-    
+
     standardModules.transform.cropCommands = [
         StandardModules.Transform.Commands.Crop(type: .none),
         StandardModules.Transform.Commands.Crop(type: .circle)
@@ -184,7 +184,7 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
 
     ```swift
     let standardModules = StandardModules()
-    
+
     standardModules.transform.extraCommands = []
     ```
 
@@ -192,12 +192,12 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
 
     ```swift
     let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-    
+
     // Keep original ratio
     premiumModules.transform.cropCommands.append(
         PremiumModules.Transform.Commands.Crop(type: .rect, aspectRatio: .original)
     )
-    
+
     // Keep 16:9 ratio
     premiumModules.transform.cropCommands.append(
         PremiumModules.Transform.Commands.Crop(type: .rect, aspectRatio: .custom(CGSize(width: 16, height: 9)))
@@ -208,24 +208,24 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
 
     ```swift
     let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-    
+
     premiumModules.filters.commands = [
         PremiumModules.Filters.Commands.Filter(type: .chrome),
         PremiumModules.Filters.Commands.Filter(type: .process),
         PremiumModules.Filters.Commands.Filter(type: .instant)
     ]
     ```
-    
+
 5. When using `PremiumModules`, you want to add extra available font families to text module.
 
     ```swift
     let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-    
+
     premiumModules.text.availableFontFamilies.append(contentsOf: ["Optima Regular", "Symbol"])
     ```
-    
+
     Or you may want to replace available font families completely:
-    
+
     ```swift
     premiumModules.text.availableFontFamilies = ["Optima Regular", "Symbol"]
     ```
@@ -234,7 +234,7 @@ To discover other module features that may be configured, enabled or disabled, t
 
 ## Demo
 
-Check the [demos](https://github.com/filepicker/transformations-ui-demo-ios) showcasing using Transformations UI with either Standard or Premium modules.
+Check the [demos](https://github.com/filestack/transformations-ui-demo-ios) showcasing using Transformations UI with either Standard or Premium modules.
 
 ## Versioning
 
@@ -242,8 +242,8 @@ Transformations UI follows the [Semantic Versioning](http://semver.org/).
 
 ## Issues
 
-If you have problems, please create a [Github Issue](https://github.com/filepicker/transformations-ui-ios/issues).
+If you have problems, please create a [Github Issue](https://github.com/filestack/transformations-ui-ios/issues).
 
 ## Credits
 
-Thank you to all the [contributors](https://github.com/filepicker/transformations-ui-ios/graphs/contributors).
+Thank you to all the [contributors](https://github.com/filestack/transformations-ui-ios/graphs/contributors).
