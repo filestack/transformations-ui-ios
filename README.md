@@ -114,7 +114,7 @@ After that, you may follow the same steps as in the previous section (e.g., set 
 
 ## Modules Features
 
-This is the current list of features available per module depending on chosen editor modules family.
+This is the current list of features available per module depending on chosen editor modules family:
 
 ### Standard Modules
 
@@ -154,6 +154,11 @@ This is the current list of features available per module depending on chosen ed
     - bold, italic, underline
 - Text Alignment:
     - left, center, right, justify
+
+#### Border
+- Color
+- Width
+- Transparency
 
 ## Enabling or Disabling Modules
 
