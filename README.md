@@ -237,6 +237,12 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
 
 To discover other module features that may be configured, enabled or disabled, try Xcode's autocompletion with your `StandardModules` or `PremiumModules` objects.
 
+## Screenshots
+
+| <img src="screenshots/1.png"> | <img src="screenshots/2.png"> | <img src="screenshots/3.png"> |
+|---|---|---|
+| <img src="screenshots/5.png"> | <img src="screenshots/6.png"> | <img src="screenshots/7.png"> |
+
 ## Demo
 
 Check the [demos](https://github.com/filestack/transformations-ui-demo-ios) showcasing using **Transformations UI** with either **Standard** or **Premium modules**.
