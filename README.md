@@ -1,6 +1,6 @@
 # Transformations UI
 
-Filestack's [Transformations UI](https://www.filestack.com/docs/concepts/transform_ui/) implementation for iOS and iPadOS.
+Filestack's [Transformations UI](https://www.filestack.com/docs/transformations/ui/) implementation for iOS and iPadOS.
 
 ## Requirements
 
