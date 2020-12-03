@@ -9,7 +9,7 @@
 import UIKit
 import TransformationsUIShared
 
-final class EditorViewController: ArrangeableViewController, DiscardApplyToolbarDelegate, TitleToolbarDelegate {
+final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate, TitleToolbarDelegate {
     // MARK: - Internal Properties
 
     lazy var titleToolbar: TitleToolbar = {
@@ -20,16 +20,14 @@ final class EditorViewController: ArrangeableViewController, DiscardApplyToolbar
         return toolbar
     }()
 
-    let renderPipeline: BasicRenderPipeline
+    let renderPipeline: RenderPipeline
     let modules: [EditorModule]
+    let moduleViewController = ModuleViewController()
     let moduleContainerView = UIView()
     var editorUndoManager: EditorUndoManager?
+    var moduleUUIDToRenderNode = [UUID:RenderNode]()
 
-    lazy var overviewModule: StandardModules.Overview = {
-        let viewController = OverviewViewController(modules: modules, delegate: self)
-
-        return StandardModules.Overview(using: viewController)
-    }()
+    lazy var overviewModule: StandardModules.Overview = StandardModules.Overview(modules: modules, pipeline: renderPipeline)
 
     let stackView: UIStackView = {
         let stackView = UIStackView()
@@ -45,8 +43,7 @@ final class EditorViewController: ArrangeableViewController, DiscardApplyToolbar
 
     private let config: Config
     private var completion: ((UIImage?) -> Void)?
-    private var activeModule: EditorModule?
-    private var activeEditableModuleVC: Editable? { activeModule?.viewController as? Editable }
+    private var activeEditableModuleController: Editable? { moduleViewController.activeModuleController as? Editable }
     private var discardApplyToolbar: DiscardApplyToolbar? = nil
 
     // MARK: - Lifecycle
@@ -56,7 +53,7 @@ final class EditorViewController: ArrangeableViewController, DiscardApplyToolbar
 
         self.config = config
         self.modules = config.modules.all.compactMap { $0.isEnabled ? $0 : nil }
-        self.renderPipeline = BasicRenderPipeline(inputImage: ciImage)
+        self.renderPipeline = RenderPipeline(inputImage: ciImage)
         self.completion = completion
 
         super.init(nibName: nil, bundle: nil)
@@ -81,32 +78,30 @@ final class EditorViewController: ArrangeableViewController, DiscardApplyToolbar
 
     // MARK: - Public Functions
 
-    func activate(module: EditorModule) {
-        // Remove any previously added module VC's.
-        for child in (children.compactMap { $0 as? EditorModuleVC }) {
-            child.removeFromParent()
-            child.view.removeFromSuperview()
-        }
+    func attachModuleViewController() {
+        addChild(moduleViewController)
 
-        // Add module as a child VC.
-        addChild(module.viewController)
+        moduleContainerView.fill(with: moduleViewController.view, activate: true)
+        moduleViewController.didMove(toParent: self)
+        moduleViewController.discardApplyDelegate = self
+    }
 
-        moduleContainerView.fill(with: module.viewController.view, activate: true)
-        activeModule = module
+    func activate(module: EditorModule, renderNode: RenderNode? = nil) {
+        let moduleController = module.controllerType.init(renderNode: renderNode ?? self.renderNode(for: module),
+                                                          module: module,
+                                                          viewSource: moduleViewController)
 
-        // Notify that module VC moved to a new parent.
-        module.viewController.didMove(toParent: self)
-        module.viewController.discardApplyDelegate = self
+        moduleViewController.activeModuleController = moduleController
 
         // If module VC has a custom title view, let's add it to the title toolbar.
-        if let titleView = module.viewController.getTitleView() {
+        if let titleView = moduleController.getTitleView() {
             titleToolbar.setItems([titleView])
         } else {
             titleToolbar.setItems([])
         }
 
         // Add or remove "discard/apply" toolbar depending on whether module is editable.
-        if module.viewController is Editable {
+        if moduleController is Editable {
             if discardApplyToolbar == nil {
                 let toolbar = DiscardApplyToolbar()
 
@@ -120,12 +115,16 @@ final class EditorViewController: ArrangeableViewController, DiscardApplyToolbar
 
             self.discardApplyToolbar = nil
         }
+
+        if let overlayController = moduleController as? OverviewController {
+            overlayController.delegate = self
+        }
     }
 
     // MARK: - DiscardApplyToolbar Delegate
 
     func applySelected(sender: UIButton) {
-        activeEditableModuleVC?.applyEditing()
+        activeEditableModuleController?.applyEditing()
 
         // Take a snapshot from rendering pipeline and register permanent undo step.
         editorUndoManager?.register(step: renderPipeline.snapshot())
@@ -134,7 +133,7 @@ final class EditorViewController: ArrangeableViewController, DiscardApplyToolbar
     }
 
     func discardSelected(sender: UIButton) {
-        activeEditableModuleVC?.cancelEditing()
+        activeEditableModuleController?.cancelEditing()
 
         editorUndoManager?.removeTransitorySteps()
 
@@ -149,10 +148,11 @@ final class EditorViewController: ArrangeableViewController, DiscardApplyToolbar
     // MARK: - TitleToolbar Delegate
 
     func saveSelected(sender: UIButton) {
-        activeEditableModuleVC?.applyEditing()
+        activeEditableModuleController?.applyEditing()
+
+        let editedImage = renderPipeline.view.renderToImage(afterScreenUpdates: false)
 
         dismiss(animated: true) {
-            let editedImage = UIImage(ciImage: self.renderPipeline.outputImage).cgImageBackedCopy()
             self.completion?(editedImage)
         }
     }
@@ -165,44 +165,61 @@ final class EditorViewController: ArrangeableViewController, DiscardApplyToolbar
 
     func undoSelected(sender: UIButton) {
         editorUndoManager?.undo()
-        activeEditableModuleVC?.cancelEditing()
+        activeEditableModuleController?.cancelEditing()
 
         if let state = editorUndoManager?.currentStep {
             renderPipeline.restore(from: state)
 
             DispatchQueue.main.async {
-                self.activeModule?.viewController.editorDidRestoreSnapshot()
+                self.moduleViewController.activeModuleController?.editorDidRestoreSnapshot()
             }
         }
     }
 
     func redoSelected(sender: UIButton) {
         editorUndoManager?.redo()
-        activeEditableModuleVC?.cancelEditing()
+        activeEditableModuleController?.cancelEditing()
 
         if let state = editorUndoManager?.currentStep {
             renderPipeline.restore(from: state)
 
             DispatchQueue.main.async {
-                self.activeModule?.viewController.editorDidRestoreSnapshot()
+                self.moduleViewController.activeModuleController?.editorDidRestoreSnapshot()
             }
         }
+    }
+}
+
+// MARK: - Private Functions
+
+private extension EditorViewController {
+    func renderNode(for module: EditorModule) -> RenderNode? {
+        if let moduleRenderNode = moduleUUIDToRenderNode[module.uuid] {
+            return moduleRenderNode
+        }
+
+        if !module.autocreatesNode {
+            switch module.nodeCategory {
+            case .object:
+                let renderNodeGroup = renderPipeline.objectRenderNodeGroup
+                let renderNode = module.controllerType.renderNode(for: module, in: renderNodeGroup)
+
+                return renderNode
+            default:
+                break
+            }
+        }
+
+        return nil
     }
 }
 
 // MARK: - RenderPipeline Delegate
 
 extension EditorViewController: RenderPipelineDelegate {
-    func outputChanged(pipeline: RenderPipeline) {
-        // Update active module VC's image view.
-        DispatchQueue.main.async {
-            self.activeModule?.viewController.imageView.image = pipeline.outputImage
-        }
-    }
-
-    func outputFinishedChanging(pipeline: RenderPipeline) {
+    func pipelineChanged(pipeline: RenderPipeline) {
         // Take a snapshot from rendering pipeline and register transitory undo step.
-        guard let snapshot = (pipeline as? Snapshotable)?.snapshot() else { return }
+        let snapshot = pipeline.snapshot()
 
         editorUndoManager?.register(step: snapshot, transitory: true)
     }
@@ -216,10 +233,14 @@ extension EditorViewController: EditorUndoManagerDelegate {
     }
 }
 
-// MARK: - OverviewViewController Delegate
+// MARK: - OverviewController Delegate
 
-extension EditorViewController: OverviewViewControllerDelegate {
-    func moduleSelected(module: EditorModule) {
-        activate(module: module)
+extension EditorViewController: OverviewControllerDelegate {
+    func overviewSelectedModule(module: EditorModule, renderNode: RenderNode?) {
+        activate(module: module, renderNode: renderNode)
+    }
+
+    func overviewCommittedChange() {
+        editorUndoManager?.register(step: renderPipeline.snapshot())
     }
 }

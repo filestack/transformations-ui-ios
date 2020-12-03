@@ -7,22 +7,33 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
 extension CIImage {
-    /// Returns a 90 degree-rotated `CIImage`.
+    /// Transforms an image using a given `RenderNodeTransform`.
     ///
-    /// - Parameter clockwise: If true, image is rotated clockwise, otherwise it is rotated anticlockwise.
+    /// - Parameter type: The `RenderNodeTransform` to apply.
     ///
-    func rotated(clockwise: Bool) -> CIImage? {
-        let transform = orientationTransform(for: clockwise ? .right : .left)
+    func transformed(using type: RenderNodeTransform) -> CIImage? {
+        switch type {
+        case .crop(let insets, let cropType):
+            switch cropType {
+            case .rect:
+                return cropped(by: insets)
+            case .circle:
+                return circled(by: insets)
+            }
+        case .rotate:
+            return rotated()
+        }
+    }
+}
+
+private extension CIImage {
+    func rotated() -> CIImage? {
+        let transform = orientationTransform(for: .left)
         return transformed(by: transform)
     }
 
-    /// Returns a cropped `CIImage`.
-    ///
-    /// - Parameter insets: Specifies how much should be inset on each side of the rect.
-    ///
     func cropped(by insets: UIEdgeInsets) -> CIImage? {
         let transform = coordinatesTransform(rect: extent)
         let rect = extent.applying(transform).inset(by: insets).applying(transform)
@@ -30,44 +41,31 @@ extension CIImage {
         return cropped(to: rect)
     }
 
-    /// Returns a circle-cropped `CIImage`.
-    ///
-    /// - Parameter center: Circle's center point.
-    /// - Parameter radius: Circle's radius.
-    /// - Parameter transformed: Whether to transform UIKit coordinates into Core Image coordinates. Defaults to false.
-    ///
-    func circled(center: CGPoint, radius: CGFloat) -> CIImage? {
-        let transform = coordinatesTransform(rect: extent)
-        let tCenter = center.applying(transform)
+    func circled(by insets: UIEdgeInsets) -> CIImage? {
+        guard let croppedCIImage = cropped(by: insets) else { return nil }
 
-        let origin = CGPoint(x: extent.minX + (tCenter.x - radius),
-                             y: extent.minY + (tCenter.y - radius)).rounded()
-
-        let rect = CGRect(origin: origin, size: CGSize(width: radius * 2, height: radius * 2).rounded())
-
-        let transformedCIImage = cropped(to: rect)
+        let rect = croppedCIImage.extent
+        let radius = min(rect.width, rect.height) / 2
 
         let alpha1 = CIColor(red: 0, green: 0, blue: 0, alpha: 1)
         let alpha0 = CIColor(red: 0, green: 0, blue: 0, alpha: 0)
         let croppedCenter = CIVector(x: rect.midX, y: rect.midY)
 
-        let radialGradientFilter = CIFilter(name: "CIRadialGradient", parameters: ["inputRadius0": radius,
-                                                                                   "inputRadius1": radius + 1,
+        let radialGradientFilter = CIFilter(name: "CIRadialGradient", parameters: ["inputRadius0": radius - 0.5,
+                                                                                   "inputRadius1": radius + 0.5,
                                                                                    "inputColor0": alpha1,
                                                                                    "inputColor1": alpha0,
                                                                                    kCIInputCenterKey: croppedCenter])
 
         guard let circledImage = radialGradientFilter?.outputImage else { return nil }
 
-        let compositingFilter = CIFilter(name: "CISourceInCompositing", parameters: [kCIInputImageKey: transformedCIImage,
+        let compositingFilter = CIFilter(name: "CISourceInCompositing", parameters: [kCIInputImageKey: croppedCIImage,
                                                                                      kCIInputBackgroundImageKey: circledImage])
 
         return compositingFilter?.outputImage
     }
 
-    // MARK: - Private Functions
-
-    private func coordinatesTransform(rect: CGRect) -> CGAffineTransform {
+    func coordinatesTransform(rect: CGRect) -> CGAffineTransform {
         return CGAffineTransform(scaleX: 1, y: -1).translatedBy(x: 0, y: -rect.height)
     }
 }

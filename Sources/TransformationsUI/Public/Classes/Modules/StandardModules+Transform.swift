@@ -18,13 +18,21 @@ extension StandardModules {
     /// Transform module configuration object.
     public class Transform: NSObject, EditorModule {
         /// :nodoc:
+        public let uuid = UUID()
+        /// :nodoc:
         public var title: String = "Transform"
         /// :nodoc:
         public var icon: UIImage? = .fromBundle("icon-module-transform")
         /// :nodoc:
         public var isEnabled: Bool = true
         /// :nodoc:
-        private(set) public lazy var viewController: EditorModuleVC = { TransformViewController(module: self) }()
+        public let controllerType: EditorModuleController.Type = TransformController.self
+        /// :nodoc:
+        public let nodeCategory: RenderNodeCategory = .image
+        /// :nodoc:
+        public var nodeType: RenderGroupChildNode.Type? = TransformRenderNode.self
+        /// :nodoc:
+        public var autocreatesNode: Bool = true
 
         /// Extra Commands available in `Transform` module.
         public var extraCommands: [ExtraModuleCommand] = [
@@ -48,6 +56,8 @@ extension StandardModules.Transform {
         /// Rotate command.
         public class Rotate: NSObject, ExtraModuleCommand {
             /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
             public var title: String = "Rotate"
             /// :nodoc:
             public lazy var icon: UIImage? = UIImage.fromBundle("icon-rotate")
@@ -55,6 +65,8 @@ extension StandardModules.Transform {
 
         /// Crop command.
         public class Crop: NSObject, CropModuleCommand {
+            /// :nodoc:
+            public let uuid = UUID()
             /// :nodoc:
             public lazy var title: String = {
                 switch type {

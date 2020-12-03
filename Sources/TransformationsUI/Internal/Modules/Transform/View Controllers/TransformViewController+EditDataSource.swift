@@ -10,17 +10,18 @@ import AVFoundation.AVUtilities
 import Foundation
 import TransformationsUIShared
 
-extension TransformViewController: EditDataSource {
+extension TransformController: EditDataSource {
+    var imageView: CIImageView { (renderNode.group! as! ViewableNode).view as! CIImageView }
     var imageFrame: CGRect { imageView.bounds }
     var imageSize: CGSize { renderNode.outputImage.extent.size }
-    var zoomScale: CGFloat { scrollView.zoomScale }
-    var virtualFrame: CGRect { AVMakeRect(aspectRatio: imageSize, insideRect: scrollView.bounds) }
+    var zoomScale: CGFloat { viewSource.scrollView.zoomScale }
+    var virtualFrame: CGRect { AVMakeRect(aspectRatio: imageSize, insideRect: viewSource.scrollView.bounds) }
 
     func convertPointFromVirtualFrameToImageFrame(_ point: CGPoint) -> CGPoint {
-        return scrollView.convert(point, to: imageView)
+        return viewSource.scrollView.convert(point, to: imageView)
     }
 
     func convertRectFromVirtualFrameToImageFrame(_ rect: CGRect) -> CGRect {
-        return scrollView.convert(rect, to: imageView)
+        return viewSource.scrollView.convert(rect, to: imageView)
     }
 }

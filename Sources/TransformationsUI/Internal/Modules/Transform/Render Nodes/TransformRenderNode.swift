@@ -9,10 +9,10 @@
 import UIKit
 import TransformationsUIShared
 
-class TransformRenderNode: RenderNode {
-    weak var pipeline: RenderPipeline?
+class TransformRenderNode: NSObject, RenderGroupChildNode & IONode {
+    weak var group: RenderGroupNode?
 
-    let uuid = UUID()
+    let uuid: UUID
 
     var inputImage: CIImage = CIImage() {
         didSet { renderedImage = inputImage }
@@ -21,21 +21,18 @@ class TransformRenderNode: RenderNode {
     var outputImage: CIImage { renderedImage ?? inputImage }
 
     var renderedImage: CIImage? = nil {
-        didSet { pipeline?.nodeChanged(node: self) }
+        didSet { group?.nodeChanged(node: self) }
+    }
+
+    required init(uuid: UUID) {
+        self.uuid = uuid
     }
 }
 
 extension TransformRenderNode {
-    func rotate(clockwise: Bool) {
-        renderedImage = outputImage.rotated(clockwise: clockwise)
-    }
-
-    func cropRect(insets: UIEdgeInsets) {
-        renderedImage = outputImage.cropped(by: insets)
-    }
-
-    func cropCircle(center: CGPoint, radius: CGFloat) {
-        renderedImage = outputImage.circled(center: center, radius: radius)
+    func apply(transform: RenderNodeTransform) {
+        renderedImage = outputImage.transformed(using: transform)
+        group?.nodeFinishedChanging(node: self, change: transform)
     }
 }
 

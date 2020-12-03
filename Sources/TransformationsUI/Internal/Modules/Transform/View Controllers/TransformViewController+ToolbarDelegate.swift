@@ -9,13 +9,13 @@
 import UIKit
 import TransformationsUIShared
 
-extension TransformViewController: StandardToolbarDelegate {
+extension TransformController: StandardToolbarDelegate {
     func toolbarItemSelected(toolbar: StandardToolbar, item: DescriptibleEditorItem, control: UIControl) {
         let command = item as? EditorModuleCommand
 
         switch command {
         case is Module.Commands.Rotate:
-            perform(command: .rotate(clockwise: false))
+            perform(transform: .rotate)
         case let crop as Module.Commands.Crop:
             editMode = crop.type == .none ? .none : .crop(mode: crop)
         default:
@@ -24,28 +24,13 @@ extension TransformViewController: StandardToolbarDelegate {
     }
 }
 
-extension TransformViewController {
-    private enum NodeCommand {
-        case rotate(clockwise: Bool)
-        case cropRect(insets: UIEdgeInsets)
-        case cropCircle(center: CGPoint, radius: CGFloat)
-    }
-
-    private func perform(command: NodeCommand) {
-        switch command {
-        case let .rotate(clockwise):
-            renderNode.rotate(clockwise: clockwise)
-        case let .cropRect(insets):
-            renderNode.cropRect(insets: insets)
-        case let .cropCircle(center, radius):
-            renderNode.cropCircle(center: center, radius: radius)
-        }
+extension TransformController {
+    private func perform(transform: RenderNodeTransform) {
+        renderNode.apply(transform: transform)
 
         editMode = .none
-        cropHandler.reset()
-        circleHandler.reset()
-
-        renderNode.pipeline?.nodeFinishedChanging(node: renderNode)
+        rectCropHandler.reset()
+        circleCropHandler.reset()
     }
 
     func applyPendingChanges() {
@@ -55,9 +40,9 @@ extension TransformViewController {
             case .none:
                 break
             case .rect:
-                perform(command: .cropRect(insets: cropHandler.actualEdgeInsets))
+                perform(transform: .crop(insets: rectCropHandler.actualEdgeInsets, type: .rect))
             case .circle:
-                perform(command: .cropCircle(center: circleHandler.actualCenter, radius: circleHandler.actualRadius))
+                perform(transform: .crop(insets: circleCropHandler.actualEdgeInsets, type: .circle))
             }
         case .none:
             break

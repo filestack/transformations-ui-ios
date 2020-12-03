@@ -9,7 +9,7 @@
 import UIKit
 import TransformationsUIShared
 
-class TransformViewController: ModuleViewController {
+class TransformController: EditorModuleController {
     typealias Module = StandardModules.Transform
 
     enum EditMode: Hashable {
@@ -20,7 +20,9 @@ class TransformViewController: ModuleViewController {
     // MARK: - Internal Properties
     
     let module: Module
-    lazy var renderNode = TransformRenderNode()
+    let renderNode: TransformRenderNode
+
+    var isEditing: Bool = false
 
     var editMode = EditMode.none {
         didSet {
@@ -30,15 +32,22 @@ class TransformViewController: ModuleViewController {
             updatePaths()
 
             if isEditing {
-                canScrollAndZoom = false
+                viewSource.canScrollAndZoom = false
                 addCropGestureRecognizers()
             } else {
-                canScrollAndZoom = true
+                viewSource.canScrollAndZoom = true
                 removeCropGestoreRecognizers()
                 cropToolbar.resetSelectedSegment()
             }
         }
     }
+
+    let viewSource: ModuleViewSource
+
+    lazy var rectCropHandler = RectCropGesturesHandler(delegate: self, allowDraggingFromSides: false)
+    lazy var circleCropHandler = CircleCropGesturesHandler(delegate: self)
+
+    // MARK: - Private Properties
 
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let recognizer = UIPanGestureRecognizer()
@@ -48,17 +57,17 @@ class TransformViewController: ModuleViewController {
         return recognizer
     }()
 
-    var extraToolbarCommands: [EditorModuleCommand] { module.extraCommands }
-    var cropToolbarCommands: [EditorModuleCommand] { module.cropCommands }
+    private var extraToolbarCommands: [EditorModuleCommand] { module.extraCommands }
+    private var cropToolbarCommands: [EditorModuleCommand] { module.cropCommands }
 
-    lazy var extraToolbar: StandardToolbar = {
+    private lazy var extraToolbar: StandardToolbar = {
         let toolbar = StandardToolbar(items: extraToolbarCommands, style: .commands)
         toolbar.delegate = self
 
         return toolbar
     }()
 
-    lazy var cropToolbar: SegmentedControlToolbar = {
+    private lazy var cropToolbar: SegmentedControlToolbar = {
         let toolbar = SegmentedControlToolbar(items: cropToolbarCommands, style: .segments)
 
         toolbar.delegate = self
@@ -66,44 +75,44 @@ class TransformViewController: ModuleViewController {
         return toolbar
     }()
 
-    lazy var cropHandler = RectCropGesturesHandler(delegate: self, allowDraggingFromSides: false)
-    lazy var circleHandler = CircleCropGesturesHandler(delegate: self)
+    private lazy var extraToolbarFXWrapperView: UIView = {
+        VisualFXWrapperView(wrapping: extraToolbar, usingBlurEffect: Constants.ViewEffects.blur)
+    }()
 
-    // MARK: - Private Properties
+    private lazy var cropToolbarFXWrapperView: UIView = {
+        VisualFXWrapperView(wrapping: cropToolbar, usingBlurEffect: Constants.ViewEffects.blur)
+    }()
 
-    private let cropLayer = RectCropLayer()
-    private let circleLayer = CircleCropLayer()
+    private let rectCropLayer = RectCropLayer()
+    private let circleCropLayer = CircleCropLayer()
 
     // MARK: - View Overrides
 
-    override func viewDidLoad() {
-        super.viewDidLoad()
-
-        setupView()
-    }
-
-    override func viewDidLayoutSubviews() {
-        super.viewDidLayoutSubviews()
-
+    func viewSourceDidLayoutSubviews() {
         DispatchQueue.main.async() {
             self.updatePaths()
         }
     }
 
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        cropLayer.updateColors()
-        circleLayer.updateColors()
+    func viewSourceTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        rectCropLayer.updateColors()
+        circleCropLayer.updateColors()
     }
+
+    func getModule() -> EditorModule? { module }
+    func getRenderNode() -> RenderNode? { renderNode }
 
     // MARK: - Lifecycle
 
-    required init(module: Module) {
-        self.module = module
-        super.init(nibName: nil, bundle: nil)
+    required init(renderNode: RenderNode?, module: EditorModule, viewSource: ModuleViewSource) {
+        self.module = module as! Module
+        self.renderNode = renderNode as! TransformRenderNode
+        self.viewSource = viewSource
+        setup()
     }
 
-    required init?(coder _: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    deinit {
+        cleanup()
     }
 
     // MARK: - Pan Gesture Handling
@@ -113,8 +122,8 @@ class TransformViewController: ModuleViewController {
         case .crop(let mode):
             switch mode.type {
             case .none: break
-            case .rect: cropHandler.handlePanGesture(recognizer: recognizer, in: scrollView)
-            case .circle: circleHandler.handlePanGesture(recognizer: recognizer, in: scrollView)
+            case .rect: rectCropHandler.handlePanGesture(recognizer: recognizer, in: viewSource.scrollView)
+            case .circle: circleCropHandler.handlePanGesture(recognizer: recognizer, in: viewSource.scrollView)
             }
         case .none:
             break
@@ -124,11 +133,18 @@ class TransformViewController: ModuleViewController {
 
 // MARK: - Private Functions
 
-private extension TransformViewController {
-    func setupView() {
-        stackView.insertArrangedSubview(extraToolbar, at: 0)
-        stackView.addArrangedSubview(cropToolbar)
-        contentView.directionalLayoutMargins = Constants.Spacing.insetContentLayout
+private extension TransformController {
+    func setup() {
+        viewSource.stackView.insertArrangedSubview(extraToolbarFXWrapperView, at: 0)
+        viewSource.stackView.addArrangedSubview(cropToolbarFXWrapperView)
+        viewSource.contentView.directionalLayoutMargins = Constants.Spacing.insetContentLayout
+    }
+
+    func cleanup() {
+        extraToolbarFXWrapperView.removeFromSuperview()
+        cropToolbarFXWrapperView.removeFromSuperview()
+        viewSource.contentView.directionalLayoutMargins = .zero
+        editMode = .none
     }
 
     func turnOff(mode: EditMode) {
@@ -142,12 +158,12 @@ private extension TransformViewController {
         case .crop(let mode):
             switch mode.type {
             case .none:
-                cropHandler.reset()
-                circleHandler.reset()
+                rectCropHandler.reset()
+                circleCropHandler.reset()
             case .rect:
-                cropHandler.reset()
+                rectCropHandler.reset()
             case .circle:
-                circleHandler.reset()
+                circleCropHandler.reset()
             }
         case .none:
             break
@@ -159,8 +175,8 @@ private extension TransformViewController {
         case .crop(let mode):
             switch mode.type {
             case .none: return nil
-            case .rect: return cropLayer
-            case .circle: return circleLayer
+            case .rect: return rectCropLayer
+            case .circle: return circleCropLayer
             }
         case .none:
             return nil
@@ -168,12 +184,12 @@ private extension TransformViewController {
     }
 
     func isVisible(layer: CALayer) -> Bool {
-        return scrollView.layer.sublayers?.contains(layer) ?? false
+        return viewSource.scrollView.layer.sublayers?.contains(layer) ?? false
     }
 
     func addLayer(for mode: EditMode) {
         guard let editLayer = layer(for: mode), !isVisible(layer: editLayer) else { return }
-        scrollView.layer.addSublayer(editLayer)
+        viewSource.scrollView.layer.addSublayer(editLayer)
     }
 
     func hideLayer(for mode: EditMode) {
@@ -185,44 +201,37 @@ private extension TransformViewController {
         case .crop(let mode):
             switch mode.type {
             case .none: break
-            case .rect: updateCropPaths()
-            case .circle: updateCirclePaths()
+            case .rect: updateRectCropPaths()
+            case .circle: updateCircleCropPaths()
             }
         case .none:
             break
         }
     }
 
-    func updateCropPaths() {
-        cropLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
-        cropLayer.cropRect = cropHandler.croppedRect.rounded()
+    func updateRectCropPaths() {
+        rectCropLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
+        rectCropLayer.cropRect = rectCropHandler.croppedRect.rounded()
     }
 
-    func updateCirclePaths() {
-        circleLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
-        circleLayer.circleCenter = circleHandler.circleCenter
-        circleLayer.circleRadius = circleHandler.circleRadius
+    func updateCircleCropPaths() {
+        circleCropLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
+        circleCropLayer.circleCenter = circleCropHandler.circleCenter
+        circleCropLayer.circleRadius = circleCropHandler.circleRadius
     }
 
     func addCropGestureRecognizers() {
-        contentView.addGestureRecognizer(panGestureRecognizer)
+        viewSource.contentView.addGestureRecognizer(panGestureRecognizer)
     }
 
     func removeCropGestoreRecognizers() {
-        contentView.removeGestureRecognizer(panGestureRecognizer)
+        viewSource.contentView.removeGestureRecognizer(panGestureRecognizer)
     }
-}
-
-// MARK: - EditorModuleVC Protocol
-
-extension TransformViewController: EditorModuleVC {
-    func getModule() -> EditorModule? { module }
-    func getRenderNode() -> RenderNode { renderNode }
 }
 
 // MARK: - Editable Protocol
 
-extension TransformViewController: Editable {
+extension TransformController: Editable {
     func applyEditing() {
         applyPendingChanges()
         editMode = .none
@@ -235,16 +244,16 @@ extension TransformViewController: Editable {
 
 // MARK: - RectCropGesturesHandlerDelegate Conformance
 
-extension TransformViewController: RectCropGesturesHandlerDelegate {
-    func updateCropInset(_: UIEdgeInsets) {
-        updateCropPaths()
+extension TransformController: RectCropGesturesHandlerDelegate {
+    func rectCropChanged(_ handler: RectCropGesturesHandler) {
+        updateRectCropPaths()
     }
 }
 
 // MARK: - CircleCropGesturesHandlerDelegate Conformance
 
-extension TransformViewController: CircleCropGesturesHandlerDelegate {
-    func updateCircle(_: CGPoint, radius _: CGFloat) {
-        updateCirclePaths()
+extension TransformController: CircleCropGesturesHandlerDelegate {
+    func circleCropChanged(_ handler: CircleCropGesturesHandler) {
+        updateCircleCropPaths()
     }
 }

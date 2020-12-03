@@ -11,11 +11,10 @@ import TransformationsUIShared
 
 extension EditorViewController {
     func setup() {
+        attachModuleViewController()
         setupPipeline()
         setupView()
         setupAndActivateOverviewModule()
-
-        renderPipeline.delegate = self
 
         editorUndoManager = EditorUndoManager(initialStep: renderPipeline.snapshot())
         editorUndoManager?.delegate = self
@@ -30,14 +29,30 @@ extension EditorViewController {
 
 private extension EditorViewController {
     func setupAndActivateOverviewModule() {
-        renderPipeline.addNode(node: overviewModule.viewController.getRenderNode())
         activate(module: overviewModule)
     }
 
     func setupPipeline() {
+        renderPipeline.delegate = self
+
         for module in modules {
-            renderPipeline.addNode(node: module.viewController.getRenderNode())
+            guard module.autocreatesNode == true, let node = module.nodeType?.init(uuid: UUID()) else { continue }
+
+            moduleUUIDToRenderNode[module.uuid] = node
+
+            switch module.nodeCategory {
+            case .image:
+                renderPipeline.imageRenderNodeGroup.add(node: node)
+            case .object:
+                renderPipeline.objectRenderNodeGroup.add(node: node)
+            case .overlay:
+                renderPipeline.overlayRenderNodeGroup.add(node: node)
+            case .none:
+                break
+            }
         }
+
+        moduleViewController.canvasView = renderPipeline.view
     }
 
     func setupView() {
