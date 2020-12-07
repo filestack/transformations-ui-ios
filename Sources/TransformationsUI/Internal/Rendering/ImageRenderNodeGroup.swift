@@ -9,13 +9,12 @@
 import UIKit
 import TransformationsUIShared
 
-class ImageRenderNodeGroup: NSObject, RenderGroupNode & IONode & ViewableNode {
+class ImageRenderNodeGroup: RenderNode, RenderGroupNode & IONode & ViewableNode {
     typealias Node = RenderGroupChildNode & IONode
 
     weak var delegate: RenderNodeDelegate?
     weak var parent: RenderGroupNode?
 
-    let uuid: UUID
     var view: UIView { imageView }
 
     var inputImage: CIImage = CIImage() {
@@ -38,12 +37,6 @@ class ImageRenderNodeGroup: NSObject, RenderGroupNode & IONode & ViewableNode {
     private var linkedNodes = LinkedList<Node>()
     private var nodeToLinkNodeMap = NSMapTable<AnyObject, LinkedList<Node>.Node>(keyOptions: .weakMemory,
                                                                                  valueOptions: .weakMemory)
-
-    // MARK: - Lifecycle
-
-    required init(uuid: UUID) {
-        self.uuid = uuid
-    }
 }
 
 // MARK: - Public Functions

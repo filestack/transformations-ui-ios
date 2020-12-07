@@ -9,10 +9,8 @@
 import UIKit
 import TransformationsUIShared
 
-class LayeredRenderNodeGroup: NSObject, RenderGroupNode & ViewableNode {
+class LayeredRenderNodeGroup: RenderNode, RenderGroupNode & ViewableNode {
     typealias Node = RenderGroupChildNode & ViewableNode
-
-    let uuid: UUID
 
     let view: UIView = {
         let view = UIView()
@@ -27,12 +25,6 @@ class LayeredRenderNodeGroup: NSObject, RenderGroupNode & ViewableNode {
     weak var parent: RenderGroupNode?
 
     private var nodes: [RenderGroupChildNode] = []
-
-    // MARK: - Lifecycle
-
-    required init(uuid: UUID) {
-        self.uuid = uuid
-    }
 }
 
 // MARK: - Public Functions
@@ -52,7 +44,7 @@ extension LayeredRenderNodeGroup {
         node.view.removeFromSuperview()
         node.group = nil
 
-        nodes.removeAll { $0 == node }
+        nodes.removeAll { $0 === node }
     }
 
     func canMoveBack(node: RenderGroupChildNode) -> Bool {
@@ -162,7 +154,7 @@ extension LayeredRenderNodeGroup: Snapshotable {
             }
 
             // Fix child node position if needed.
-            if let currentPosition = (nodes.firstIndex { $0 == node }), currentPosition != position {
+            if let currentPosition = (nodes.firstIndex { $0 === node }), currentPosition != position {
                 nodes.swapAt(currentPosition, position)
             }
 
@@ -175,7 +167,7 @@ extension LayeredRenderNodeGroup: Snapshotable {
 
             (node as? Snapshotable)?.restore(from: snapshot)
 
-            oldNodes.removeAll { $0 == node }
+            oldNodes.removeAll { $0 === node }
         }
 
         // Remove any nodes that are not contained on the snapshot.

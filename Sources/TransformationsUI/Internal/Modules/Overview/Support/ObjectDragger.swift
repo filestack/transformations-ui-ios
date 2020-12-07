@@ -14,7 +14,7 @@ class ObjectDragger {
 
     var object: ObjectRenderNode? = nil {
         didSet {
-            if object?.hash != oldValue?.hash {
+            if object !== oldValue {
                 lastRadians = nil
                 originalTransform = nil
             }

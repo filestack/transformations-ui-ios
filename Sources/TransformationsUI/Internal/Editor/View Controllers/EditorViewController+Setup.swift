@@ -36,7 +36,7 @@ private extension EditorViewController {
         renderPipeline.delegate = self
 
         for module in modules {
-            guard module.autocreatesNode == true, let node = module.nodeType?.init(uuid: UUID()) else { continue }
+            guard module.autocreatesNode == true, let node = module.nodeType?.init() else { continue }
 
             moduleUUIDToRenderNode[module.uuid] = node
 

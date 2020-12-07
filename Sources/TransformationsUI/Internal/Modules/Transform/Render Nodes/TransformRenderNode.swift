@@ -9,10 +9,8 @@
 import UIKit
 import TransformationsUIShared
 
-class TransformRenderNode: NSObject, RenderGroupChildNode & IONode {
+class TransformRenderNode: RenderNode, RenderGroupChildNode & IONode {
     weak var group: RenderGroupNode?
-
-    let uuid: UUID
 
     var inputImage: CIImage = CIImage() {
         didSet { renderedImage = inputImage }
@@ -22,10 +20,6 @@ class TransformRenderNode: NSObject, RenderGroupChildNode & IONode {
 
     var renderedImage: CIImage? = nil {
         didSet { group?.nodeChanged(node: self) }
-    }
-
-    required init(uuid: UUID) {
-        self.uuid = uuid
     }
 }
 

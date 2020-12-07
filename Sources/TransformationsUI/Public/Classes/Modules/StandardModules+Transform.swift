@@ -16,7 +16,7 @@ public protocol CropModuleCommand: EditorModuleCommand {}
 
 extension StandardModules {
     /// Transform module configuration object.
-    public class Transform: NSObject, EditorModule {
+    public class Transform: EditorModule {
         /// :nodoc:
         public let uuid = UUID()
         /// :nodoc:
@@ -52,9 +52,9 @@ extension StandardModules {
 
 extension StandardModules.Transform {
     /// All available commands.
-    public class Commands: NSObject {
+    public class Commands {
         /// Rotate command.
-        public class Rotate: NSObject, ExtraModuleCommand {
+        public class Rotate: PointerHashable, ExtraModuleCommand {
             /// :nodoc:
             public let uuid = UUID()
             /// :nodoc:
@@ -64,7 +64,7 @@ extension StandardModules.Transform {
         }
 
         /// Crop command.
-        public class Crop: NSObject, CropModuleCommand {
+        public class Crop: PointerHashable, CropModuleCommand {
             /// :nodoc:
             public let uuid = UUID()
             /// :nodoc:
@@ -112,8 +112,6 @@ extension StandardModules.Transform {
             ///   - icon: An icon representing this crop type. Overrides the default icon *(optional)*.
             public init(type: CropType = .rect, title: String? = nil, icon: UIImage? = nil) {
                 self.type = type
-
-                super.init()
 
                 if let title = title {
                     self.title = title

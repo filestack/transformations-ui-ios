@@ -10,7 +10,7 @@ import UIKit
 import TransformationsUIShared
 
 extension StandardModules {
-    class Overview: NSObject, EditorModule {
+    class Overview: EditorModule {
         public let uuid = UUID()
         public var title: String = "Overview"
         public var isEnabled: Bool = true

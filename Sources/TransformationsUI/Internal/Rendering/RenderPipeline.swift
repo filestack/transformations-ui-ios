@@ -30,13 +30,13 @@ class RenderPipeline {
     }()
 
     /// Image render node group (contains the original image with all the transformations and filters applied.)
-    let imageRenderNodeGroup = ImageRenderNodeGroup(uuid: UUID())
+    let imageRenderNodeGroup = ImageRenderNodeGroup()
 
     /// Object render node group (contains object nodes such as text, stickers, etc.)
-    let objectRenderNodeGroup = LayeredRenderNodeGroup(uuid: UUID())
+    let objectRenderNodeGroup = LayeredRenderNodeGroup()
 
     /// Overlay render node group (contains nodes that should be rendered on top of everything else such as borders, etc.)
-    let overlayRenderNodeGroup = LayeredRenderNodeGroup(uuid: UUID())
+    let overlayRenderNodeGroup = LayeredRenderNodeGroup()
 
     // MARK: - Private Properties
 
@@ -85,7 +85,7 @@ extension RenderPipeline: RenderNodeDelegate {
             }
 
             // Update any other viewable nodes' view frames.
-            let otherViewableNodes = (nodes.filter { $0 != ioNode }).compactMap { $0 as? ViewableNode }
+            let otherViewableNodes = (nodes.filter { $0 !== ioNode }).compactMap { $0 as? ViewableNode }
 
             for node in otherViewableNodes {
                 node.view.frame = CGRect(origin: .zero, size: extent.size)
