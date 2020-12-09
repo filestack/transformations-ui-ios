@@ -165,7 +165,6 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
 
     func undoSelected(sender: UIButton) {
         editorUndoManager?.undo()
-        activeEditableModuleController?.cancelEditing()
 
         if let state = editorUndoManager?.currentStep {
             renderPipeline.restore(from: state)
@@ -178,7 +177,6 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
 
     func redoSelected(sender: UIButton) {
         editorUndoManager?.redo()
-        activeEditableModuleController?.cancelEditing()
 
         if let state = editorUndoManager?.currentStep {
             renderPipeline.restore(from: state)

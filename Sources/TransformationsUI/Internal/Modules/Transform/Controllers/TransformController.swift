@@ -101,6 +101,7 @@ class TransformController: EditorModuleController {
 
     func getModule() -> EditorModule? { module }
     func getRenderNode() -> RenderNode? { renderNode }
+    func editorDidRestoreSnapshot() { editMode = .none }
 
     // MARK: - Lifecycle
 
