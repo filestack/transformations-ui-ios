@@ -49,11 +49,11 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
     // MARK: - Lifecycle
 
     init?(image: UIImage, config: Config, completion: @escaping (UIImage?) -> Void) {
-        guard let ciImage = image.ciImageBackedCopy()?.ciImage else { return nil }
+        guard let cgImage = image.cgImage else { return nil }
 
         self.config = config
         self.modules = config.modules.all.compactMap { $0.isEnabled ? $0 : nil }
-        self.renderPipeline = RenderPipeline(inputImage: ciImage)
+        self.renderPipeline = RenderPipeline(inputImage: CIImage(cgImage: cgImage))
         self.completion = completion
 
         super.init(nibName: nil, bundle: nil)
