@@ -12,7 +12,7 @@ import TransformationsUIShared
 class ObjectDragger {
     // MARK: - Internal Properties
 
-    var object: ObjectRenderNode? = nil {
+    weak var object: ObjectRenderNode? = nil {
         didSet {
             if object !== oldValue {
                 lastRadians = nil

@@ -56,11 +56,11 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
             return nil
         }
 
-        guard let cgImage = image.cgImage else { return nil }
+        guard let renderPipeline = RenderPipeline(inputImage: image) else { return nil }
 
         self.config = config
         self.modules = config.modules.all.compactMap { $0.isEnabled ? $0 : nil }
-        self.renderPipeline = RenderPipeline(inputImage: CIImage(cgImage: cgImage))
+        self.renderPipeline = renderPipeline
         self.completion = completion
 
         super.init(nibName: nil, bundle: nil)
@@ -123,8 +123,8 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
             self.discardApplyToolbar = nil
         }
 
-        if let overlayController = moduleController as? OverviewController {
-            overlayController.delegate = self
+        if let overviewController = moduleController as? OverviewController {
+            overviewController.delegate = self
         }
     }
 
@@ -157,6 +157,10 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
     func saveSelected(sender: UIButton) {
         activeEditableModuleController?.applyEditing()
         let editedImage = renderPipeline.outputImage
+
+        moduleViewController.activeModuleController = nil
+        moduleViewController.view.removeFromSuperview()
+        moduleViewController.removeFromParent()
 
         dismiss(animated: true) {
             self.completion?(editedImage)

@@ -47,6 +47,12 @@ extension LayeredRenderNodeGroup {
         nodes.removeAll { $0 === node }
     }
 
+    func removeAllNodes() {
+        for node in nodes {
+            remove(node: node)
+        }
+    }
+
     func canMoveBack(node: RenderGroupChildNode) -> Bool {
         return nodes.first?.uuid != node.uuid
     }

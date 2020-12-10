@@ -8,6 +8,7 @@
 
 import UIKit
 import TransformationsUIShared
+import MetalKit
 
 protocol RenderPipelineDelegate: class {
     /// Called whenever the pipeline's content changed in a meaningful way.
@@ -46,26 +47,40 @@ class RenderPipeline {
 
     // MARK: - Private Properties
 
-    private let inputImage: CIImage
     private var nodes: [RenderGroupNode] = []
 
     // MARK: - Lifecycle
 
-    init(inputImage: CIImage) {
-        self.inputImage = inputImage
+    init?(inputImage: UIImage) {
+        guard let metalDevice = MTLCreateSystemDefaultDevice() else { return nil }
+        guard let cgImage = inputImage.cgImage else { return nil }
 
-        imageRenderNodeGroup.inputImage = inputImage
+        let textureLoader = MTKTextureLoader(device: metalDevice)
 
-        addNode(node: imageRenderNodeGroup)
-        addNode(node: objectRenderNodeGroup)
-        addNode(node: overlayRenderNodeGroup)
+        guard let sourceTexture = try? textureLoader.newTexture(cgImage: cgImage, options: [
+            MTKTextureLoader.Option.SRGB : true,
+            MTKTextureLoader.Option.origin: MTKTextureLoader.Origin.flippedVertically,
+        ]) else { return nil }
+
+        guard let ciImage = CIImage(mtlTexture: sourceTexture) else { return nil }
+
+        imageRenderNodeGroup.metalDevice = metalDevice
+        imageRenderNodeGroup.inputImage = ciImage
+
+        add(node: imageRenderNodeGroup)
+        add(node: objectRenderNodeGroup)
+        add(node: overlayRenderNodeGroup)
+    }
+
+    deinit {
+        cleanup()
     }
 }
 
 // MARK: - Private Functions
 
 private extension RenderPipeline {
-    func addNode(node: RenderGroupNode) {
+    func add(node: RenderGroupNode) {
         node.delegate = self
 
         // Add node to `nodes` array.
@@ -74,6 +89,22 @@ private extension RenderPipeline {
         // Add node view to `view` in case it has one.
         if let nodeView = (node as? ViewableNode)?.view {
             view.addSubview(nodeView)
+        }
+    }
+
+    func remove(node: RenderGroupNode) {
+        (node as? ViewableNode)?.view.removeFromSuperview()
+
+        nodes.removeAll { $0 === node }
+    }
+
+    func cleanup() {
+        imageRenderNodeGroup.removeAllNodes()
+        objectRenderNodeGroup.removeAllNodes()
+        overlayRenderNodeGroup.removeAllNodes()
+
+        for node in nodes {
+            remove(node: node)
         }
     }
 }

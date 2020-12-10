@@ -8,6 +8,7 @@
 
 import UIKit
 import TransformationsUIShared
+import MetalKit
 
 class ImageRenderNodeGroup: RenderNode, RenderGroupNode & IONode & ViewableNode {
     typealias Node = RenderGroupChildNode & IONode
@@ -16,6 +17,7 @@ class ImageRenderNodeGroup: RenderNode, RenderGroupNode & IONode & ViewableNode 
     weak var parent: RenderGroupNode?
 
     var view: UIView { imageView }
+    var metalDevice: MTLDevice? = nil
 
     var inputImage: CIImage = CIImage() {
         didSet { linkedNodes.first?.value.inputImage = inputImage }
@@ -24,7 +26,7 @@ class ImageRenderNodeGroup: RenderNode, RenderGroupNode & IONode & ViewableNode 
     var outputImage: CIImage { linkedNodes.last?.value.outputImage ?? inputImage }
 
     private lazy var imageView: CIImageView = {
-        let view = CIImageView()
+        let view = CIImageView(frame: .zero, device: metalDevice)
 
         view.translatesAutoresizingMaskIntoConstraints = false
         view.clipsToBounds = true
@@ -71,6 +73,12 @@ extension ImageRenderNodeGroup {
 
         // Remove map from node to linkNode
         nodeToLinkNodeMap.removeObject(forKey: node)
+    }
+
+    func removeAllNodes() {
+        for linkedNode in linkedNodes {
+            remove(node: linkedNode.value)
+        }
     }
 
     func canMoveBack(node: RenderGroupChildNode) -> Bool { return false }

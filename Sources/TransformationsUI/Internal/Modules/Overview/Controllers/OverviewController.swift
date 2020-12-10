@@ -99,8 +99,10 @@ class OverviewController: NSObject, EditorModuleController {
             }
         }
     }
-    private lazy var objectPanHandler = ObjectPanHandler(delegate: self)
+
+    private let objectPanHandler = ObjectPanHandler()
     private let objectDragger = ObjectDragger()
+
     private var scrollViewObservers: [NSObjectProtocol] = []
 
     // MARK: - Lifecycle
@@ -151,17 +153,18 @@ class OverviewController: NSObject, EditorModuleController {
 
 private extension OverviewController {
     func setup() {
+        objectPanHandler.delegate = self
         addGestureRecognizers()
         viewSource.stackView.addArrangedSubview(objectToolbarFXWrapperView)
         viewSource.stackView.addArrangedSubview(modulesToolbar)
     }
 
     func cleanup() {
+        selectedObject = nil
         removeGestureRecognizers()
         removeObjectSelectionView()
         modulesToolbar.removeFromSuperview()
         objectToolbarFXWrapperView.removeFromSuperview()
-        objectSelectionView?.removeFromSuperview()
     }
 
     func addGestureRecognizers() {
