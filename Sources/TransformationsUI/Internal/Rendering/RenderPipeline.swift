@@ -29,6 +29,12 @@ class RenderPipeline {
         return view
     }()
 
+    var outputImage: UIImage {
+        UIImage(ciImage: imageRenderNodeGroup.outputImage)
+            .merge(with: objectRenderNodeGroup.view.renderToImage())
+            .merge(with: overlayRenderNodeGroup.view.renderToImage())
+    }
+
     /// Image render node group (contains the original image with all the transformations and filters applied.)
     let imageRenderNodeGroup = ImageRenderNodeGroup()
 

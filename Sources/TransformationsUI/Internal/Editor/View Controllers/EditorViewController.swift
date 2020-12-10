@@ -49,6 +49,13 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
     // MARK: - Lifecycle
 
     init?(image: UIImage, config: Config, completion: @escaping (UIImage?) -> Void) {
+        guard
+            image.size.width < Constants.Size.maxImageInputSize.width,
+            image.size.height < Constants.Size.maxImageInputSize.height
+        else {
+            return nil
+        }
+
         guard let cgImage = image.cgImage else { return nil }
 
         self.config = config
@@ -149,8 +156,7 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
 
     func saveSelected(sender: UIButton) {
         activeEditableModuleController?.applyEditing()
-
-        let editedImage = renderPipeline.view.renderToImage(afterScreenUpdates: false)
+        let editedImage = renderPipeline.outputImage
 
         dismiss(animated: true) {
             self.completion?(editedImage)

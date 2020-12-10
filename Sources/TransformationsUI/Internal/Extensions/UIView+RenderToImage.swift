@@ -10,7 +10,7 @@ import UIKit
 import TransformationsUIShared
 
 extension UIView {
-    func renderToImage(afterScreenUpdates: Bool) -> UIImage {
+    func renderToImage() -> UIImage {
         let rendererFormat = UIGraphicsImageRendererFormat.default()
 
         rendererFormat.opaque = false
@@ -19,7 +19,7 @@ extension UIView {
         let renderer = UIGraphicsImageRenderer(bounds: bounds, format: rendererFormat)
 
         return renderer.image { (ctx) in
-            drawHierarchy(in: bounds, afterScreenUpdates: afterScreenUpdates)
+            layer.render(in: ctx.cgContext)
         }
     }
 }
