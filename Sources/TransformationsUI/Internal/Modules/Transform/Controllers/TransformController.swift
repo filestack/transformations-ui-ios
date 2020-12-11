@@ -22,8 +22,6 @@ class TransformController: EditorModuleController {
     let module: Module
     let renderNode: TransformRenderNode
 
-    var isEditing: Bool = false
-
     var editMode = EditMode.none {
         didSet {
             isEditing = editMode != .none
@@ -48,6 +46,8 @@ class TransformController: EditorModuleController {
     lazy var circleCropHandler = CircleCropGesturesHandler(delegate: self)
 
     // MARK: - Private Properties
+
+    private var isEditing: Bool = false
 
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let recognizer = UIPanGestureRecognizer()
