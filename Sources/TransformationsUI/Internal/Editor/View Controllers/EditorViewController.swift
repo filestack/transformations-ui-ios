@@ -130,7 +130,7 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
 
     // MARK: - DiscardApplyToolbar Delegate
 
-    func applySelected(sender: UIButton) {
+    func applySelected(sender: UIButton?) {
         activeEditableModuleController?.applyEditing()
 
         // Take a snapshot from rendering pipeline and register permanent undo step.
@@ -139,7 +139,7 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
         activate(module: overviewModule)
     }
 
-    func discardSelected(sender: UIButton) {
+    func discardSelected(sender: UIButton?) {
         activeEditableModuleController?.cancelEditing()
 
         editorUndoManager?.removeTransitorySteps()
