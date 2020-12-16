@@ -57,17 +57,15 @@ class RenderPipeline {
 
         let textureLoader = MTKTextureLoader(device: metalDevice)
 
-        var loaderOptions: [MTKTextureLoader.Option : Any] = [
-            MTKTextureLoader.Option.SRGB : true
+        let loaderOptions: [MTKTextureLoader.Option : Any] = [
+            MTKTextureLoader.Option.SRGB : false,
+            MTKTextureLoader.Option.origin: MTKTextureLoader.Origin.flippedVertically
         ]
 
-        #if !targetEnvironment(simulator)
-            // Only real devices require texture origin to be flipped vertically.
-            loaderOptions[MTKTextureLoader.Option.origin] = MTKTextureLoader.Origin.flippedVertically
-        #endif
+        let colorSpace = cgImage.colorSpace ?? CGColorSpaceCreateDeviceRGB()
 
         guard let sourceTexture = try? textureLoader.newTexture(cgImage: cgImage, options: loaderOptions) else { return nil }
-        guard let ciImage = CIImage(mtlTexture: sourceTexture) else { return nil }
+        guard let ciImage = CIImage(mtlTexture: sourceTexture)?.matchedToWorkingSpace(from: colorSpace) else { return nil }
 
         imageRenderNodeGroup.metalDevice = metalDevice
         imageRenderNodeGroup.inputImage = ciImage
