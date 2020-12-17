@@ -155,6 +155,9 @@ This is the current list of features available per module depending on chosen ed
 - Text Alignment:
     - left, center, right, justify
 
+### Sticker
+- Stickers
+
 #### Border
 - Color
 - Width
