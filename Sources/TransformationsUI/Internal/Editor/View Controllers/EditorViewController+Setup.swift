@@ -47,7 +47,7 @@ private extension EditorViewController {
                 renderPipeline.objectRenderNodeGroup.add(node: node)
             case .overlay:
                 renderPipeline.overlayRenderNodeGroup.add(node: node)
-            case .none:
+            default:
                 break
             }
         }
