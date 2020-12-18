@@ -222,6 +222,21 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
     premiumModules.text.availableFontFamilies = ["Optima Regular", "Symbol"]
     ```
 
+6. When using `PremiumModules`, you want to add stickers to stickers module.
+
+    **IMPORTANT**: *Make sure these stickers are first added to your project (e.g. as part of an **XCAsset**.)*
+
+    ```swift
+    let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
+
+    premiumModules.sticker.stickers = [
+        "Funny": (1...18).compactMap { UIImage(named: "stickers-funny-\($0)") },
+        "Hilarious": (1...18).compactMap { UIImage(named: "stickers-hilarious-\($0)") },
+        "Extravagant": (1...18).compactMap { UIImage(named: "stickers-extravagant-\($0)") },
+        "Kick-ass": (1...18).compactMap { UIImage(named: "stickers-kickass-\($0)") }
+    ]
+    ```
+
 To discover other module features that may be configured, enabled or disabled, try Xcode's autocompletion with your `StandardModules` or `PremiumModules` objects.
 
 ## Screenshots
