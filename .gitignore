@@ -66,5 +66,6 @@ fastlane/screenshots
 # Jazzy Docs
 docs/
 
-export/
-dependencies/
+# Ignore any XCFramework generation work files.
+artifacts/work/
+artifacts/*.xcarchive
