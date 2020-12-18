@@ -2,6 +2,8 @@
 
 Filestack's [Transformations UI](https://www.filestack.com/docs/transformations/ui/) implementation for iOS and iPadOS.
 
+**Transformations UI** is shipped as a Swift Package and contains Standard and Premium modules.
+
 ## Requirements
 
 * Xcode 12+
@@ -10,32 +12,15 @@ Filestack's [Transformations UI](https://www.filestack.com/docs/transformations/
 
 ## Installation
 
-**Transformations UI** for iOS is available in 2 different flavors:
-
-1. Version with **Standard Modules**.
-2. Version with **Premium Modules** (requires a **Filestack API key** with permission to use this feature.)
-
-The installation procedure will be different depending on what flavor you would like to install.
-
-### 1. Installing Transformations UI with Standard Modules
+To install our Swift Package, please follow the steps below:
 
 - Add `https://github.com/filestack/transformations-ui-ios.git` as a [Swift Package Manager](https://swift.org/package-manager/) dependency to your project.
-
-- Make sure that `TransformationsUI.framework` is set to **Embed & Sign** in your app's target.
-
-### 2. Installing Transformations UI with Premium Modules
-
-- Go to `https://github.com/filestack/transformations-ui-ios/releases` and download the latest binary release available.
-
-- Unzip the file you just downloaded and select everything inside it from the Finder.
-
-- Drag & drop your selection into **Dependencies** making sure that **Copy items if needed** is checked.
-
-- Select your target, expand **Frameworks, Libraries, and Embedded Content** and set all the added frameworks to **Embed & Sign**.
+- When asked to **Choose Package Options**, use the default settings provided by Xcode.
+- When asked to **Add Package**, toggle on all the packages displayed (at the time of writting these were `Pikko`, `TransformationsUI`, `TransformationsUIPremiumAddOns`, `TransformationsShared`, and `UberSegmentedControl`.) and choose the target you would like to add them to on each of them.
 
 ## Usage
 
-### Basic Usage
+### Using TransformationsUI with Standard Modules
 
 1. Import `TransformationsUI`
 
@@ -71,17 +56,12 @@ The installation procedure will be different depending on what flavor you would 
     }
     ```
 
-### Using Standard or Premium Modules
+### Using TransformationsUI with Premium Modules
 
-A newly instantiated `TransformationsUI` object is configured to use **Standard Modules** by default.
-
-In order to use **Premium Modules** instead, first make sure you have downloaded and installed the binary release of `TransformationsUI` into your project as explained above, and then follow these steps:
-
-1. Import `TransformationsUIShared` and `TransformationsUIPremiumAddOns`
+1. Import `TransformationsUIPremiumAddOns`
 
     ```swift
     import TransformationsUI
-    import TransformationsUIShared /* newly added */
     import TransformationsUIPremiumAddOns /* newly added */
     ```
 
@@ -90,12 +70,12 @@ In order to use **Premium Modules** instead, first make sure you have downloaded
 3. Instantiate `TransformationsUI` using a custom `Config` object
 
     ```swift
-    let modules: TransformationsUIShared.EditorModules
+    let config: Config
 
     do {
-        let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
+        let modules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
 
-        modules = premiumModules
+        config = Config(modules: modules)
     } catch {
         // Unable to instantiate `PremiumModules`.
         //
@@ -103,10 +83,9 @@ In order to use **Premium Modules** instead, first make sure you have downloaded
         // to use Transformations UI for the API key you have used above.
         //
         // Falling back to `StandardModules`.
-        modules = StandardModules()
+        config = Config(modules: StandardModules())
     }
 
-    let config = Config(modules: modules)
     let transformationsUI = TransformationsUI(with: config)
     ```
 
@@ -155,7 +134,7 @@ This is the current list of features available per module depending on chosen ed
 - Text Alignment:
     - left, center, right, justify
 
-### Sticker
+### Sticker *(added in 1.1)*
 - Stickers
 
 #### Border
