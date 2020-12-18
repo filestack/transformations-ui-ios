@@ -80,4 +80,4 @@ then
 fi
 
 # Remove $NAME prefix on symbols names (per https://developer.apple.com/forums/thread/123253)
-#find $DEST/$NAME.xcframework -name "*.swiftinterface" -exec sed -i -e "s/$NAME\.//g" {} \;
+find $DEST/$NAME.xcframework -name "*.swiftinterface" -exec sed -i -e "s/$NAME\.//g" {} \;
