@@ -93,54 +93,106 @@ After that, you may follow the same steps as in the previous section (e.g., set 
 
 ## Modules Features
 
-This is the current list of features available per module depending on chosen editor modules family:
+Below you will find an exhaustive list of configurable properties and commands per module.
 
 ### Standard Modules
 
-#### Transform
-- Rotate (clockwise)
-- Crop
-    - Rect
-    - Circle
+#### Transform Module
+
+##### Commands
+
+| Command | Purpose | Options | Group |
+|---|---|---|----|
+| Rotate | Rotate image 90 degrees clockwise | None | `extraCommands` |
+| Crop | |  | `cropCommands` |
+|      | Crop image freely (no constraints) | `type: .rect` | `cropCommands` |
+|      | Circle crop image | `type: .circle` | `cropCommands` |
 
 ### Premium Modules
 
-#### Transform
-- Flip
-- Flop
-- Rotate
-    - Clockwise
-    - Anticlockwise
-- Crop
-    - Rect
-        - Freeform
-        - Fixed
-        - Custom
-    - Circle
-- Resize
-    - Free/Locked ratio
+#### Transform Module
 
-#### Filters
-- Chrome, Fade, Instant, Mono, Noir, Process, Tonal, Transfer
+##### Commands
 
-#### Adjustments
-- Blur, Brightness, Contrast, Gamma (per RGB component), Hue
+| Command | Purpose | Options | Group |
+|---|---|---|----|
+| Resize | Image resize | None | `extraCommands` |
+| Flip | Flip image along the horizontal axis | None | `extraCommands` |
+| Flop | Flip image along the vertical axis | None | `extraCommands` |
+| Rotate | Rotate image 90 degrees | `clockwise: true/false` | `extraCommands` |
+| Crop | |  | `cropCommands` |
+|      | Crop image freely (no constraints) | `type: .rect, aspectRatio: .free` | `cropCommands` |
+|      | Crop image using original image aspect ratio | `type: .rect, aspectRatio: .original` | `cropCommands` |
+|      | Crop image using a custom aspect ratio | `type: .rect, aspectRatio: .custom(CGSize)` | `cropCommands` |
+|      | Circle crop image | `type: .circle` | `cropCommands` |
 
-#### Text
-- Font Family
-- Text Color
-- Text Style
-    - bold, italic, underline
-- Text Alignment:
-    - left, center, right, justify
+#### Filters Module
 
-### Sticker *(added in 1.1)*
-- Stickers
+##### Commands
 
-#### Border
-- Color
-- Width
-- Transparency
+| Command | Purpose | Options | Group |
+|---|---|---|----|
+| None | Does not apply any filter | None | `commands` |
+| Chrome | Applies a chrome effect to image | None | `commands` |
+| Fade | Applies a fade effect to image | None | `commands` |
+| Instant | Applies an instant effect to image | None | `commands` |
+| Mono | Applies a mono effect to image | None | `commands` |
+| Noir | Applies a noir effect to image | None | `commands` |
+| Process | Applies a process effect to image | None | `commands` |
+| Tonal | Applies a tonal effect to image | None | `commands` |
+| Transfer | Applies a transfer effect to image | None | `commands` |
+
+#### Adjustments Module
+
+##### Commands
+
+| Command | Purpose | Options | Group |
+|---|---|---|----|
+| Blur | Applies gaussian blur to image *(interactive)* | None | `commands` |
+| Brightness | Allows adjusting image brightness *(interactive)* | None | `commands` |
+| Contrast | Allows adjusting image contrats *(interactive)* | None | `commands` |
+| Gamma | Allows adjusting RGB gamma components separately *(interactive)*  | None | `commands` |
+| Hue | Allows adjusting image hue 360 degrees *(interactive)* | None | `commands` |
+
+#### Text Module
+
+##### Properties
+
+| Property | Purpose | Example |
+|---|---|---|
+| `availableFontFamilies` | Defines the list of font families available in the editor | `["Courier", "Futura", "Helvetica", "Times New Roman"]`|
+| `defaultFontFamily` | Defines the default font family | `"Helvetica"`|
+| `defaultFontColor` | Defines the default font color | `.white`|
+| `defaultFontStyle` | Defines the default font style | `[.bold, .underline]`|
+| `defaultTextAlignment` | Defines the default text alignment | `.left`|
+
+##### Commands
+
+| Command | Purpose | Options | Group |
+|---|---|---|----|
+| SelectFontFamily | Allows user to select a font family amongst families listed in `availableFontFamilies` | None | `commandsInGroups` |
+| SelectFontColor | Allows user to select a font color | None | `commandsInGroups` |
+| SelectFontStyle | Allows user to toggle font style options (`.bold`, `.italic`, `.underline`) | None | `commandsInGroups` |
+| SelectTextAlignment | Allows user to select text alignment (`.left`, `.center`, `.right`, `.justified`)  | None | `commandsInGroups` |
+
+#### Sticker Module *(added in 1.1)*
+
+##### Properties
+
+| Property | Purpose | Example |
+|---|---|---|
+| `stickers` | Defines the available stickers grouped by stickerset | `["Stickerset 1": [UIImage, UIImage], "Stickerset 2": [UIImage, UIImage]]`|
+
+
+#### Border Module
+
+##### Commands
+
+| Command | Purpose | Options | Group |
+|---|---|---|----|
+| Color | Allows user to select a border color | None | `commands` |
+| Width | Allows user to select a border width | None | `commands` |
+| Transparency | Allows user to set the border transparency amount | None | `commands` |
 
 ## Enabling or Disabling Modules
 
