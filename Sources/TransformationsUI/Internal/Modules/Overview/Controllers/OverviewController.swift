@@ -85,9 +85,7 @@ class OverviewController: NSObject, EditorModuleController {
     private lazy var customRecognizers = [tapGestureRecognizer, doubleTapGestureRecognizer, panGestureRecognizer]
 
     private var selectedObject: ObjectRenderNode? = nil {
-        didSet {
-            select(object: selectedObject)
-        }
+        didSet { select(object: selectedObject) }
     }
 
     private var objectSelectionView: ObjectSelectionView? = nil {
@@ -110,6 +108,7 @@ class OverviewController: NSObject, EditorModuleController {
     required init(renderNode: RenderNode?, module: EditorModule, viewSource: ModuleViewSource) {
         self.module = module as! StandardModules.Overview
         self.viewSource = viewSource
+        self.selectedObject = renderNode as? ObjectRenderNode
 
         super.init()
 
@@ -153,6 +152,7 @@ class OverviewController: NSObject, EditorModuleController {
 
 private extension OverviewController {
     func setup() {
+        select(object: selectedObject)
         objectPanHandler.delegate = self
         addGestureRecognizers()
         viewSource.stackView.addArrangedSubview(objectToolbarFXWrapperView)

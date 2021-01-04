@@ -136,12 +136,13 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
         // Take a snapshot from rendering pipeline and register permanent undo step.
         editorUndoManager?.register(step: renderPipeline.snapshot())
 
-        activate(module: overviewModule)
+        activateOverviewModule()
     }
 
     func discardSelected(sender: UIButton?) {
         activeEditableModuleController?.cancelEditing()
 
+        // Remove transitory steps from undo manager.
         editorUndoManager?.removeTransitorySteps()
 
         // Restore last state from undo manager.
@@ -149,7 +150,7 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
             renderPipeline.restore(from: state)
         }
 
-        activate(module: overviewModule)
+        activateOverviewModule()
     }
 
     // MARK: - TitleToolbar Delegate
@@ -201,6 +202,14 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
 // MARK: - Private Functions
 
 private extension EditorViewController {
+    func activateOverviewModule() {
+        // Try to get object render node from active module.
+        let objectRenderNode = moduleViewController.activeModuleController?.getRenderNode() as? ObjectRenderNode
+
+        // Activate module
+        activate(module: overviewModule, renderNode: objectRenderNode)
+    }
+
     func renderNode(for module: EditorModule) -> RenderNode? {
         if let moduleRenderNode = moduleUUIDToRenderNode[module.uuid] {
             return moduleRenderNode
