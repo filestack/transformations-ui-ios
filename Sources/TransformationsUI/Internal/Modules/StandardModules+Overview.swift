@@ -22,9 +22,106 @@ extension StandardModules {
 
         weak var pipeline: RenderPipeline?
 
-        public init(modules: [EditorModule], pipeline: RenderPipeline) {
+        let commands: [EditorModuleCommand] = [
+            Commands.Edit(),
+            Commands.Delete(),
+            Commands.Reset(),
+            Commands.Back(),
+            Commands.Forward(),
+            Commands.Flip(),
+            Commands.Flop(),
+            Commands.Opacity()
+        ]
+
+        init(modules: [EditorModule], pipeline: RenderPipeline) {
             self.modules = modules
             self.pipeline = pipeline
+        }
+    }
+}
+
+// MARK: - Commands
+
+extension StandardModules.Overview {
+    class Commands {
+        class Edit: PointerHashable, EditorModuleCommand {
+            /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
+            public var title: String = "Edit"
+            /// :nodoc:
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-edit-object")
+        }
+
+        class Delete: PointerHashable, EditorModuleCommand {
+            /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
+            public var title: String = "Delete"
+            /// :nodoc:
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-delete-object")
+        }
+
+        class Reset: PointerHashable, EditorModuleCommand {
+            /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
+            public var title: String = "Reset"
+            /// :nodoc:
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-reset-transform-object")
+        }
+
+        class Back: PointerHashable, EditorModuleCommand {
+            /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
+            public var title: String = "Back"
+            /// :nodoc:
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-send-back-object")
+        }
+
+        class Forward: PointerHashable, EditorModuleCommand {
+            /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
+            public var title: String = "Forward"
+            /// :nodoc:
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-send-forward-object")
+        }
+
+        class Flip: PointerHashable, EditorModuleCommand {
+            /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
+            public var title: String = "Flip"
+            /// :nodoc:
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-flip-object")
+        }
+
+        class Flop: PointerHashable, EditorModuleCommand {
+            /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
+            public var title: String = "Flop"
+            /// :nodoc:
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-flop-object")
+        }
+
+        class Opacity: PointerHashable, EditorModuleCommand, BoundedRangeCommand {
+            /// :nodoc:
+            public let uuid = UUID()
+            /// :nodoc:
+            public let title = "Opacity"
+            /// :nodoc:
+            public lazy var icon: UIImage? = UIImage.fromBundle("icon-opacity-object")
+            /// :nodoc:
+            public let defaultValue: Double = 0
+            /// :nodoc:
+            public let range: Range<Double> = (0..<1)
+            /// :nodoc:
+            public let format: BoundedRangeFormat = .percent
+            /// :nodoc:
+            public lazy var componentLabels: [String] = [title]
         }
     }
 }

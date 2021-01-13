@@ -15,6 +15,8 @@ protocol OverviewControllerDelegate: class {
 }
 
 class OverviewController: NSObject, EditorModuleController {
+    typealias Module = StandardModules.Overview
+
     // MARK: - Internal Properties
 
     weak var delegate: OverviewControllerDelegate?
@@ -32,27 +34,31 @@ class OverviewController: NSObject, EditorModuleController {
         return toolbar
     }()
 
-    private lazy var objectToolbar: StandardToolbar = {
-        let items = [
-            ObjectToolbarItem(title: "Edit", icon: UIImage.fromBundle("icon-edit-object"), type: .edit),
-            ObjectToolbarItem(title: "Delete", icon: UIImage.fromBundle("icon-delete-object"), type: .delete),
-            ObjectToolbarItem(title: "Reset", icon: UIImage.fromBundle("icon-reset-transform-object"), type: .resetTransform),
-            ObjectToolbarItem(title: "Back", icon: UIImage.fromBundle("icon-send-back-object"), type: .sendBack),
-            ObjectToolbarItem(title: "Forward", icon: UIImage.fromBundle("icon-send-forward-object"), type: .sendForward)
-        ]
+    private(set) lazy var objectToolbar: StandardToolbar = {
+        let toolbar = StandardToolbar(items: module.commands, style: .commands)
 
-        let toolbar = StandardToolbar(items: items, style: .commands)
+        toolbar.shouldHighlightSelectedItem = false
         toolbar.delegate = self
 
         return toolbar
     }()
 
+    private(set) var detailToolbar: BoundedRangeCommandToolbar?
+
     private lazy var objectToolbarFXWrapperView: UIView = {
-        let view = VisualFXWrapperView(wrapping: objectToolbar, usingBlurEffect: Constants.ViewEffects.blur)
+        let view = VisualFXWrapperView(wrapping: objectToolbarStack, usingBlurEffect: Constants.ViewEffects.blur)
 
         view.alpha = 0
 
         return view
+    }()
+
+    private(set) lazy var objectToolbarStack: UIStackView = {
+        let stackView = UIStackView(arrangedSubviews: [objectToolbar])
+
+        stackView.axis = .vertical
+
+        return stackView
     }()
 
     private lazy var tapGestureRecognizer: UITapGestureRecognizer = {
@@ -145,6 +151,8 @@ class OverviewController: NSObject, EditorModuleController {
         } else {
             selectedObject = nil
         }
+
+        updateDetailToolbar()
     }
 }
 
@@ -201,6 +209,8 @@ private extension OverviewController {
             removeObjectSelectionView()
             objectToolbarFXWrapperView.alpha = 0
         }
+
+        updateDetailToolbar()
     }
 
     func removeObjectSelectionView() {
@@ -257,13 +267,13 @@ private extension OverviewController {
     func updateObjectToolbar() {
         guard let selectedObject = selectedObject else { return }
 
-        for item in (objectToolbar.descriptibleItems.compactMap { $0 as? ObjectToolbarItem }) {
-            switch item.type {
-            case .resetTransform:
+        for item in objectToolbar.descriptibleItems {
+            switch item {
+            case is Module.Commands.Reset:
                 objectToolbar.setEnabled(item: item, enabled: selectedObject.transform != .identity)
-            case .sendBack:
+            case is Module.Commands.Back:
                 objectToolbar.setEnabled(item: item, enabled: selectedObject.group?.canMoveBack(node: selectedObject) ?? false)
-            case .sendForward:
+            case is Module.Commands.Forward:
                 objectToolbar.setEnabled(item: item, enabled: selectedObject.group?.canMoveForward(node: selectedObject) ?? false)
             default:
                 break
@@ -279,6 +289,42 @@ private extension OverviewController {
     func notifyChange() {
         updateObjectToolbar()
         delegate?.overviewCommittedChange()
+    }
+
+    func setupDetailToolbar(for command: BoundedRangeCommand) {
+        if detailToolbar == nil {
+            let detailToolbar = BoundedRangeCommandToolbar(command: command, style: .boundedRangeCommand)
+            detailToolbar.delegate = self
+            self.detailToolbar = detailToolbar
+        } else if let detailToolbar = detailToolbar, detailToolbar.command.uuid != command.uuid {
+            detailToolbar.command = command
+        } else {
+            detailToolbar?.removeFromSuperview()
+            detailToolbar = nil
+        }
+
+        if let detailToolbar = detailToolbar, !objectToolbarStack.arrangedSubviews.contains(detailToolbar) {
+            // Add detail toolbar before `detailToolbar`
+            if let idx = objectToolbarStack.arrangedSubviews.firstIndex(of: objectToolbar) {
+                objectToolbarStack.insertArrangedSubview(detailToolbar, at: idx)
+            }
+        }
+
+        updateDetailToolbar()
+    }
+
+    func updateDetailToolbar() {
+        guard let detailToolbar = detailToolbar else { return }
+        guard let selectedObject = selectedObject else { return }
+
+        switch detailToolbar.command {
+        case is Module.Commands.Opacity:
+            detailToolbar.updateValue(value: Double(selectedObject.opacity))
+        default:
+            break
+        }
+
+        viewSource.stackView.setNeedsLayout()
     }
 }
 
@@ -324,29 +370,60 @@ extension OverviewController: StandardToolbarDelegate {
         case objectToolbar:
             guard let selectedObject = selectedObject else { return }
 
-            switch (item as? ObjectToolbarItem)?.type {
-            case .edit:
+            switch item {
+            case is Module.Commands.Edit:
                 guard let module = self.module(for: selectedObject) else { return }
                 selectModule(module, renderNode: selectedObject)
-            case .delete:
+            case is Module.Commands.Delete:
                 self.selectedObject = nil
                 selectedObject.group?.remove(node: selectedObject)
                 notifyChange()
-            case .resetTransform:
+            case is Module.Commands.Reset:
                 selectedObject.transform = .identity
                 updateObjectSelectionView()
                 notifyChange()
-            case .sendBack:
+            case is Module.Commands.Back:
                 selectedObject.group?.moveBack(node: selectedObject)
                 notifyChange()
-            case .sendForward:
+            case is Module.Commands.Forward:
                 selectedObject.group?.moveForward(node: selectedObject)
                 notifyChange()
+            case is Module.Commands.Flip:
+                selectedObject.transform = selectedObject.transform.scaledBy(x: -1, y: 1)
+                updateObjectSelectionView()
+                notifyChange()
+            case is Module.Commands.Flop:
+                selectedObject.transform = selectedObject.transform.scaledBy(x: 1, y: -1)
+                updateObjectSelectionView()
+                notifyChange()
+            case is Module.Commands.Opacity:
+                guard let boundedRangeCommand = item as? BoundedRangeCommand else { return }
+
+                setupDetailToolbar(for: boundedRangeCommand)
             default:
                 break
             }
         default:
             break
         }
+    }
+}
+
+// MARK: - BoundedRangeCommandToolbarDelegate Conformance
+
+extension OverviewController: BoundedRangeCommandToolbarDelegate {
+    func toolbarSliderChanged(slider: UISlider, for command: BoundedRangeCommand) {
+        guard let selectedObject = selectedObject else { return }
+
+        switch command {
+        case is Module.Commands.Opacity:
+            selectedObject.opacity = CGFloat(slider.value)
+        default:
+            break
+        }
+    }
+
+    func toolbarSliderFinishedChanging(slider: UISlider, for command: BoundedRangeCommand) {
+        notifyChange()
     }
 }
