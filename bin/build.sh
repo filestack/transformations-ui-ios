@@ -9,7 +9,7 @@ DEST=$(dirname "$DIR")/artifacts
 rm -Rf $DEST/*.xcarchive $DEST/*.xcframework
 
 # Build all the required binary dependencies.
-for PACKAGE in "TransformationsUIShared" "TransformationsUIPremiumAddOns" "UberSegmentedControl" "Pikko"; do
+for PACKAGE in "TransformationsUIShared" "TransformationsUIPremiumAddOns" "FilestackSDK" "Filestack" "UberSegmentedControl" "Pikko"; do
 
     case $PACKAGE in
     "TransformationsUIShared")
@@ -18,6 +18,14 @@ for PACKAGE in "TransformationsUIShared" "TransformationsUIPremiumAddOns" "UberS
     ;;
     "TransformationsUIPremiumAddOns")
     REPO="transformations-ui-premium-addons-ios"
+    OWNER="filestack"
+    ;;
+    "FilestackSDK")
+    REPO="filestack-swift"
+    OWNER="filestack"
+    ;;
+    "Filestack")
+    REPO="filestack-ios"
     OWNER="filestack"
     ;;
     "UberSegmentedControl")

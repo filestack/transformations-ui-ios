@@ -1,0 +1,326 @@
+// swift-interface-format-version: 1.0
+// swift-compiler-version: Apple Swift version 5.3.2 (swiftlang-1200.0.45 clang-1200.0.32.28)
+// swift-module-flags: -target arm64-apple-ios11.0 -enable-objc-interop -enable-library-evolution -swift-version 5 -enforce-exclusivity=checked -O -module-name Filestack
+import AVFoundation.AVAssetExportSession
+import AVFoundation
+import AVKit
+import FilestackSDK
+import Foundation
+import Foundation/*.Bundle*/
+import MobileCoreServices
+import Photos
+import PhotosUI
+import SafariServices
+import Swift
+import UIKit.UIImage
+import UIKit.UIImagePickerController
+import UIKit
+import MobileCoreServices.UTType
+import Zip
+public typealias FolderListCompletionHandler = (Filestack.FolderListResponse) -> Swift.Void
+public typealias StoreCompletionHandler = (Filestack.StoreResponse) -> Swift.Void
+public typealias LogoutCompletionHandler = (Filestack.LogoutResponse) -> Swift.Void
+public typealias PrefetchCompletionHandler = (Filestack.PrefetchResponse) -> Swift.Void
+public enum ClientError : Swift.Error {
+  case authenticationFailed
+  public static func == (a: Filestack.ClientError, b: Filestack.ClientError) -> Swift.Bool
+  public var hashValue: Swift.Int {
+    get
+  }
+  public func hash(into hasher: inout Swift.Hasher)
+}
+extension ClientError : Foundation.LocalizedError {
+  public var errorDescription: Swift.String? {
+    get
+  }
+}
+@objc(FSCloudProvider) public enum CloudProvider : Swift.UInt, Swift.CustomStringConvertible {
+  case facebook
+  case instagram
+  case googleDrive
+  case dropbox
+  case box
+  case gitHub
+  case gmail
+  case googlePhotos
+  case oneDrive
+  case amazonDrive
+  case unsplash
+  case customSource
+  public typealias RawValue = Swift.UInt
+  public init?(rawValue: Swift.UInt)
+  public var rawValue: Swift.UInt {
+    get
+  }
+}
+extension CloudProvider {
+  public var searchBased: Swift.Bool {
+    get
+  }
+}
+extension CloudProvider {
+  public var description: Swift.String {
+    get
+  }
+}
+@objc(FSImageURLExportPreset) public enum ImageURLExportPreset : Swift.Int {
+  case compatible
+  case current
+  public typealias RawValue = Swift.Int
+  public init?(rawValue: Swift.Int)
+  public var rawValue: Swift.Int {
+    get
+  }
+}
+@objc(FSPhotosPickerFilter) public enum PhotosPickerFilter : Swift.UInt {
+  case images
+  case livePhotos
+  case videos
+  public typealias RawValue = Swift.UInt
+  public init?(rawValue: Swift.UInt)
+  public var rawValue: Swift.UInt {
+    get
+  }
+}
+extension Client {
+  @available(*, deprecated, message: "Marked for removal in version 3.0. Please use upload(using:options:queue:uploadProgress:completionHandler:) instead")
+  @discardableResult
+  @objc dynamic public func upload(from localURL: Foundation.URL, storeOptions: FilestackSDK.StorageOptions = .defaults, useIntelligentIngestionIfAvailable: Swift.Bool = true, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping (FilestackSDK.JSONResponse?) -> Swift.Void) -> FilestackSDK.Uploader
+  @available(*, deprecated, message: "Marked for removal in version 3.0. Please use uploadFromImagePicker(viewController:sourceType:options:queue:uploadProgress:completionHandler:) instead")
+  @discardableResult
+  @objc dynamic public func uploadFromImagePicker(viewController: UIKit.UIViewController, sourceType: UIKit.UIImagePickerController.SourceType, storeOptions: FilestackSDK.StorageOptions = .defaults, useIntelligentIngestionIfAvailable: Swift.Bool = true, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping ([FilestackSDK.JSONResponse]) -> Swift.Void) -> FilestackSDK.Cancellable & FilestackSDK.Monitorizable
+  @available(*, deprecated, message: "Marked for removal in version 3.0. Please use uploadFromDocumentPicker(viewController:options:queue:uploadProgress:completionHandler:) instead")
+  @discardableResult
+  @objc dynamic public func uploadFromDocumentPicker(viewController: UIKit.UIViewController, storeOptions: FilestackSDK.StorageOptions = .defaults, useIntelligentIngestionIfAvailable: Swift.Bool = true, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping ([FilestackSDK.JSONResponse]) -> Swift.Void) -> FilestackSDK.Cancellable & FilestackSDK.Monitorizable
+}
+extension Client {
+  @discardableResult
+  @objc dynamic public func uploadURL(using localURL: Foundation.NSURL, options: FilestackSDK.UploadOptions = .defaults, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping (FilestackSDK.JSONResponse) -> Swift.Void) -> FilestackSDK.Uploader
+  @discardableResult
+  @objc dynamic public func uploadMultipleURLs(using localURLs: [Foundation.NSURL], options: FilestackSDK.UploadOptions = .defaults, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping ([FilestackSDK.JSONResponse]) -> Swift.Void) -> FilestackSDK.Uploader
+  @discardableResult
+  @objc dynamic public func uploadData(using data: Foundation.NSData, options: FilestackSDK.UploadOptions = .defaults, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping (FilestackSDK.JSONResponse) -> Swift.Void) -> FilestackSDK.Uploader
+  @discardableResult
+  @objc dynamic public func uploadMultipleData(using multipleData: [Foundation.NSData], options: FilestackSDK.UploadOptions = .defaults, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping ([FilestackSDK.JSONResponse]) -> Swift.Void) -> FilestackSDK.Uploader
+}
+@objc(FSFilestackClient) public class Client : ObjectiveC.NSObject {
+  @objc final public let apiKey: Swift.String
+  @objc final public let security: FilestackSDK.Security?
+  @objc final public let config: Filestack.Config
+  @objc public var sdkClient: FilestackSDK.Client {
+    @objc get
+  }
+  @objc public init(apiKey: Swift.String, security: FilestackSDK.Security? = nil, config: Filestack.Config? = nil, token: Swift.String? = nil)
+  @objc public func picker(storeOptions: FilestackSDK.StorageOptions = .defaults) -> Filestack.PickerNavigationController
+  @discardableResult
+  public func upload(using uploadable: FilestackSDK.Uploadable, options: FilestackSDK.UploadOptions = .defaults, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping (FilestackSDK.JSONResponse) -> Swift.Void) -> FilestackSDK.Uploader
+  @discardableResult
+  public func upload(using uploadables: [FilestackSDK.Uploadable], options: FilestackSDK.UploadOptions = .defaults, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping ([FilestackSDK.JSONResponse]) -> Swift.Void) -> FilestackSDK.DeferredAdd & FilestackSDK.Uploader
+  @discardableResult
+  public func uploadFromImagePicker(viewController: UIKit.UIViewController, sourceType: UIKit.UIImagePickerController.SourceType, options: FilestackSDK.UploadOptions = .defaults, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping ([FilestackSDK.JSONResponse]) -> Swift.Void) -> FilestackSDK.Cancellable & FilestackSDK.Monitorizable
+  @discardableResult
+  public func uploadFromDocumentPicker(viewController: UIKit.UIViewController, options: FilestackSDK.UploadOptions = .defaults, queue: Dispatch.DispatchQueue = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping ([FilestackSDK.JSONResponse]) -> Swift.Void) -> FilestackSDK.Cancellable & FilestackSDK.Monitorizable
+  @discardableResult
+  @objc public func folderList(provider: Filestack.CloudProvider, path: Swift.String, pageToken: Swift.String? = nil, queue: Dispatch.DispatchQueue = .main, completionHandler: @escaping Filestack.FolderListCompletionHandler) -> FilestackSDK.Cancellable
+  @discardableResult
+  @objc public func store(provider: Filestack.CloudProvider, path: Swift.String, storeOptions: FilestackSDK.StorageOptions = .defaults, queue: Dispatch.DispatchQueue = .main, completionHandler: @escaping Filestack.StoreCompletionHandler) -> FilestackSDK.Cancellable & FilestackSDK.Monitorizable
+  @objc public func logout(provider: Filestack.CloudProvider, completionHandler: @escaping Filestack.LogoutCompletionHandler)
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_inheritsConvenienceInitializers @objc(FSConfig) public class Config : ObjectiveC.NSObject {
+  @objc public static var builder: Filestack.Config.Builder
+  @objc public var showEditorBeforeUpload: Swift.Bool
+  @objc public var callbackURLScheme: Swift.String?
+  @objc public var cloudThumbnailCachePolicy: Foundation.URLRequest.CachePolicy
+  @objc public static let kMaximumSelectionNoLimit: Swift.UInt
+  @objc public var maximumSelectionAllowed: Swift.UInt
+  @objc public var modalPresentationStyle: UIKit.UIModalPresentationStyle
+  @objc public var availableCloudSources: [Filestack.CloudSource]
+  @objc public var availableLocalSources: [Filestack.LocalSource]
+  @objc public var documentPickerAllowedUTIs: [Swift.String]
+  @objc public var cloudSourceAllowedUTIs: [Swift.String]
+  @objc public var imageURLExportPreset: Filestack.ImageURLExportPreset
+  @objc public var imageExportQuality: Swift.Float
+  @objc public var videoExportPreset: Swift.String
+  @objc public var videoQuality: UIKit.UIImagePickerController.QualityType
+  public var photosPickerFilter: [Filestack.PhotosPickerFilter]
+  @objc override dynamic public init()
+  @objc deinit
+}
+extension Config {
+  @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @objc(FSConfigBuilder) public class Builder : ObjectiveC.NSObject {
+    @objc public func with(callbackURLScheme: Swift.String) -> Self
+    @objc public func with(cloudThumbnailCachePolicy: Foundation.URLRequest.CachePolicy) -> Self
+    @objc public func with(maximumSelectionLimit: Swift.UInt) -> Self
+    @objc public func withNoSelectionLimit() -> Self
+    @objc public func with(modalPresentationStyle: UIKit.UIModalPresentationStyle) -> Self
+    @objc public func with(availableCloudSources: [Filestack.CloudSource]) -> Self
+    @objc public func with(availableLocalSources: [Filestack.LocalSource]) -> Self
+    @objc public func with(documentPickerAllowedUTIs: [Swift.String]) -> Self
+    @objc public func with(cloudSourceAllowedUTIs: [Swift.String]) -> Self
+    @objc public func with(imageURLExportPreset: Filestack.ImageURLExportPreset) -> Self
+    @objc public func with(imageExportQuality: Swift.Float) -> Self
+    @objc public func with(videoExportPreset: Swift.String) -> Self
+    @objc public func with(videoQuality: UIKit.UIImagePickerController.QualityType) -> Self
+    @objc public func withEditorEnabled() -> Self
+    public func with(photosPickerFilter: [Filestack.PhotosPickerFilter]) -> Self
+    @objc public func build() -> Filestack.Config
+    @objc deinit
+  }
+}
+extension Config {
+  @available(*, deprecated, renamed: "callbackURLScheme", message: "Marked for removal in version 3.0")
+  @objc dynamic public var appURLScheme: Swift.String? {
+    @objc get
+    @objc set
+  }
+}
+extension Config.Builder {
+  @available(*, deprecated, renamed: "with(callbackURLScheme:)", message: "Marked for removal in version 3.0")
+  @objc dynamic public func with(appURLScheme: Swift.String) -> Self
+  @available(*, deprecated, renamed: "with(callbackURLScheme:)", message: "Marked for removal in version 3.0")
+  public func with(appUrlScheme: Swift.String) -> Self
+  @available(*, deprecated, renamed: "with(imageURLExportPreset:)", message: "Marked for removal in version 3.0")
+  public func with(imageUrlExportPreset: Filestack.ImageURLExportPreset) -> Self
+}
+@objc(FSCloudResponse) public protocol CloudResponse {
+  @objc var error: Swift.Error? { get }
+  @objc var authURL: Foundation.URL? { get }
+}
+@_hasMissingDesignatedInitializers @objc(FSFolderListResponse) public class FolderListResponse : ObjectiveC.NSObject, Filestack.CloudResponse {
+  @objc final public let contents: [[Swift.String : Any]]?
+  @objc final public let nextToken: Swift.String?
+  @objc final public let authURL: Foundation.URL?
+  @objc final public let error: Swift.Error?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(FSLogoutResponse) public class LogoutResponse : ObjectiveC.NSObject {
+  @objc final public let error: Swift.Error?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(FSPrefetchResponse) public class PrefetchResponse : ObjectiveC.NSObject {
+  @objc final public let contents: [Swift.String : Any]?
+  @objc final public let error: Swift.Error?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_hasMissingDesignatedInitializers @objc(FSStoreResponse) public class StoreResponse : ObjectiveC.NSObject, Filestack.CloudResponse {
+  @objc final public let contents: [Swift.String : Any]?
+  @objc final public let authURL: Foundation.URL?
+  @objc final public let error: Swift.Error?
+  @objc override dynamic public init()
+  @objc deinit
+}
+@_inheritsConvenienceInitializers @objc(FSPickerNavigationController) public class PickerNavigationController : UIKit.UINavigationController {
+  @objc public var stylizer: Filestack.Stylizer {
+    @objc get
+    @objc set
+  }
+  @objc weak public var pickerDelegate: Filestack.PickerNavigationControllerDelegate?
+  @objc deinit
+  @available(iOS 5.0, *)
+  @objc override dynamic public init(navigationBarClass: Swift.AnyClass?, toolbarClass: Swift.AnyClass?)
+  @objc override dynamic public init(rootViewController: UIKit.UIViewController)
+  @objc override dynamic public init(nibName nibNameOrNil: Swift.String?, bundle nibBundleOrNil: Foundation.Bundle?)
+  @objc required dynamic public init?(coder aDecoder: Foundation.NSCoder)
+}
+@objc(FSPickerNavigationControllerDelegate) public protocol PickerNavigationControllerDelegate : AnyObject {
+  @objc func pickerStoredFile(picker: Filestack.PickerNavigationController, response: Filestack.StoreResponse)
+  @objc func pickerUploadedFiles(picker: Filestack.PickerNavigationController, responses: [FilestackSDK.JSONResponse])
+  @objc optional func pickerReportedUploadProgress(picker: Filestack.PickerNavigationController, progress: Swift.Float)
+}
+extension PickerNavigationController : Filestack.StylizerDelegate {
+  @objc dynamic public func updateStyle()
+}
+@objc(FSLocalProvider) public enum LocalProvider : Swift.UInt {
+  case camera
+  case photoLibrary
+  case documents
+  public typealias RawValue = Swift.UInt
+  public init?(rawValue: Swift.UInt)
+  public var rawValue: Swift.UInt {
+    get
+  }
+}
+@objc(FSCloudSource) public class CloudSource : ObjectiveC.NSObject {
+  @objc public init(description: Swift.String, image: UIKit.UIImage, provider: Filestack.CloudProvider)
+  @objc public static var facebook: Filestack.CloudSource
+  @objc public static var instagram: Filestack.CloudSource
+  @objc public static var googleDrive: Filestack.CloudSource
+  @objc public static var dropbox: Filestack.CloudSource
+  @objc public static var box: Filestack.CloudSource
+  @objc public static var gitHub: Filestack.CloudSource
+  @objc public static var gmail: Filestack.CloudSource
+  @objc public static var googlePhotos: Filestack.CloudSource
+  @objc public static var oneDrive: Filestack.CloudSource
+  @objc public static var amazonDrive: Filestack.CloudSource
+  @objc public static var unsplash: Filestack.CloudSource
+  @objc public static var customSource: Filestack.CloudSource
+  @objc public static func all() -> [Filestack.CloudSource]
+  @objc public static func title() -> Swift.String
+  @objc override dynamic public var description: Swift.String {
+    @objc get
+  }
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(FSLocalSource) public class LocalSource : ObjectiveC.NSObject {
+  @objc public init(description: Swift.String, image: UIKit.UIImage, provider: Filestack.LocalProvider)
+  @objc public static var camera: Filestack.LocalSource
+  @objc public static var photoLibrary: Filestack.LocalSource
+  @objc public static var documents: Filestack.LocalSource
+  @objc public static func all() -> [Filestack.LocalSource]
+  @objc public static func title() -> Swift.String
+  @objc deinit
+  @objc override dynamic public init()
+}
+@_hasMissingDesignatedInitializers @objc(FSStylizer) public class Stylizer : ObjectiveC.NSObject {
+  @discardableResult
+  @objc public func setSourceTable(tintColor: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(cellTextColor: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(cellTextFont: UIKit.UIFont) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(cellBackgroundColor: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(headerTextColor: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(headerTextFont: UIKit.UIFont) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(headerBackgroundColor: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(separatorColor: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(tableBackground: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setSourceTable(title: Swift.String) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setNavBar(tintColor: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setNavBar(titleColor: UIKit.UIColor) -> Filestack.Stylizer
+  @discardableResult
+  @objc public func setNavBar(style: UIKit.UIBarStyle) -> Filestack.Stylizer
+  @objc override dynamic public init()
+  @objc deinit
+}
+@objc(FSStylizerDelegate) public protocol StylizerDelegate : AnyObject {
+  @objc func updateStyle()
+}
+extension Filestack.ImageURLExportPreset : Swift.Equatable {}
+extension Filestack.ImageURLExportPreset : Swift.Hashable {}
+extension Filestack.ImageURLExportPreset : Swift.RawRepresentable {}
+extension Filestack.ClientError : Swift.Equatable {}
+extension Filestack.ClientError : Swift.Hashable {}
+extension Filestack.CloudProvider : Swift.Equatable {}
+extension Filestack.CloudProvider : Swift.Hashable {}
+extension Filestack.CloudProvider : Swift.RawRepresentable {}
+extension Filestack.PhotosPickerFilter : Swift.Equatable {}
+extension Filestack.PhotosPickerFilter : Swift.Hashable {}
+extension Filestack.PhotosPickerFilter : Swift.RawRepresentable {}
+extension Filestack.LocalProvider : Swift.Equatable {}
+extension Filestack.LocalProvider : Swift.Hashable {}
+extension Filestack.LocalProvider : Swift.RawRepresentable {}

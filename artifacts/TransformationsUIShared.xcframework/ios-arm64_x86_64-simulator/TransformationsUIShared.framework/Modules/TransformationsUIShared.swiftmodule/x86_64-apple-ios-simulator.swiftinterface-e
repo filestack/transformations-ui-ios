@@ -292,6 +292,7 @@ public protocol ObjectRenderNode : TransformationsUIShared.RenderGroupChildNode,
   var center: CoreGraphics.CGPoint { get set }
   var bounds: CoreGraphics.CGRect { get set }
   var transform: CoreGraphics.CGAffineTransform { get set }
+  var opacity: CoreGraphics.CGFloat { get set }
 }
 public typealias Snapshot = [Swift.String : Any?]
 public protocol Snapshotable {

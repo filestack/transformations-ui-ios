@@ -21,6 +21,14 @@ let package = Package(
             targets: ["TransformationsUIPremiumAddOns"]
         ),
         .library(
+            name: "FilestackSDK",
+            targets: ["FilestackSDK"]
+        ),
+        .library(
+            name: "Filestack",
+            targets: ["Filestack"]
+        ),
+        .library(
             name: "UberSegmentedControl",
             targets: ["UberSegmentedControl"]
         ),
@@ -29,6 +37,7 @@ let package = Package(
             targets: ["Pikko"]
         ),
     ],
+    dependencies: [],
     targets: [
         .target(
             name: "TransformationsUI",
@@ -41,6 +50,14 @@ let package = Package(
         .binaryTarget(
             name: "TransformationsUIPremiumAddOns",
             path: "artifacts/TransformationsUIPremiumAddOns.xcframework"
+        ),
+        .binaryTarget(
+            name: "FilestackSDK",
+            path: "artifacts/FilestackSDK.xcframework"
+        ),
+        .binaryTarget(
+            name: "Filestack",
+            path: "artifacts/Filestack.xcframework"
         ),
         .binaryTarget(
             name: "UberSegmentedControl",
