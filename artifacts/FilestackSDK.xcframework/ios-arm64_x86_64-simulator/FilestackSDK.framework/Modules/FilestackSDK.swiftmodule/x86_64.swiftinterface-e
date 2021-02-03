@@ -5,7 +5,6 @@ import CommonCrypto
 import Foundation
 import Foundation/*.Bundle*/
 import MobileCoreServices
-@_exported import ObjcDefs
 import QuartzCore
 import Swift
 import UIKit
@@ -35,8 +34,20 @@ extension Error : Foundation.LocalizedError {
     get
   }
 }
-public typealias MetadataOptions = ObjcDefs.FSMetadataOptions
-public typealias PolicyCall = ObjcDefs.FSPolicyCall
+public struct MetadataOptions : Swift.OptionSet {
+  public let rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  public typealias Element = FilestackSDK.MetadataOptions
+  public typealias ArrayLiteralElement = FilestackSDK.MetadataOptions
+  public typealias RawValue = Swift.Int
+}
+public struct PolicyCall : Swift.OptionSet {
+  public let rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  public typealias Element = FilestackSDK.PolicyCall
+  public typealias ArrayLiteralElement = FilestackSDK.PolicyCall
+  public typealias RawValue = Swift.Int
+}
 @objc(FSStorageAccess) public enum StorageAccess : Swift.UInt, Swift.CustomStringConvertible {
   case `private`
   case `public`
@@ -264,7 +275,13 @@ extension TransformPageOrientation {
     get
   }
 }
-public typealias TransformPosition = ObjcDefs.FSTransformPosition
+public struct TransformPosition : Swift.OptionSet {
+  public let rawValue: Swift.Int
+  public init(rawValue: Swift.Int)
+  public typealias Element = FilestackSDK.TransformPosition
+  public typealias ArrayLiteralElement = FilestackSDK.TransformPosition
+  public typealias RawValue = Swift.Int
+}
 @objc(FSTransformShapeType) public enum TransformShapeType : Swift.UInt, Swift.CustomStringConvertible {
   case rect
   case oval
@@ -438,7 +455,7 @@ extension FileLink {
   @objc dynamic public func getContent(parameters: [Swift.String : Any]? = nil, queue: Dispatch.DispatchQueue? = .main, downloadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping (FilestackSDK.DataResponse) -> Swift.Void)
   @objc dynamic public func getTags(queue: Dispatch.DispatchQueue? = .main, completionHandler: @escaping (FilestackSDK.JSONResponse) -> Swift.Void)
   @objc dynamic public func getSafeForWork(queue: Dispatch.DispatchQueue? = .main, completionHandler: @escaping (FilestackSDK.JSONResponse) -> Swift.Void)
-  @objc dynamic public func getMetadata(options: FilestackSDK.MetadataOptions, queue: Dispatch.DispatchQueue? = .main, completionHandler: @escaping (FilestackSDK.JSONResponse) -> Swift.Void)
+  public func getMetadata(options: FilestackSDK.MetadataOptions, queue: Dispatch.DispatchQueue? = .main, completionHandler: @escaping (FilestackSDK.JSONResponse) -> Swift.Void)
   @objc dynamic public func download(destinationURL: Foundation.URL, parameters: [Swift.String : Any]? = nil, queue: Dispatch.DispatchQueue? = .main, downloadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping (FilestackSDK.DownloadResponse) -> Swift.Void)
   @objc dynamic public func delete(parameters: [Swift.String : Any]? = nil, queue: Dispatch.DispatchQueue? = .main, completionHandler: @escaping (FilestackSDK.DataResponse) -> Swift.Void)
   @objc dynamic public func overwrite(parameters: [Swift.String : Any]? = nil, fileURL: Foundation.URL, queue: Dispatch.DispatchQueue? = .main, uploadProgress: ((Foundation.Progress) -> Swift.Void)? = nil, completionHandler: @escaping (FilestackSDK.DataResponse) -> Swift.Void)
@@ -475,7 +492,7 @@ extension JSONResponse {
   public var path: Swift.String?
   public var container: Swift.String?
   @objc convenience public init(expiry: Foundation.Date)
-  @objc convenience public init(expiry: Foundation.Date, call: FilestackSDK.PolicyCall)
+  convenience public init(expiry: Foundation.Date, call: FilestackSDK.PolicyCall)
   @nonobjc public init(expiry: Foundation.Date, call: FilestackSDK.PolicyCall? = nil, handle: Swift.String? = nil, url: Swift.String? = nil, maxSize: Swift.UInt? = nil, minSize: Swift.UInt? = nil, path: Swift.String? = nil, container: Swift.String? = nil)
   @objc deinit
   @objc override dynamic public init()
@@ -718,7 +735,7 @@ extension AnimateTransform {
   @discardableResult
   @objc dynamic public func fit(_ value: FilestackSDK.TransformFit) -> Self
   @discardableResult
-  @objc dynamic public func align(_ value: FilestackSDK.TransformPosition) -> Self
+  public func align(_ value: FilestackSDK.TransformPosition) -> Self
   @discardableResult
   @objc dynamic public func background(_ value: Swift.String) -> Self
 }
@@ -1347,7 +1364,7 @@ extension WatermarkTransform {
   @discardableResult
   @objc dynamic public func size(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func position(_ value: FilestackSDK.TransformPosition) -> Self
+  public func position(_ value: FilestackSDK.TransformPosition) -> Self
 }
 @_hasMissingDesignatedInitializers @objc(FSZipTransform) public class ZipTransform : FilestackSDK.Transform {
   @objc public init()

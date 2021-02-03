@@ -35,9 +35,7 @@ for PLATFORM in "iOS" "iOS Simulator"; do
 
     FRAMEWORK_PATH="$ARCHIVE_PATH.xcarchive/Products/usr/local/lib/$NAME.framework"
     MODULES_PATH="$FRAMEWORK_PATH/Modules"
-    HEADERS_PATH="$FRAMEWORK_PATH/Headers"
     mkdir -p $MODULES_PATH
-    mkdir -p $HEADERS_PATH
 
     BUILD_PRODUCTS_PATH="$SRCROOT/.build/Build/Intermediates.noindex/ArchiveIntermediates/$NAME/BuildProductsPath"
     RELEASE_PATH="$BUILD_PRODUCTS_PATH/$RELEASE_FOLDER"
@@ -51,8 +49,7 @@ for PLATFORM in "iOS" "iOS Simulator"; do
     else
         # In case there are no modules, assume C/ObjC library and create module map
         echo "module $NAME { export * }" > $MODULES_PATH/module.modulemap
-        # Copy headers
-        cp -r $SRCROOT/Sources/$NAME/include/*.h $HEADERS_PATH
+        # TODO: Copy headers
     fi
 
     # Copy resources bundle, if exists
