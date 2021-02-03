@@ -35,6 +35,24 @@ extension Error : Foundation.LocalizedError {
   }
 }
 public struct MetadataOptions : Swift.OptionSet {
+  public static let size: MetadataOptions
+  public static let mimeType: MetadataOptions
+  public static let fileName: MetadataOptions
+  public static let width: MetadataOptions
+  public static let height: MetadataOptions
+  public static let uploaded: MetadataOptions
+  public static let writeable: MetadataOptions
+  public static let cloud: MetadataOptions
+  public static let sourceURL: MetadataOptions
+  public static let MD5: MetadataOptions
+  public static let SHA224: MetadataOptions
+  public static let SHA256: MetadataOptions
+  public static let SHA384: MetadataOptions
+  public static let SHA512: MetadataOptions
+  public static let location: MetadataOptions
+  public static let path: MetadataOptions
+  public static let container: MetadataOptions
+  public static let exif: MetadataOptions
   public let rawValue: Swift.Int
   public init(rawValue: Swift.Int)
   public typealias Element = MetadataOptions
@@ -42,6 +60,16 @@ public struct MetadataOptions : Swift.OptionSet {
   public typealias RawValue = Swift.Int
 }
 public struct PolicyCall : Swift.OptionSet {
+  public static let pick: PolicyCall
+  public static let read: PolicyCall
+  public static let stat: PolicyCall
+  public static let write: PolicyCall
+  public static let writeURL: PolicyCall
+  public static let store: PolicyCall
+  public static let convert: PolicyCall
+  public static let remove: PolicyCall
+  public static let exif: PolicyCall
+  public static let runWorkflow: PolicyCall
   public let rawValue: Swift.Int
   public init(rawValue: Swift.Int)
   public typealias Element = PolicyCall
@@ -276,6 +304,12 @@ extension TransformPageOrientation {
   }
 }
 public struct TransformPosition : Swift.OptionSet {
+  public static let top: TransformPosition
+  public static let middle: TransformPosition
+  public static let bottom: TransformPosition
+  public static let left: TransformPosition
+  public static let center: TransformPosition
+  public static let right: TransformPosition
   public let rawValue: Swift.Int
   public init(rawValue: Swift.Int)
   public typealias Element = TransformPosition

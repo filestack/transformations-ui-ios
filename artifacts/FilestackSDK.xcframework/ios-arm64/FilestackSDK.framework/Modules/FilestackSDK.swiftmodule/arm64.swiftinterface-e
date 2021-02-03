@@ -35,6 +35,24 @@ extension Error : Foundation.LocalizedError {
   }
 }
 public struct MetadataOptions : Swift.OptionSet {
+  public static let size: FilestackSDK.MetadataOptions
+  public static let mimeType: FilestackSDK.MetadataOptions
+  public static let fileName: FilestackSDK.MetadataOptions
+  public static let width: FilestackSDK.MetadataOptions
+  public static let height: FilestackSDK.MetadataOptions
+  public static let uploaded: FilestackSDK.MetadataOptions
+  public static let writeable: FilestackSDK.MetadataOptions
+  public static let cloud: FilestackSDK.MetadataOptions
+  public static let sourceURL: FilestackSDK.MetadataOptions
+  public static let MD5: FilestackSDK.MetadataOptions
+  public static let SHA224: FilestackSDK.MetadataOptions
+  public static let SHA256: FilestackSDK.MetadataOptions
+  public static let SHA384: FilestackSDK.MetadataOptions
+  public static let SHA512: FilestackSDK.MetadataOptions
+  public static let location: FilestackSDK.MetadataOptions
+  public static let path: FilestackSDK.MetadataOptions
+  public static let container: FilestackSDK.MetadataOptions
+  public static let exif: FilestackSDK.MetadataOptions
   public let rawValue: Swift.Int
   public init(rawValue: Swift.Int)
   public typealias Element = FilestackSDK.MetadataOptions
@@ -42,6 +60,16 @@ public struct MetadataOptions : Swift.OptionSet {
   public typealias RawValue = Swift.Int
 }
 public struct PolicyCall : Swift.OptionSet {
+  public static let pick: FilestackSDK.PolicyCall
+  public static let read: FilestackSDK.PolicyCall
+  public static let stat: FilestackSDK.PolicyCall
+  public static let write: FilestackSDK.PolicyCall
+  public static let writeURL: FilestackSDK.PolicyCall
+  public static let store: FilestackSDK.PolicyCall
+  public static let convert: FilestackSDK.PolicyCall
+  public static let remove: FilestackSDK.PolicyCall
+  public static let exif: FilestackSDK.PolicyCall
+  public static let runWorkflow: FilestackSDK.PolicyCall
   public let rawValue: Swift.Int
   public init(rawValue: Swift.Int)
   public typealias Element = FilestackSDK.PolicyCall
@@ -276,6 +304,12 @@ extension TransformPageOrientation {
   }
 }
 public struct TransformPosition : Swift.OptionSet {
+  public static let top: FilestackSDK.TransformPosition
+  public static let middle: FilestackSDK.TransformPosition
+  public static let bottom: FilestackSDK.TransformPosition
+  public static let left: FilestackSDK.TransformPosition
+  public static let center: FilestackSDK.TransformPosition
+  public static let right: FilestackSDK.TransformPosition
   public let rawValue: Swift.Int
   public init(rawValue: Swift.Int)
   public typealias Element = FilestackSDK.TransformPosition

@@ -16,7 +16,7 @@ import UIKit.UIImage
 import UIKit.UIImagePickerController
 import UIKit
 import MobileCoreServices.UTType
-import Zip
+import ZIPFoundation
 public typealias FolderListCompletionHandler = (Filestack.FolderListResponse) -> Swift.Void
 public typealias StoreCompletionHandler = (Filestack.StoreResponse) -> Swift.Void
 public typealias LogoutCompletionHandler = (Filestack.LogoutResponse) -> Swift.Void
