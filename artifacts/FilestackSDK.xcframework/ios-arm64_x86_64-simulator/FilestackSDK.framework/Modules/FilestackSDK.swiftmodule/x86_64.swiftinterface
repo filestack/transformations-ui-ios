@@ -538,7 +538,7 @@ extension StorageOptions {
     @objc get
   }
 }
-@_hasMissingDesignatedInitializers @objc(FSTransformable) public class Transformable : ObjectiveC.NSObject {
+@objc @_hasMissingDesignatedInitializers public class Transformable : ObjectiveC.NSObject {
   @objc final public let apiKey: Swift.String
   @objc final public let security: Security?
   @objc public var handle: Swift.String? {
@@ -561,7 +561,7 @@ extension StorageOptions {
 }
 extension Transformable {
   @discardableResult
-  @objc(add:) dynamic public func add(transform: Transform) -> Self
+  public func add(transform: Transform) -> Self
   @discardableResult
   @objc dynamic public func debug() -> Self
   @discardableResult
@@ -639,192 +639,192 @@ public protocol Uploadable {
   @objc var uuid: Foundation.UUID { get }
   @objc var state: UploadState { get }
 }
-@_hasMissingDesignatedInitializers @objc(FSASCIITransform) public class ASCIITransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class ASCIITransform : Transform {
+  public init()
   @objc deinit
 }
 extension ASCIITransform {
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
   @discardableResult
-  @objc dynamic public func foreground(_ value: UIKit.UIColor) -> Self
+  public func foreground(_ value: UIKit.UIColor) -> Self
   @discardableResult
-  @objc dynamic public func colored() -> Self
+  public func colored() -> Self
   @discardableResult
-  @objc dynamic public func size(_ value: Swift.Int) -> Self
+  public func size(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func reverse() -> Self
+  public func reverse() -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSAVTransform) public class AVTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class AVTransform : Transform {
+  public init()
   @objc deinit
 }
 extension AVTransform {
   @discardableResult
-  @objc dynamic public func preset(_ value: Swift.String) -> Self
+  public func preset(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func force(_ value: Swift.Bool) -> Self
+  public func force(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func width(_ value: Swift.Int) -> Self
+  public func width(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func height(_ value: Swift.Int) -> Self
+  public func height(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func title(_ value: Swift.String) -> Self
+  public func title(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func extName(_ value: Swift.String) -> Self
+  public func extName(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func fileName(_ value: Swift.String) -> Self
+  public func fileName(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func location(_ value: StorageLocation) -> Self
+  public func location(_ value: StorageLocation) -> Self
   @discardableResult
-  @objc dynamic public func path(_ value: Swift.String) -> Self
+  public func path(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func access(_ value: StorageAccess) -> Self
+  public func access(_ value: StorageAccess) -> Self
   @discardableResult
-  @objc dynamic public func container(_ value: Swift.String) -> Self
+  public func container(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func upscale(_ value: Swift.Bool) -> Self
+  public func upscale(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func aspectMode(_ value: TransformAspectMode) -> Self
+  public func aspectMode(_ value: TransformAspectMode) -> Self
   @discardableResult
-  @objc dynamic public func twoPass(_ value: Swift.Bool) -> Self
+  public func twoPass(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func videoBitRate(_ value: Swift.Int) -> Self
+  public func videoBitRate(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func fps(_ value: Swift.Int) -> Self
+  public func fps(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func keyframeInterval(_ value: Swift.Int) -> Self
+  public func keyframeInterval(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func audioBitRate(_ value: Swift.Int) -> Self
+  public func audioBitRate(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func audioSampleRate(_ value: Swift.Int) -> Self
+  public func audioSampleRate(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func audioChannels(_ value: Swift.Int) -> Self
+  public func audioChannels(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func clipLength(_ value: Swift.String) -> Self
+  public func clipLength(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func clipOffset(_ value: Swift.String) -> Self
+  public func clipOffset(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func watermarkURL(_ value: Foundation.URL) -> Self
+  public func watermarkURL(_ value: Foundation.URL) -> Self
   @discardableResult
-  @objc dynamic public func watermarkTop(_ value: Swift.Int) -> Self
+  public func watermarkTop(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func watermarkBottom(_ value: Swift.Int) -> Self
+  public func watermarkBottom(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func watermarkLeft(_ value: Swift.Int) -> Self
+  public func watermarkLeft(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func watermarkRight(_ value: Swift.Int) -> Self
+  public func watermarkRight(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func watermarkWidth(_ value: Swift.Int) -> Self
+  public func watermarkWidth(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func watermarkHeight(_ value: Swift.Int) -> Self
+  public func watermarkHeight(_ value: Swift.Int) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSAnimateTransform) public class AnimateTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class AnimateTransform : Transform {
+  public init()
   @objc deinit
 }
 extension AnimateTransform {
   @discardableResult
-  @objc dynamic public func delay(_ value: Swift.Int) -> Self
+  public func delay(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func loop(_ value: Swift.Int) -> Self
+  public func loop(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func width(_ value: Swift.Int) -> Self
+  public func width(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func height(_ value: Swift.Int) -> Self
+  public func height(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func fit(_ value: TransformFit) -> Self
+  public func fit(_ value: TransformFit) -> Self
   @discardableResult
   public func align(_ value: TransformPosition) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: Swift.String) -> Self
+  public func background(_ value: Swift.String) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSAutoImageTransform) public class AutoImageTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class AutoImageTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSBlackAndWhiteTransform) public class BlackAndWhiteTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class BlackAndWhiteTransform : Transform {
+  public init()
   @objc deinit
 }
 extension BlackAndWhiteTransform {
   @discardableResult
-  @objc dynamic public func threshold(_ value: Swift.Int) -> Self
+  public func threshold(_ value: Swift.Int) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSBlurFacesTransform) public class BlurFacesTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class BlurFacesTransform : Transform {
+  public init()
   @objc deinit
 }
 extension BlurFacesTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Float) -> Self
+  public func amount(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func type(_ value: TransformShapeType) -> Self
+  public func type(_ value: TransformShapeType) -> Self
   @discardableResult
-  @objc dynamic public func minSize(_ value: Swift.Float) -> Self
+  public func minSize(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func maxSize(_ value: Swift.Float) -> Self
+  public func maxSize(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func buffer(_ value: Swift.Int) -> Self
+  public func buffer(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func blur(_ value: Swift.Float) -> Self
+  public func blur(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func allFaces() -> Self
+  public func allFaces() -> Self
   @discardableResult
-  @objc dynamic public func faces(_ value: [Swift.Int]) -> Self
+  public func faces(_ value: [Swift.Int]) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSBlurTransform) public class BlurTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class BlurTransform : Transform {
+  public init()
   @objc deinit
 }
 extension BlurTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Int) -> Self
+  public func amount(_ value: Swift.Int) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSBorderTransform) public class BorderTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class BorderTransform : Transform {
+  public init()
   @objc deinit
 }
 extension BorderTransform {
   @discardableResult
-  @objc dynamic public func width(_ value: Swift.Int) -> Self
+  public func width(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func color(_ value: UIKit.UIColor) -> Self
+  public func color(_ value: UIKit.UIColor) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSCacheTransform) public class CacheTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class CacheTransform : Transform {
+  public init()
   @objc deinit
 }
 extension CacheTransform {
   @discardableResult
-  @objc dynamic public func turnOff() -> Self
+  public func turnOff() -> Self
   @discardableResult
-  @objc dynamic public func expiry(_ value: Swift.Int) -> Self
+  public func expiry(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func maxExpiry() -> Self
+  public func maxExpiry() -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSCircleTransform) public class CircleTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class CircleTransform : Transform {
+  public init()
   @objc deinit
 }
 extension CircleTransform {
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSCollageTransform) public class CollageTransform : Transform {
+@_hasMissingDesignatedInitializers public class CollageTransform : Transform {
   @objc deinit
 }
 extension CollageTransform {
   @discardableResult
-  @objc dynamic public func margin(_ value: Swift.Int) -> Self
+  public func margin(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func color(_ value: UIKit.UIColor) -> Self
+  public func color(_ value: UIKit.UIColor) -> Self
   @discardableResult
-  @objc dynamic public func cropFit() -> Self
+  public func cropFit() -> Self
   @discardableResult
-  @objc dynamic public func autorotate() -> Self
+  public func autorotate() -> Self
 }
 @_inheritsConvenienceInitializers @objc(FSCollageTransformCollection) public class CollageTransformCollection : ObjectiveC.NSObject {
   @objc deinit
@@ -836,423 +836,422 @@ extension CollageTransformCollection {
   @discardableResult
   @objc(addResources:) dynamic public func add(_ resources: [Swift.String]) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSCompressTransform) public class CompressTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class CompressTransform : Transform {
+  public init()
   @objc deinit
 }
 extension CompressTransform {
   @discardableResult
-  @objc dynamic public func metadata(_ value: Swift.Bool) -> Self
+  public func metadata(_ value: Swift.Bool) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSConvertTransform) public class ConvertTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class ConvertTransform : Transform {
+  public init()
   @objc deinit
 }
 extension ConvertTransform {
   @discardableResult
-  @objc dynamic public func format(_ value: TransformFiletype) -> Self
+  public func format(_ value: TransformFiletype) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
   @discardableResult
-  @objc dynamic public func page(_ value: Swift.Int) -> Self
+  public func page(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func density(_ value: Swift.Int) -> Self
+  public func density(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func compress() -> Self
+  public func compress() -> Self
   @discardableResult
-  @objc dynamic public func quality(_ value: Swift.Int) -> Self
+  public func quality(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func preserveInputQuality() -> Self
+  public func preserveInputQuality() -> Self
   @discardableResult
-  @objc dynamic public func strip() -> Self
+  public func strip() -> Self
   @discardableResult
-  @objc dynamic public func colorSpace(_ value: TransformColorSpace) -> Self
+  public func colorSpace(_ value: TransformColorSpace) -> Self
   @discardableResult
-  @objc dynamic public func secure() -> Self
+  public func secure() -> Self
   @discardableResult
-  @objc dynamic public func docInfo() -> Self
+  public func docInfo() -> Self
   @discardableResult
-  @objc dynamic public func pageFormat(_ value: TransformPageFormat) -> Self
+  public func pageFormat(_ value: TransformPageFormat) -> Self
   @discardableResult
-  @objc dynamic public func pageOrientation(_ value: TransformPageOrientation) -> Self
+  public func pageOrientation(_ value: TransformPageOrientation) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSCopyrightTransform) public class CopyrightTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class CopyrightTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSCropFacesTransform) public class CropFacesTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class CropFacesTransform : Transform {
+  public init()
   @objc deinit
 }
 extension CropFacesTransform {
   @discardableResult
-  @objc dynamic public func mode(_ value: TransformCropMode) -> Self
+  public func mode(_ value: TransformCropMode) -> Self
   @discardableResult
-  @objc dynamic public func width(_ value: Swift.Int) -> Self
+  public func width(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func height(_ value: Swift.Int) -> Self
+  public func height(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func minSize(_ value: Swift.Float) -> Self
+  public func minSize(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func maxSize(_ value: Swift.Float) -> Self
+  public func maxSize(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func allFaces() -> Self
+  public func allFaces() -> Self
   @discardableResult
-  @objc dynamic public func buffer(_ value: Swift.Int) -> Self
+  public func buffer(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func faces(_ value: [Swift.Int]) -> Self
+  public func faces(_ value: [Swift.Int]) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSCropTransform) public class CropTransform : Transform {
-  @objc public init(x: Swift.Int, y: Swift.Int, width: Swift.Int, height: Swift.Int)
+@_hasMissingDesignatedInitializers public class CropTransform : Transform {
+  public init(x: Swift.Int, y: Swift.Int, width: Swift.Int, height: Swift.Int)
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSDetectFacesTransform) public class DetectFacesTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class DetectFacesTransform : Transform {
+  public init()
   @objc deinit
 }
 extension DetectFacesTransform {
   @discardableResult
-  @objc dynamic public func minSize(_ value: Swift.Float) -> Self
+  public func minSize(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func maxSize(_ value: Swift.Float) -> Self
+  public func maxSize(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func color(_ value: UIKit.UIColor) -> Self
+  public func color(_ value: UIKit.UIColor) -> Self
   @discardableResult
-  @objc dynamic public func export(_ value: Swift.Bool) -> Self
+  public func export(_ value: Swift.Bool) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSDocumentDetectionTransform) public class DocumentDetectionTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class DocumentDetectionTransform : Transform {
+  public init()
   @objc deinit
 }
 extension DocumentDetectionTransform {
   @discardableResult
-  @objc dynamic public func coords(_ value: Swift.Bool) -> Self
+  public func coords(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func preprocess(_ value: Swift.Bool) -> Self
+  public func preprocess(_ value: Swift.Bool) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSEnhanceTransform) public class EnhanceTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class EnhanceTransform : Transform {
+  public init()
   @objc deinit
 }
 extension EnhanceTransform {
   @discardableResult
-  @objc dynamic public func preset(_ value: TransformEnhancePreset) -> Self
+  public func preset(_ value: TransformEnhancePreset) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSFallbackTransform) public class FallbackTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class FallbackTransform : Transform {
+  public init()
   @objc deinit
 }
 extension FallbackTransform {
   @discardableResult
-  @objc dynamic public func handle(_ value: Swift.String) -> Self
+  public func handle(_ value: Swift.String) -> Self
   @discardableResult
-  @objc dynamic public func cache(_ value: Swift.Int) -> Self
+  public func cache(_ value: Swift.Int) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSFlipTransform) public class FlipTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class FlipTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSFlopTransform) public class FlopTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class FlopTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSImageSizeTransform) public class ImageSizeTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class ImageSizeTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSMinifyCSSTransform) public class MinifyCSSTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class MinifyCSSTransform : Transform {
+  public init()
   @objc deinit
 }
 extension MinifyCSSTransform {
   @discardableResult
-  @objc dynamic public func level(_ value: Swift.Int) -> Self
+  public func level(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func gzip(_ value: Swift.Bool) -> Self
+  public func gzip(_ value: Swift.Bool) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSMinifyJSTransform) public class MinifyJSTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class MinifyJSTransform : Transform {
+  public init()
   @objc deinit
 }
 extension MinifyJSTransform {
   @discardableResult
-  @objc dynamic public func booleans(_ value: Swift.Bool) -> Self
+  public func booleans(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func builtIns(_ value: Swift.Bool) -> Self
+  public func builtIns(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func consecutiveAdds(_ value: Swift.Bool) -> Self
+  public func consecutiveAdds(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func deadcode(_ value: Swift.Bool) -> Self
+  public func deadcode(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func evaluate(_ value: Swift.Bool) -> Self
+  public func evaluate(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func flipComparisons(_ value: Swift.Bool) -> Self
+  public func flipComparisons(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func guards(_ value: Swift.Bool) -> Self
+  public func guards(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func infinity(_ value: Swift.Bool) -> Self
+  public func infinity(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func mangle(_ value: Swift.Bool) -> Self
+  public func mangle(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func memberExpressions(_ value: Swift.Bool) -> Self
+  public func memberExpressions(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func mergeVars(_ value: Swift.Bool) -> Self
+  public func mergeVars(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func numericLiterals(_ value: Swift.Bool) -> Self
+  public func numericLiterals(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func propertyLiterals(_ value: Swift.Bool) -> Self
+  public func propertyLiterals(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func regexpConstructors(_ value: Swift.Bool) -> Self
+  public func regexpConstructors(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func removeConsole(_ value: Swift.Bool) -> Self
+  public func removeConsole(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func removeDebugger(_ value: Swift.Bool) -> Self
+  public func removeDebugger(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func removeUndefined(_ value: Swift.Bool) -> Self
+  public func removeUndefined(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func simplify(_ value: Swift.Bool) -> Self
+  public func simplify(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func simplifyComparisons(_ value: Swift.Bool) -> Self
+  public func simplifyComparisons(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func typeConstructors(_ value: Swift.Bool) -> Self
+  public func typeConstructors(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func undefinedToVoid(_ value: Swift.Bool) -> Self
+  public func undefinedToVoid(_ value: Swift.Bool) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSModulateTransform) public class ModulateTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class ModulateTransform : Transform {
+  public init()
   @objc deinit
 }
 extension ModulateTransform {
   @discardableResult
-  @objc dynamic public func brightness(_ value: Swift.Int) -> Self
+  public func brightness(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func saturation(_ value: Swift.Int) -> Self
+  public func saturation(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func hue(_ value: Swift.Int) -> Self
+  public func hue(_ value: Swift.Int) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSMonochromeTransform) public class MonochromeTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class MonochromeTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSNegativeTransform) public class NegativeTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class NegativeTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSNoMetadataTransform) public class NoMetadataTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class NoMetadataTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSOCRTransform) public class OCRTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class OCRTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSOilPaintTransform) public class OilPaintTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class OilPaintTransform : Transform {
+  public init()
   @objc deinit
 }
 extension OilPaintTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Int) -> Self
+  public func amount(_ value: Swift.Int) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSPDFConvertTransform) public class PDFConvertTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class PDFConvertTransform : Transform {
+  public init()
   @objc deinit
 }
 extension PDFConvertTransform {
   @discardableResult
-  @objc dynamic public func pageOrientation(_ value: TransformPageOrientation) -> Self
+  public func pageOrientation(_ value: TransformPageOrientation) -> Self
   @discardableResult
-  @objc dynamic public func pageFormat(_ value: TransformPageFormat) -> Self
+  public func pageFormat(_ value: TransformPageFormat) -> Self
   @discardableResult
-  @objc dynamic public func pages(_ value: [Swift.Int]) -> Self
+  public func pages(_ value: [Swift.Int]) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSPDFInfoTransform) public class PDFInfoTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class PDFInfoTransform : Transform {
+  public init()
   @objc deinit
 }
 extension PDFInfoTransform {
   @discardableResult
-  @objc dynamic public func colorInfo() -> Self
+  public func colorInfo() -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSPDFMonochromeTransform) public class PDFMonochromeTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class PDFMonochromeTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSPartialBlurTransform) public class PartialBlurTransform : Transform {
-  @objc public init(objects: [CoreGraphics.CGRect])
+@_hasMissingDesignatedInitializers public class PartialBlurTransform : Transform {
+  public init(objects: [CoreGraphics.CGRect])
   @objc deinit
 }
 extension PartialBlurTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Int) -> Self
+  public func amount(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func blur(_ value: Swift.Float) -> Self
+  public func blur(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func type(_ value: TransformShapeType) -> Self
+  public func type(_ value: TransformShapeType) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSPartialPixelateTransform) public class PartialPixelateTransform : Transform {
-  @objc public init(objects: [CoreGraphics.CGRect])
+@_hasMissingDesignatedInitializers public class PartialPixelateTransform : Transform {
+  public init(objects: [CoreGraphics.CGRect])
   @objc deinit
 }
 extension PartialPixelateTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Int) -> Self
+  public func amount(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func blur(_ value: Swift.Float) -> Self
+  public func blur(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func type(_ value: TransformShapeType) -> Self
+  public func type(_ value: TransformShapeType) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSPixelateFacesTransform) public class PixelateFacesTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class PixelateFacesTransform : Transform {
+  public init()
   @objc deinit
 }
 extension PixelateFacesTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Int = 10) -> Self
+  public func amount(_ value: Swift.Int = 10) -> Self
   @discardableResult
-  @objc dynamic public func type(_ value: TransformShapeType) -> Self
+  public func type(_ value: TransformShapeType) -> Self
   @discardableResult
-  @objc dynamic public func minSize(_ value: Swift.Float) -> Self
+  public func minSize(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func maxSize(_ value: Swift.Float) -> Self
+  public func maxSize(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func buffer(_ value: Swift.Int) -> Self
+  public func buffer(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func blur(_ value: Swift.Float) -> Self
+  public func blur(_ value: Swift.Float) -> Self
   @discardableResult
-  @objc dynamic public func allFaces() -> Self
+  public func allFaces() -> Self
   @discardableResult
-  @objc dynamic public func faces(_ value: [Swift.Int]) -> Self
+  public func faces(_ value: [Swift.Int]) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSPixelateTransform) public class PixelateTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class PixelateTransform : Transform {
+  public init()
   @objc deinit
 }
 extension PixelateTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Int = 2) -> Self
+  public func amount(_ value: Swift.Int = 2) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSPolaroidTransform) public class PolaroidTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class PolaroidTransform : Transform {
+  public init()
   @objc deinit
 }
 extension PolaroidTransform {
   @discardableResult
-  @objc dynamic public func color(_ value: UIKit.UIColor) -> Self
+  public func color(_ value: UIKit.UIColor) -> Self
   @discardableResult
-  @objc dynamic public func rotate(_ value: Swift.Int) -> Self
+  public func rotate(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSProgressiveJpegTransform) public class ProgressiveJPEGTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class ProgressiveJPEGTransform : Transform {
+  public init()
   @objc deinit
 }
 extension ProgressiveJPEGTransform {
   @discardableResult
-  @objc dynamic public func quality(_ value: Swift.Int) -> Self
+  public func quality(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func metadata(_ value: Swift.Bool) -> Self
+  public func metadata(_ value: Swift.Bool) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSQualityTransform) public class QualityTransform : Transform {
-  @objc public init(value: Swift.Int)
+@_hasMissingDesignatedInitializers public class QualityTransform : Transform {
+  public init(value: Swift.Int)
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSRedEyeRemovalTransform) public class RedEyeRemovalTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class RedEyeRemovalTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSResizeTransform) public class ResizeTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class ResizeTransform : Transform {
+  public init()
   @objc deinit
 }
 extension ResizeTransform {
   @discardableResult
-  @objc dynamic public func width(_ value: Swift.Int) -> Self
+  public func width(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func height(_ value: Swift.Int) -> Self
+  public func height(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func fit(_ value: TransformFit) -> Self
+  public func fit(_ value: TransformFit) -> Self
   @discardableResult
-  @objc dynamic public func align(_ value: TransformAlign) -> Self
+  public func align(_ value: TransformAlign) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSRotateTransform) public class RotateTransform : Transform {
-  @objc public init()
-  @objc public init(deg: Swift.Int)
+@_hasMissingDesignatedInitializers public class RotateTransform : Transform {
+  public init()
+  public init(deg: Swift.Int)
   @objc deinit
 }
 extension RotateTransform {
   @discardableResult
-  @objc dynamic public func exif(_ value: Swift.Bool) -> Self
+  public func exif(_ value: Swift.Bool) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSRoundedCornersTransform) public class RoundedCornersTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class RoundedCornersTransform : Transform {
+  public init()
   @objc deinit
 }
 extension RoundedCornersTransform {
   @discardableResult
-  @objc dynamic public func maxRadius() -> Self
+  public func maxRadius() -> Self
   @discardableResult
-  @objc dynamic public func radius(_ value: Swift.Int) -> Self
+  public func radius(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func blur(_ value: Swift.Float = 0.3) -> Self
+  public func blur(_ value: Swift.Float = 0.3) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSSecureForWorkTransform) public class SecureForWorkTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class SecureForWorkTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSSepiaTransform) public class SepiaTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class SepiaTransform : Transform {
+  public init()
   @objc deinit
 }
 extension SepiaTransform {
   @discardableResult
-  @objc dynamic public func tone(_ value: Swift.Int) -> Self
+  public func tone(_ value: Swift.Int) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSShadowTransform) public class ShadowTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class ShadowTransform : Transform {
+  public init()
   @objc deinit
 }
 extension ShadowTransform {
   @discardableResult
-  @objc dynamic public func blur(_ value: Swift.Int) -> Self
+  public func blur(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func opacity(_ value: Swift.Int) -> Self
+  public func opacity(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func vector(x: Swift.Int, y: Swift.Int) -> Self
+  public func vector(x: Swift.Int, y: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func color(_ value: UIKit.UIColor) -> Self
+  public func color(_ value: UIKit.UIColor) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSSharpenTransform) public class SharpenTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class SharpenTransform : Transform {
+  public init()
   @objc deinit
 }
 extension SharpenTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Int) -> Self
+  public func amount(_ value: Swift.Int) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSTagsTransform) public class TagsTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class TagsTransform : Transform {
+  public init()
   @objc deinit
 }
-@_hasMissingDesignatedInitializers @objc(FSTornEdgesTransform) public class TornEdgesTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class TornEdgesTransform : Transform {
+  public init()
   @objc deinit
 }
 extension TornEdgesTransform {
   @discardableResult
-  @objc dynamic public func spread(start: Swift.Int, end: Swift.Int) -> Self
+  public func spread(start: Swift.Int, end: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSTransform) public class Transform : ObjectiveC.NSObject {
-  @objc override dynamic public init()
+@_hasMissingDesignatedInitializers public class Transform {
   @objc deinit
 }
 extension Transform {
@@ -1312,62 +1311,62 @@ extension Transform {
   public typealias Watermark = WatermarkTransform
   public typealias Zip = ZipTransform
 }
-@_hasMissingDesignatedInitializers @objc(FSURLScreenshotTransform) public class URLScreenshotTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class URLScreenshotTransform : Transform {
+  public init()
   @objc deinit
 }
 extension URLScreenshotTransform {
   @discardableResult
-  @objc dynamic public func mobileAgent() -> Self
+  public func mobileAgent() -> Self
   @discardableResult
-  @objc dynamic public func windowMode() -> Self
+  public func windowMode() -> Self
   @discardableResult
-  @objc dynamic public func width(_ value: Swift.Int) -> Self
+  public func width(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func height(_ value: Swift.Int) -> Self
+  public func height(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func delay(_ value: Swift.Int) -> Self
+  public func delay(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func orientation(_ value: TransformPageOrientation) -> Self
+  public func orientation(_ value: TransformPageOrientation) -> Self
   @discardableResult
-  @objc dynamic public func device(_ value: Swift.String) -> Self
+  public func device(_ value: Swift.String) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSUpscaleTransform) public class UpscaleTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class UpscaleTransform : Transform {
+  public init()
   @objc deinit
 }
 extension UpscaleTransform {
   @discardableResult
-  @objc dynamic public func noUpscale() -> Self
+  public func noUpscale() -> Self
   @discardableResult
-  @objc dynamic public func noise(_ value: TransformNoiseMode) -> Self
+  public func noise(_ value: TransformNoiseMode) -> Self
   @discardableResult
-  @objc dynamic public func style(_ value: TransformStyleMode) -> Self
+  public func style(_ value: TransformStyleMode) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSVignetteTransform) public class VignetteTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class VignetteTransform : Transform {
+  public init()
   @objc deinit
 }
 extension VignetteTransform {
   @discardableResult
-  @objc dynamic public func amount(_ value: Swift.Int) -> Self
+  public func amount(_ value: Swift.Int) -> Self
   @discardableResult
-  @objc dynamic public func blurMode(_ value: TransformBlurMode) -> Self
+  public func blurMode(_ value: TransformBlurMode) -> Self
   @discardableResult
-  @objc dynamic public func background(_ value: UIKit.UIColor) -> Self
+  public func background(_ value: UIKit.UIColor) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSWatermarkTransform) public class WatermarkTransform : Transform {
-  @objc public init(file: Swift.String)
+@_hasMissingDesignatedInitializers public class WatermarkTransform : Transform {
+  public init(file: Swift.String)
   @objc deinit
 }
 extension WatermarkTransform {
   @discardableResult
-  @objc dynamic public func size(_ value: Swift.Int) -> Self
+  public func size(_ value: Swift.Int) -> Self
   @discardableResult
   public func position(_ value: TransformPosition) -> Self
 }
-@_hasMissingDesignatedInitializers @objc(FSZipTransform) public class ZipTransform : Transform {
-  @objc public init()
+@_hasMissingDesignatedInitializers public class ZipTransform : Transform {
+  public init()
   @objc deinit
 }
 extension StorageAccess : Swift.Equatable {}
