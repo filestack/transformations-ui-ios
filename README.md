@@ -189,11 +189,11 @@ Below you will find an exhaustive list of configurable properties and commands p
 
 | Property | Purpose | Example |
 |---|---|---|
-| `filestackAPIKey` | Filestack's API key required to pick images using Filestack's picker.|
-| `filestackAppSecret` | Filestack's APP secret required to pick images using Filestack's picker.|
-| `callbackURLScheme` | Required by Filestack's picker to complete the cloud provider's authentication flow (only required if any cloud sources are available.)|
-| `availableCloudSources` | The list of [cloud sources](https://filestack.github.io/filestack-ios/Classes/CloudSource.html) available to Filestack's picker.|
-| `availableLocalSources` | The list of [local sources](https://filestack.github.io/filestack-ios/Classes/LocalSource.html) available to Filestack's picker.|
+| `filestackAPIKey` | Filestack's API key required to pick images using Filestack's picker.| `"YOUR-API-KEY-HERE"` |
+| `filestackAppSecret` | Filestack's APP secret required to pick images using Filestack's picker.| `"YOUR-APP-SECRET"` |
+| `callbackURLScheme` | Required by Filestack's picker to complete the cloud provider's authentication flow (only required if any cloud sources are available.)| `"transformationsuidemo"` |
+| `availableCloudSources` | The list of [cloud sources](https://filestack.github.io/filestack-ios/Classes/CloudSource.html) available to Filestack's picker.| `[.dropbox, .googleDrive, .googlePhotos]` |
+| `availableLocalSources` | The list of [local sources](https://filestack.github.io/filestack-ios/Classes/LocalSource.html) available to Filestack's picker.| `[.camera, .photoLibrary, .documents]` |
 
 #### Border Module
 
