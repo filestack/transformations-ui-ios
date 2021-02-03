@@ -25,10 +25,6 @@ let package = Package(
             targets: ["FilestackSDK"]
         ),
         .library(
-            name: "ObjcDefs",
-            targets: ["ObjcDefs"]
-        ),
-        .library(
             name: "Filestack",
             targets: ["Filestack"]
         ),
@@ -58,10 +54,6 @@ let package = Package(
         .binaryTarget(
             name: "FilestackSDK",
             path: "artifacts/FilestackSDK.xcframework"
-        ),
-        .binaryTarget(
-            name: "ObjcDefs",
-            path: "artifacts/ObjcDefs.xcframework"
         ),
         .binaryTarget(
             name: "Filestack",
