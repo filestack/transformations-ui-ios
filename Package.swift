@@ -36,6 +36,10 @@ let package = Package(
             name: "Pikko",
             targets: ["Pikko"]
         ),
+        .library(
+            name: "ZIPFoundation",
+            targets: ["ZIPFoundation"]
+        ),
     ],
     dependencies: [],
     targets: [
@@ -66,6 +70,10 @@ let package = Package(
         .binaryTarget(
             name: "Pikko",
             path: "artifacts/Pikko.xcframework"
+        ),
+        .binaryTarget(
+            name: "ZIPFoundation",
+            path: "artifacts/ZIPFoundation.xcframework"
         ),
     ]
 )
