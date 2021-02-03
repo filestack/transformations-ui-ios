@@ -15,12 +15,12 @@ import TransformationsUIShared
 import UIKit
 import UberSegmentedControl
 public protocol BorderToolbarDelegate : AnyObject {
-  func borderToolbarWidthButtonTapped(_ toolbar: TransformationsUIPremiumAddOns.BorderToolbar)
-  func borderToolbarOpacityButtonTapped(_ toolbar: TransformationsUIPremiumAddOns.BorderToolbar)
-  func borderToolbarColorButtonTapped(_ toolbar: TransformationsUIPremiumAddOns.BorderToolbar)
+  func borderToolbarWidthButtonTapped(_ toolbar: BorderToolbar)
+  func borderToolbarOpacityButtonTapped(_ toolbar: BorderToolbar)
+  func borderToolbarColorButtonTapped(_ toolbar: BorderToolbar)
 }
 @_hasMissingDesignatedInitializers public class BorderToolbar : TransformationsUIShared.EditorToolbar {
-  weak public var delegate: TransformationsUIPremiumAddOns.BorderToolbarDelegate?
+  weak public var delegate: BorderToolbarDelegate?
   public var color: UIKit.UIColor? {
     get
     set
@@ -37,13 +37,13 @@ extension BorderToolbar {
   }
 }
 public protocol TextToolbarDelegate : AnyObject {
-  func textToolbarFontFamilyChanged(_ toolbar: TransformationsUIPremiumAddOns.TextToolbar)
-  func textToolbarFontColorChanged(_ toolbar: TransformationsUIPremiumAddOns.TextToolbar)
-  func textToolbarFontStyleChanged(_ toolbar: TransformationsUIPremiumAddOns.TextToolbar)
-  func textToolbarTextAlignmentChanged(_ toolbar: TransformationsUIPremiumAddOns.TextToolbar)
+  func textToolbarFontFamilyChanged(_ toolbar: TextToolbar)
+  func textToolbarFontColorChanged(_ toolbar: TextToolbar)
+  func textToolbarFontStyleChanged(_ toolbar: TextToolbar)
+  func textToolbarTextAlignmentChanged(_ toolbar: TextToolbar)
 }
 public class TextToolbar : TransformationsUIShared.EditorToolbar {
-  weak public var delegate: TransformationsUIPremiumAddOns.TextToolbarDelegate?
+  weak public var delegate: TextToolbarDelegate?
   override public var items: [UIKit.UIView] {
     get
   }
@@ -55,7 +55,7 @@ public class TextToolbar : TransformationsUIShared.EditorToolbar {
     get
     set
   }
-  public var fontStyle: TransformationsUIPremiumAddOns.FontStyle? {
+  public var fontStyle: FontStyle? {
     get
     set
   }
@@ -74,7 +74,7 @@ public enum RenderNodeTransform : TransformationsUIShared.RenderNodeChange {
   public enum CropType {
     case rect
     case circle
-    public static func == (a: TransformationsUIPremiumAddOns.RenderNodeTransform.CropType, b: TransformationsUIPremiumAddOns.RenderNodeTransform.CropType) -> Swift.Bool
+    public static func == (a: RenderNodeTransform.CropType, b: RenderNodeTransform.CropType) -> Swift.Bool
     public var hashValue: Swift.Int {
       get
     }
@@ -84,7 +84,7 @@ public enum RenderNodeTransform : TransformationsUIShared.RenderNodeChange {
   case flop
   case rotate(clockwise: Swift.Bool)
   case resize(ratio: CoreGraphics.CGSize)
-  case crop(insets: UIKit.UIEdgeInsets, type: TransformationsUIPremiumAddOns.RenderNodeTransform.CropType)
+  case crop(insets: UIKit.UIEdgeInsets, type: RenderNodeTransform.CropType)
 }
 extension PremiumModules {
   @objc @_inheritsConvenienceInitializers public class Adjustments : ObjectiveC.NSObject, TransformationsUIShared.EditorModule {
@@ -283,13 +283,13 @@ extension PremiumModules {
           case process
           case tonal
           case transfer
-          public static func == (a: TransformationsUIPremiumAddOns.PremiumModules.Filters.Commands.Filter.FilterType, b: TransformationsUIPremiumAddOns.PremiumModules.Filters.Commands.Filter.FilterType) -> Swift.Bool
+          public static func == (a: PremiumModules.Filters.Commands.Filter.FilterType, b: PremiumModules.Filters.Commands.Filter.FilterType) -> Swift.Bool
           public var hashValue: Swift.Int {
             get
           }
           public func hash(into hasher: inout Swift.Hasher)
         }
-        public init(type: TransformationsUIPremiumAddOns.PremiumModules.Filters.Commands.Filter.FilterType = .none)
+        public init(type: PremiumModules.Filters.Commands.Filter.FilterType = .none)
         @objc override dynamic public init()
         @objc deinit
       }
@@ -348,7 +348,7 @@ extension PremiumModules {
     public var defaultFontFamily: Swift.String
     public var defaultFontSize: CoreGraphics.CGFloat
     public var defaultFontColor: UIKit.UIColor
-    public var defaultFontStyle: TransformationsUIPremiumAddOns.FontStyle
+    public var defaultFontStyle: FontStyle
     public var defaultTextAlignment: UIKit.NSTextAlignment
     public var commandsInGroups: [[TransformationsUIShared.EditorModuleCommand]]
     @objc @_inheritsConvenienceInitializers public class Commands : ObjectiveC.NSObject {
@@ -405,15 +405,15 @@ extension PremiumModules {
     final public let nodeCategory: TransformationsUIShared.RenderNodeCategory
     public var nodeType: TransformationsUIShared.RenderGroupChildNode.Type?
     public var autocreatesNode: Swift.Bool
-    public var extraCommands: [TransformationsUIPremiumAddOns.ExtraModuleCommand]
-    public var cropCommands: [TransformationsUIPremiumAddOns.CropModuleCommand]
+    public var extraCommands: [ExtraModuleCommand]
+    public var cropCommands: [CropModuleCommand]
     @objc deinit
     @objc override dynamic public init()
   }
 }
 extension PremiumModules.Transform {
   @_hasMissingDesignatedInitializers public class Commands {
-    @_hasMissingDesignatedInitializers public class Resize : TransformationsUIShared.PointerHashable, TransformationsUIPremiumAddOns.ExtraModuleCommand {
+    @_hasMissingDesignatedInitializers public class Resize : TransformationsUIShared.PointerHashable, ExtraModuleCommand {
       final public let uuid: Foundation.UUID
       public var title: Swift.String {
         get
@@ -426,7 +426,7 @@ extension PremiumModules.Transform {
         get
       }
     }
-    @_hasMissingDesignatedInitializers public class Flip : TransformationsUIShared.PointerHashable, TransformationsUIPremiumAddOns.ExtraModuleCommand {
+    @_hasMissingDesignatedInitializers public class Flip : TransformationsUIShared.PointerHashable, ExtraModuleCommand {
       final public let uuid: Foundation.UUID
       public var title: Swift.String {
         get
@@ -439,7 +439,7 @@ extension PremiumModules.Transform {
         get
       }
     }
-    @_hasMissingDesignatedInitializers public class Flop : TransformationsUIShared.PointerHashable, TransformationsUIPremiumAddOns.ExtraModuleCommand {
+    @_hasMissingDesignatedInitializers public class Flop : TransformationsUIShared.PointerHashable, ExtraModuleCommand {
       final public let uuid: Foundation.UUID
       public var title: Swift.String {
         get
@@ -452,7 +452,7 @@ extension PremiumModules.Transform {
         get
       }
     }
-    public class Rotate : TransformationsUIShared.PointerHashable, TransformationsUIPremiumAddOns.ExtraModuleCommand {
+    public class Rotate : TransformationsUIShared.PointerHashable, ExtraModuleCommand {
       final public let uuid: Foundation.UUID
       public var title: Swift.String {
         get
@@ -467,7 +467,7 @@ extension PremiumModules.Transform {
         get
       }
     }
-    public class Crop : TransformationsUIShared.PointerHashable, TransformationsUIPremiumAddOns.CropModuleCommand {
+    public class Crop : TransformationsUIShared.PointerHashable, CropModuleCommand {
       final public let uuid: Foundation.UUID
       public var title: Swift.String {
         get
@@ -479,7 +479,7 @@ extension PremiumModules.Transform {
         case none
         case rect
         case circle
-        public static func == (a: TransformationsUIPremiumAddOns.PremiumModules.Transform.Commands.Crop.CropType, b: TransformationsUIPremiumAddOns.PremiumModules.Transform.Commands.Crop.CropType) -> Swift.Bool
+        public static func == (a: PremiumModules.Transform.Commands.Crop.CropType, b: PremiumModules.Transform.Commands.Crop.CropType) -> Swift.Bool
         public var hashValue: Swift.Int {
           get
         }
@@ -490,7 +490,7 @@ extension PremiumModules.Transform {
         case original
         case custom(_: CoreGraphics.CGSize)
       }
-      public init(type: TransformationsUIPremiumAddOns.PremiumModules.Transform.Commands.Crop.CropType = .rect, aspectRatio: TransformationsUIPremiumAddOns.PremiumModules.Transform.Commands.Crop.AspectRatio = .free, title: Swift.String? = nil, icon: UIKit.UIImage? = nil)
+      public init(type: PremiumModules.Transform.Commands.Crop.CropType = .rect, aspectRatio: PremiumModules.Transform.Commands.Crop.AspectRatio = .free, title: Swift.String? = nil, icon: UIKit.UIImage? = nil)
       @objc deinit
       public var hashValue: Swift.Int {
         get
@@ -504,13 +504,13 @@ extension PremiumModules.Transform {
     get
     set
   }
-  final public let transform: TransformationsUIPremiumAddOns.PremiumModules.Transform
-  final public let filters: TransformationsUIPremiumAddOns.PremiumModules.Filters
-  final public let adjustments: TransformationsUIPremiumAddOns.PremiumModules.Adjustments
-  final public let text: TransformationsUIPremiumAddOns.PremiumModules.Text
-  final public let stickers: TransformationsUIPremiumAddOns.PremiumModules.Stickers
-  final public let overlays: TransformationsUIPremiumAddOns.PremiumModules.Overlays
-  final public let border: TransformationsUIPremiumAddOns.PremiumModules.Border
+  final public let transform: PremiumModules.Transform
+  final public let filters: PremiumModules.Filters
+  final public let adjustments: PremiumModules.Adjustments
+  final public let text: PremiumModules.Text
+  final public let stickers: PremiumModules.Stickers
+  final public let overlays: PremiumModules.Overlays
+  final public let border: PremiumModules.Border
   public init(apiKey: Swift.String) throws
   @objc deinit
   @objc override dynamic public init()
@@ -523,17 +523,17 @@ extension PremiumModules {
 public struct FontStyle : Swift.OptionSet {
   public let rawValue: Swift.UInt
   public init(rawValue: Swift.UInt)
-  public static let none: TransformationsUIPremiumAddOns.FontStyle
-  public static let bold: TransformationsUIPremiumAddOns.FontStyle
-  public static let italic: TransformationsUIPremiumAddOns.FontStyle
-  public static let underline: TransformationsUIPremiumAddOns.FontStyle
-  public typealias Element = TransformationsUIPremiumAddOns.FontStyle
-  public typealias ArrayLiteralElement = TransformationsUIPremiumAddOns.FontStyle
+  public static let none: FontStyle
+  public static let bold: FontStyle
+  public static let italic: FontStyle
+  public static let underline: FontStyle
+  public typealias Element = FontStyle
+  public typealias ArrayLiteralElement = FontStyle
   public typealias RawValue = Swift.UInt
 }
-extension TransformationsUIPremiumAddOns.PremiumModules.Filters.Commands.Filter.FilterType : Swift.Equatable {}
-extension TransformationsUIPremiumAddOns.PremiumModules.Filters.Commands.Filter.FilterType : Swift.Hashable {}
-extension TransformationsUIPremiumAddOns.RenderNodeTransform.CropType : Swift.Equatable {}
-extension TransformationsUIPremiumAddOns.RenderNodeTransform.CropType : Swift.Hashable {}
-extension TransformationsUIPremiumAddOns.PremiumModules.Transform.Commands.Crop.CropType : Swift.Equatable {}
-extension TransformationsUIPremiumAddOns.PremiumModules.Transform.Commands.Crop.CropType : Swift.Hashable {}
+extension PremiumModules.Filters.Commands.Filter.FilterType : Swift.Equatable {}
+extension PremiumModules.Filters.Commands.Filter.FilterType : Swift.Hashable {}
+extension RenderNodeTransform.CropType : Swift.Equatable {}
+extension RenderNodeTransform.CropType : Swift.Hashable {}
+extension PremiumModules.Transform.Commands.Crop.CropType : Swift.Equatable {}
+extension PremiumModules.Transform.Commands.Crop.CropType : Swift.Hashable {}

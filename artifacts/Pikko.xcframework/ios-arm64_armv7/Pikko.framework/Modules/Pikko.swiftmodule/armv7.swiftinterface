@@ -10,7 +10,7 @@ public protocol PikkoDelegate {
 @objc @_inheritsConvenienceInitializers @_hasMissingDesignatedInitializers @available(iOS 9.0, *)
 @IBDesignable public class Pikko : UIKit.UIView {
   public var dimension: Swift.Int
-  public var delegate: Pikko.PikkoDelegate?
+  public var delegate: PikkoDelegate?
   public init(dimension: Swift.Int, setToColor color: UIKit.UIColor = .white)
   @objc override dynamic public func layoutSubviews()
   public func getColor() -> UIKit.UIColor
@@ -18,6 +18,6 @@ public protocol PikkoDelegate {
   @objc deinit
 }
 @available(iOS 9.0, *)
-extension Pikko : Pikko.PikkoDelegate {
+extension Pikko : PikkoDelegate {
   public func writeBackColor(color: UIKit.UIColor)
 }

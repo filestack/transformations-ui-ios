@@ -7,7 +7,6 @@ set -o errexit
 NAME=$1
 SRCROOT=$2
 DEST=$3
-REMOVEPREFIX=$4
 
 # Build the scheme for all platforms that we plan to support
 for PLATFORM in "iOS" "iOS Simulator"; do
@@ -36,7 +35,9 @@ for PLATFORM in "iOS" "iOS Simulator"; do
 
     FRAMEWORK_PATH="$ARCHIVE_PATH.xcarchive/Products/usr/local/lib/$NAME.framework"
     MODULES_PATH="$FRAMEWORK_PATH/Modules"
+    HEADERS_PATH="$FRAMEWORK_PATH/Headers"
     mkdir -p $MODULES_PATH
+    mkdir -p $HEADERS_PATH
 
     BUILD_PRODUCTS_PATH="$SRCROOT/.build/Build/Intermediates.noindex/ArchiveIntermediates/$NAME/BuildProductsPath"
     RELEASE_PATH="$BUILD_PRODUCTS_PATH/$RELEASE_FOLDER"
@@ -50,7 +51,8 @@ for PLATFORM in "iOS" "iOS Simulator"; do
     else
         # In case there are no modules, assume C/ObjC library and create module map
         echo "module $NAME { export * }" > $MODULES_PATH/module.modulemap
-        # TODO: Copy headers
+        # Copy headers
+        cp -r $SRCROOT/Sources/$NAME/include/*.h $HEADERS_PATH
     fi
 
     # Copy resources bundle, if exists
@@ -80,8 +82,5 @@ then
     rm -Rf $DEST/$NAME-Release-iphonesimulator.xcarchive
 fi
 
-if [[ -z "${REMOVEPREFIX}" ]]
-then
-    # Remove $NAME prefix on symbols names (per https://developer.apple.com/forums/thread/123253)
-    find $DEST/$NAME.xcframework -name "*.swiftinterface" -exec sed -i -e "s/$NAME\.//g" {} \;
-fi
+# Remove $NAME prefix on symbols names (per https://developer.apple.com/forums/thread/123253)
+find $DEST/$NAME.xcframework -name "*.swiftinterface" -exec sed -i -e "s/$NAME\.//g" {} \;
