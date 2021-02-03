@@ -7,6 +7,7 @@ set -o errexit
 NAME=$1
 SRCROOT=$2
 DEST=$3
+REMOVEPREFIX=$4
 
 # Build the scheme for all platforms that we plan to support
 for PLATFORM in "iOS" "iOS Simulator"; do
@@ -79,5 +80,8 @@ then
     rm -Rf $DEST/$NAME-Release-iphonesimulator.xcarchive
 fi
 
-# Remove $NAME prefix on symbols names (per https://developer.apple.com/forums/thread/123253)
-find $DEST/$NAME.xcframework -name "*.swiftinterface" -exec sed -i -e "s/$NAME\.//g" {} \;
+if [[ -z "${REMOVEPREFIX}" ]]
+then
+    # Remove $NAME prefix on symbols names (per https://developer.apple.com/forums/thread/123253)
+    find $DEST/$NAME.xcframework -name "*.swiftinterface" -exec sed -i -e "s/$NAME\.//g" {} \;
+fi

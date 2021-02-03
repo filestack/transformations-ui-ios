@@ -10,6 +10,7 @@ rm -Rf $DEST/*.xcarchive $DEST/*.xcframework
 
 # Build all the required binary dependencies.
 for PACKAGE in "TransformationsUIShared" "TransformationsUIPremiumAddOns" "FilestackSDK" "ObjcDefs" "Filestack" "UberSegmentedControl" "Pikko"; do
+    REMOVEPREFIX=1
 
     case $PACKAGE in
     "TransformationsUIShared")
@@ -27,6 +28,7 @@ for PACKAGE in "TransformationsUIShared" "TransformationsUIPremiumAddOns" "Files
     "ObjcDefs")
     REPO="filestack-swift"
     OWNER="filestack"
+    REMOVEPREFIX=0
     ;;
     "Filestack")
     REPO="filestack-ios"
@@ -53,7 +55,7 @@ for PACKAGE in "TransformationsUIShared" "TransformationsUIPremiumAddOns" "Files
     TAG=$(cd $DEST/work/$REPO && git tag | sort -r | head -n 1)
     (cd $DEST/work/$REPO && git checkout $TAG)
 
-    $DIR/generate-xcframework.sh $PACKAGE $DEST/work/$REPO $DEST | xcpretty
+    $DIR/generate-xcframework.sh $PACKAGE $DEST/work/$REPO $DEST $REMOVEPREFIX | xcpretty
 
     if [ -d $DEST/work/$REPO ]
     then
