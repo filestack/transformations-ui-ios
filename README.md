@@ -175,7 +175,7 @@ Below you will find an exhaustive list of configurable properties and commands p
 | SelectFontStyle | Allows user to toggle font style options (`.bold`, `.italic`, `.underline`) | None | `commandsInGroups` |
 | SelectTextAlignment | Allows user to select text alignment (`.left`, `.center`, `.right`, `.justified`)  | None | `commandsInGroups` |
 
-#### Sticker Module *(added in 1.1)*
+#### Stickers Module *(added in 1.1)*
 
 ##### Properties
 
@@ -183,6 +183,17 @@ Below you will find an exhaustive list of configurable properties and commands p
 |---|---|---|
 | `stickers` | Defines the available stickers grouped by stickerset | `["Stickerset 1": [UIImage, UIImage], "Stickerset 2": [UIImage, UIImage]]`|
 
+#### Overlays Module *(added in 1.1.3)*
+
+##### Properties
+
+| Property | Purpose | Example |
+|---|---|---|
+| `filestackAPIKey` | Filestack's API key required to pick images using Filestack's picker.|
+| `filestackAppSecret` | Filestack's APP secret required to pick images using Filestack's picker.|
+| `callbackURLScheme` | Required by Filestack's picker to complete the cloud provider's authentication flow (only required if any cloud sources are available.)|
+| `availableCloudSources` | The list of [cloud sources](https://filestack.github.io/filestack-ios/Classes/CloudSource.html) available to Filestack's picker.|
+| `availableLocalSources` | The list of [local sources](https://filestack.github.io/filestack-ios/Classes/LocalSource.html) available to Filestack's picker.|
 
 #### Border Module
 
