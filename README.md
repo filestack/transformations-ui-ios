@@ -53,7 +53,7 @@ To install our Swift Package, please follow the steps below:
         present(editorVC, animated: true)
     }
     ```
-    
+
 ## Modules Features
 
 Below you will find an exhaustive list of configurable properties and commands per module.
@@ -191,21 +191,21 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
     ```swift
     // Keep original ratio
     modules.transform.cropCommands.append(
-        PremiumModules.Transform.Commands.Crop(type: .rect, aspectRatio: .original)
+        Modules.Transform.Commands.Crop(type: .rect, aspectRatio: .original)
     )
 
     // Keep 16:9 ratio
     modules.transform.cropCommands.append(
-        PremiumModules.Transform.Commands.Crop(type: .rect, aspectRatio: .custom(CGSize(width: 16, height: 9)))
+        Modules.Transform.Commands.Crop(type: .rect, aspectRatio: .custom(CGSize(width: 16, height: 9)))
     )
     ```
 
 4. Define available filters in filters module
     ```swift
     modules.filters.commands = [
-        PremiumModules.Filters.Commands.Filter(type: .chrome),
-        PremiumModules.Filters.Commands.Filter(type: .process),
-        PremiumModules.Filters.Commands.Filter(type: .instant)
+        Modules.Filters.Commands.Filter(type: .chrome),
+        Modules.Filters.Commands.Filter(type: .process),
+        Modules.Filters.Commands.Filter(type: .instant)
     ]
     ```
 
