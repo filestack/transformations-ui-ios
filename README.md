@@ -16,11 +16,9 @@ To install our Swift Package, please follow the steps below:
 
 - Add `https://github.com/filestack/transformations-ui-ios.git` as a [Swift Package Manager](https://swift.org/package-manager/) dependency to your project.
 - When asked to **Choose Package Options**, use the default settings provided by Xcode.
-- When asked to **Add Package**, toggle on all the packages displayed (at the time of writting these were `Pikko`, `TransformationsUI`, `TransformationsUIPremiumAddOns`, `TransformationsShared`, and `UberSegmentedControl`.) and choose the target you would like to add them to on each of them.
+- When asked to **Add Package**, add `TransformationsUI` to your desired target(s).
 
 ## Usage
-
-### Using TransformationsUI with Standard Modules
 
 1. Import `TransformationsUI`
 
@@ -55,64 +53,14 @@ To install our Swift Package, please follow the steps below:
         present(editorVC, animated: true)
     }
     ```
-
-### Using TransformationsUI with Premium Modules
-
-1. Import `TransformationsUIPremiumAddOns`
-
-    ```swift
-    import TransformationsUI
-    import TransformationsUIPremiumAddOns /* newly added */
-    ```
-
-2. Get your **Filestack API key** ready, you will need it for next step.
-
-3. Instantiate `TransformationsUI` using a custom `Config` object
-
-    ```swift
-    let config: Config
-
-    do {
-        let modules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-
-        config = Config(modules: modules)
-    } catch {
-        // Unable to instantiate `PremiumModules`.
-        //
-        // You may want to double-check that your Filestack account has permissions
-        // to use Transformations UI for the API key you have used above.
-        //
-        // Falling back to `StandardModules`.
-        config = Config(modules: StandardModules())
-    }
-
-    let transformationsUI = TransformationsUI(with: config)
-    ```
-
-After that, you may follow the same steps as in the previous section (e.g., set and implement delegate, present view controller, etc.)
-
+    
 ## Modules Features
 
 Below you will find an exhaustive list of configurable properties and commands per module.
 
-### Standard Modules
+### Transform Module
 
-#### Transform Module
-
-##### Commands
-
-| Command | Purpose | Options | Group |
-|---|---|---|----|
-| Rotate | Rotate image 90 degrees clockwise | None | `extraCommands` |
-| Crop | |  | `cropCommands` |
-|      | Crop image freely (no constraints) | `type: .rect` | `cropCommands` |
-|      | Circle crop image | `type: .circle` | `cropCommands` |
-
-### Premium Modules
-
-#### Transform Module
-
-##### Commands
+#### Commands
 
 | Command | Purpose | Options | Group |
 |---|---|---|----|
@@ -126,9 +74,9 @@ Below you will find an exhaustive list of configurable properties and commands p
 |      | Crop image using a custom aspect ratio | `type: .rect, aspectRatio: .custom(CGSize)` | `cropCommands` |
 |      | Circle crop image | `type: .circle` | `cropCommands` |
 
-#### Filters Module
+### Filters Module
 
-##### Commands
+#### Commands
 
 | Command | Purpose | Options | Group |
 |---|---|---|----|
@@ -142,9 +90,9 @@ Below you will find an exhaustive list of configurable properties and commands p
 | Tonal | Applies a tonal effect to image | None | `commands` |
 | Transfer | Applies a transfer effect to image | None | `commands` |
 
-#### Adjustments Module
+### Adjustments Module
 
-##### Commands
+#### Commands
 
 | Command | Purpose | Options | Group |
 |---|---|---|----|
@@ -154,9 +102,9 @@ Below you will find an exhaustive list of configurable properties and commands p
 | Gamma | Allows adjusting RGB gamma components separately *(interactive)*  | None | `commands` |
 | Hue | Allows adjusting image hue 360 degrees *(interactive)* | None | `commands` |
 
-#### Text Module
+### Text Module
 
-##### Properties
+#### Properties
 
 | Property | Purpose | Example |
 |---|---|---|
@@ -166,7 +114,7 @@ Below you will find an exhaustive list of configurable properties and commands p
 | `defaultFontStyle` | Defines the default font style | `[.bold, .underline]`|
 | `defaultTextAlignment` | Defines the default text alignment | `.left`|
 
-##### Commands
+#### Commands
 
 | Command | Purpose | Options | Group |
 |---|---|---|----|
@@ -175,17 +123,17 @@ Below you will find an exhaustive list of configurable properties and commands p
 | SelectFontStyle | Allows user to toggle font style options (`.bold`, `.italic`, `.underline`) | None | `commandsInGroups` |
 | SelectTextAlignment | Allows user to select text alignment (`.left`, `.center`, `.right`, `.justified`)  | None | `commandsInGroups` |
 
-#### Stickers Module *(added in 1.1)*
+### Stickers Module *(added in 1.1)*
 
-##### Properties
+#### Properties
 
 | Property | Purpose | Example |
 |---|---|---|
 | `stickers` | Defines the available stickers grouped by stickerset | `["Stickerset 1": [UIImage, UIImage], "Stickerset 2": [UIImage, UIImage]]`|
 
-#### Overlays Module *(added in 1.1.3)*
+### Overlays Module *(added in 1.1.3)*
 
-##### Properties
+#### Properties
 
 | Property | Purpose | Example |
 |---|---|---|
@@ -195,9 +143,9 @@ Below you will find an exhaustive list of configurable properties and commands p
 | `availableCloudSources` | The list of [cloud sources](https://filestack.github.io/filestack-ios/Classes/CloudSource.html) available to Filestack's picker.| `[.dropbox, .googleDrive, .googlePhotos]` |
 | `availableLocalSources` | The list of [local sources](https://filestack.github.io/filestack-ios/Classes/LocalSource.html) available to Filestack's picker.| `[.camera, .photoLibrary, .documents]` |
 
-#### Border Module
+### Border Module
 
-##### Commands
+#### Commands
 
 | Command | Purpose | Options | Group |
 |---|---|---|----|
@@ -209,15 +157,13 @@ Below you will find an exhaustive list of configurable properties and commands p
 
 Modules may be enabled or disabled programmatically. Let's see an example:
 
-1. Defining the available premium modules.
+1. Defining the available modules
 
     ```swift
-    let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-
-    premiumModules.all = [
-        premiumModules.transform,
-        premiumModules.filters,
-        premiumModules.adjustments
+    modules.all = [
+        modules.transform,
+        modules.filters,
+        modules.adjustments
     ]
     ```
 
@@ -225,74 +171,62 @@ Modules may be enabled or disabled programmatically. Let's see an example:
 
 Module features may be enabled or disabled programmatically. Let's see a few examples:
 
-1. When using `StandardModules`, you want to allow circle cropping but disallow rect cropping.
+1. Allow only circle crop in transform module
 
     ```swift
-    let standardModules = StandardModules()
-
-    standardModules.transform.cropCommands = [
-        StandardModules.Transform.Commands.Crop(type: .none),
-        StandardModules.Transform.Commands.Crop(type: .circle)
+    modules.transform.cropCommands = [
+        Modules.Transform.Commands.Crop(type: .none),
+        Modules.Transform.Commands.Crop(type: .circle)
     ]
     ```
 
-2. When using `StandardModules`, you don't want any extra commands (e.g. rotation) to be available.
+2. Disable extra commands in transform module
 
     ```swift
-    let standardModules = StandardModules()
-
-    standardModules.transform.extraCommands = []
+    modules.transform.extraCommands = []
     ```
 
-3. When using `PremiumModules`, you want to define custom crop modes.
+3. Define custom crop modes in transform module
 
     ```swift
-    let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-
     // Keep original ratio
-    premiumModules.transform.cropCommands.append(
+    modules.transform.cropCommands.append(
         PremiumModules.Transform.Commands.Crop(type: .rect, aspectRatio: .original)
     )
 
     // Keep 16:9 ratio
-    premiumModules.transform.cropCommands.append(
+    modules.transform.cropCommands.append(
         PremiumModules.Transform.Commands.Crop(type: .rect, aspectRatio: .custom(CGSize(width: 16, height: 9)))
     )
     ```
 
-4. When using `PremiumModules`, you want to redefine the available filters in filters module.
+4. Define available filters in filters module
     ```swift
-    let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-
-    premiumModules.filters.commands = [
+    modules.filters.commands = [
         PremiumModules.Filters.Commands.Filter(type: .chrome),
         PremiumModules.Filters.Commands.Filter(type: .process),
         PremiumModules.Filters.Commands.Filter(type: .instant)
     ]
     ```
 
-5. When using `PremiumModules`, you want to add extra available font families to text module.
+5. Add extra available font families in text module
 
     ```swift
-    let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-
-    premiumModules.text.availableFontFamilies.append(contentsOf: ["Optima Regular", "Symbol"])
+    modules.text.availableFontFamilies.append(contentsOf: ["Optima Regular", "Symbol"])
     ```
 
     Or you may want to replace available font families completely:
 
     ```swift
-    premiumModules.text.availableFontFamilies = ["Optima Regular", "Symbol"]
+    modules.text.availableFontFamilies = ["Optima Regular", "Symbol"]
     ```
 
-6. When using `PremiumModules`, you want to add stickers to stickers module.
+6. Add stickers in stickers module
 
     **IMPORTANT**: *Make sure these stickers are first added to your project (e.g. as part of an **XCAsset**.)*
 
     ```swift
-    let premiumModules = try PremiumModules(apiKey: "YOUR-API-KEY-HERE")
-
-    premiumModules.sticker.stickers = [
+    modules.sticker.stickers = [
         "Funny": (1...18).compactMap { UIImage(named: "stickers-funny-\($0)") },
         "Hilarious": (1...18).compactMap { UIImage(named: "stickers-hilarious-\($0)") },
         "Extravagant": (1...18).compactMap { UIImage(named: "stickers-extravagant-\($0)") },
@@ -300,7 +234,7 @@ Module features may be enabled or disabled programmatically. Let's see a few exa
     ]
     ```
 
-To discover other module features that may be configured, enabled or disabled, try Xcode's autocompletion with your `StandardModules` or `PremiumModules` objects.
+To discover other module features that may be configured, enabled or disabled, try Xcode's autocompletion on your `Modules` objects.
 
 ## Screenshots
 
@@ -310,7 +244,7 @@ To discover other module features that may be configured, enabled or disabled, t
 
 ## Demo
 
-Check the [demos](https://github.com/filestack/transformations-ui-demo-ios) showcasing using **Transformations UI** with either **Standard** or **Premium modules**.
+Check the [demos](https://github.com/filestack/transformations-ui-demo-ios) showcasing **Transformations UI** usage.
 
 ## Versioning
 
