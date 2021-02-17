@@ -2,7 +2,9 @@
 
 Filestack's [Transformations UI](https://www.filestack.com/docs/transformations/ui/) implementation for iOS and iPadOS.
 
-**Transformations UI** is shipped as a Swift Package and contains Standard and Premium modules.
+**Transformations UI** is shipped as a Swift Package.
+
+**NOTE**: *Starting in version `1.2.0`, all modules (previously categorized as either Standard or Premium) are now part of this Swift Package.*
 
 ## Requirements
 
