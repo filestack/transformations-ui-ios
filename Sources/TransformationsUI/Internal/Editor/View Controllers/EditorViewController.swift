@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
 final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate, TitleToolbarDelegate {
     // MARK: - Internal Properties
@@ -27,7 +26,7 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
     var editorUndoManager: EditorUndoManager?
     var moduleUUIDToRenderNode = [UUID:RenderNode]()
 
-    lazy var overviewModule: StandardModules.Overview = StandardModules.Overview(modules: modules, pipeline: renderPipeline)
+    lazy var overviewModule: Modules.Overview = Modules.Overview(modules: modules, pipeline: renderPipeline)
 
     let stackView: UIStackView = {
         let stackView = UIStackView()

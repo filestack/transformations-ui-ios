@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
 protocol ObjectPanHandlerDelegate: class {
     /// Called when a movement is detected.

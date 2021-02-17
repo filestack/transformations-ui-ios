@@ -1,16 +1,17 @@
 //
-//  TransformViewController.swift
+//  TransformController.swift
 //  TransformationsUI
 //
-//  Created by Ruben Nine on 29/10/2019.
+//  Created by Ruben Nine on 05/11/2019.
 //  Copyright © 2019 Filestack. All rights reserved.
 //
 
 import UIKit
-import TransformationsUIShared
+import AVFoundation.AVUtilities
+import UberSegmentedControl
 
 class TransformController: EditorModuleController {
-    typealias Module = StandardModules.Transform
+    typealias Module = Modules.Transform
 
     enum EditMode: Hashable {
         case none
@@ -18,9 +19,10 @@ class TransformController: EditorModuleController {
     }
 
     // MARK: - Internal Properties
-    
+
     let module: Module
     let renderNode: TransformRenderNode
+    let viewSource: ModuleViewSource
 
     var editMode = EditMode.none {
         didSet {
@@ -40,14 +42,24 @@ class TransformController: EditorModuleController {
         }
     }
 
-    let viewSource: ModuleViewSource
+    var hasResizeCommand: Bool {
+        return module.extraCommands.contains { $0 is Module.Commands.Resize }
+    }
 
-    lazy var rectCropHandler = RectCropGesturesHandler(delegate: self, allowDraggingFromSides: false)
-    lazy var circleCropHandler = CircleCropGesturesHandler(delegate: self)
+    lazy var cropHandler = RectCropGesturesHandler(delegate: self, allowDraggingFromSides: false)
+    lazy var circleHandler = CircleCropGesturesHandler(delegate: self)
 
     // MARK: - Private Properties
 
     private var isEditing: Bool = false
+
+    private var extraToolbarCommands: [EditorModuleCommand] {
+        module.extraCommands.filter { !($0 is Module.Commands.Resize) }
+    }
+
+    private var cropToolbarCommands: [EditorModuleCommand] {
+        module.cropCommands
+    }
 
     private lazy var panGestureRecognizer: UIPanGestureRecognizer = {
         let recognizer = UIPanGestureRecognizer()
@@ -56,9 +68,6 @@ class TransformController: EditorModuleController {
 
         return recognizer
     }()
-
-    private var extraToolbarCommands: [EditorModuleCommand] { module.extraCommands }
-    private var cropToolbarCommands: [EditorModuleCommand] { module.cropCommands }
 
     private lazy var extraToolbar: StandardToolbar = {
         let toolbar = StandardToolbar(items: extraToolbarCommands, style: .commands)
@@ -83,25 +92,28 @@ class TransformController: EditorModuleController {
         VisualFXWrapperView(wrapping: cropToolbar, usingBlurEffect: Constants.ViewEffects.blur)
     }()
 
-    private let rectCropLayer = RectCropLayer()
-    private let circleCropLayer = CircleCropLayer()
+    private var observers: [NSKeyValueObservation] = []
 
-    // MARK: - View Overrides
+    private let cropLayer = RectCropLayer()
+    private let circleLayer = CircleCropLayer()
 
-    func viewSourceDidLayoutSubviews() {
-        DispatchQueue.main.async() {
-            self.updatePaths()
-        }
+    private lazy var resizeButton: UIButton = {
+        let button = ToolbarButton(type: .system)
+
+        button.tintColor = Constants.Color.defaultTint
+        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
+        button.setImage(UIImage.fromBundle("icon-drop-down-arrow"), for: .normal)
+        button.semanticContentAttribute = .forceRightToLeft
+        button.imageEdgeInsets.left = 14
+        button.setTitle(resizeButtonTitle, for: .normal)
+        button.addTarget(self, action: #selector(resizeTapped), for: .touchUpInside)
+
+        return button
+    }()
+
+    private var resizeButtonTitle: String {
+        return "\(Int(imageSize.width)) x \(Int(imageSize.height))"
     }
-
-    func viewSourceTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        rectCropLayer.updateColors()
-        circleCropLayer.updateColors()
-    }
-
-    func getModule() -> EditorModule? { module }
-    func getRenderNode() -> RenderNode? { renderNode }
-    func editorDidRestoreSnapshot() { editMode = .none }
 
     // MARK: - Lifecycle
 
@@ -116,6 +128,27 @@ class TransformController: EditorModuleController {
         cleanup()
     }
 
+    // MARK: - Actions
+
+    @objc func resizeTapped(sender: UIButton) {
+        let resizeVC = ResizeViewController()
+
+        resizeVC.title = "Resize Image"
+        resizeVC.delegate = self
+
+        if #available(iOS 13.0, *) {
+            resizeVC.isModalInPresentation = true
+        }
+
+        resizeVC.imageSize = renderNode.outputImage.extent.size
+
+        let controller = UINavigationController(rootViewController: resizeVC)
+        controller.modalPresentationStyle = .popover
+        (controller.presentationController as? UIPopoverPresentationController)?.sourceView = sender
+
+        (viewSource as? UIViewController)?.present(controller, animated: true)
+    }
+
     // MARK: - Pan Gesture Handling
 
     @objc func handlePanGesture(recognizer: UIPanGestureRecognizer) {
@@ -123,8 +156,8 @@ class TransformController: EditorModuleController {
         case .crop(let mode):
             switch mode.type {
             case .none: break
-            case .rect: rectCropHandler.handlePanGesture(recognizer: recognizer, in: viewSource.scrollView)
-            case .circle: circleCropHandler.handlePanGesture(recognizer: recognizer, in: viewSource.scrollView)
+            case .rect: cropHandler.handlePanGesture(recognizer: recognizer, in: viewSource.scrollView)
+            case .circle: circleHandler.handlePanGesture(recognizer: recognizer, in: viewSource.scrollView)
             }
         case .none:
             break
@@ -139,6 +172,7 @@ private extension TransformController {
         viewSource.stackView.insertArrangedSubview(extraToolbarFXWrapperView, at: 0)
         viewSource.stackView.addArrangedSubview(cropToolbarFXWrapperView)
         viewSource.contentView.directionalLayoutMargins = Constants.Spacing.insetContentLayout
+        addObservers()
     }
 
     func cleanup() {
@@ -146,6 +180,19 @@ private extension TransformController {
         cropToolbarFXWrapperView.removeFromSuperview()
         viewSource.contentView.directionalLayoutMargins = .zero
         editMode = .none
+        removeObservers()
+    }
+
+    func addObservers() {
+        observers.append(imageView.observe(\.image, options: [.new, .old]) { _, change in
+            DispatchQueue.main.async {
+                self.updateTitle()
+            }
+        })
+    }
+
+    func removeObservers() {
+        observers.removeAll()
     }
 
     func turnOff(mode: EditMode) {
@@ -159,12 +206,24 @@ private extension TransformController {
         case .crop(let mode):
             switch mode.type {
             case .none:
-                rectCropHandler.reset()
-                circleCropHandler.reset()
+                cropHandler.reset()
+                circleHandler.reset()
             case .rect:
-                rectCropHandler.reset()
+                switch mode.aspectRatio {
+                case .free:
+                    cropHandler.aspectRatio = imageSize
+                    cropHandler.keepAspectRatio = false
+                case .original:
+                    cropHandler.aspectRatio = imageSize
+                    cropHandler.keepAspectRatio = true
+                case let .custom(ratio):
+                    cropHandler.aspectRatio = ratio
+                    cropHandler.keepAspectRatio = true
+                }
+
+                cropHandler.reset()
             case .circle:
-                circleCropHandler.reset()
+                circleHandler.reset()
             }
         case .none:
             break
@@ -176,8 +235,8 @@ private extension TransformController {
         case .crop(let mode):
             switch mode.type {
             case .none: return nil
-            case .rect: return rectCropLayer
-            case .circle: return circleCropLayer
+            case .rect: return cropLayer
+            case .circle: return circleLayer
             }
         case .none:
             return nil
@@ -211,14 +270,14 @@ private extension TransformController {
     }
 
     func updateRectCropPaths() {
-        rectCropLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
-        rectCropLayer.cropRect = rectCropHandler.croppedRect.rounded()
+        cropLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
+        cropLayer.cropRect = cropHandler.croppedRect.rounded()
     }
 
     func updateCircleCropPaths() {
-        circleCropLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
-        circleCropLayer.circleCenter = circleCropHandler.circleCenter
-        circleCropLayer.circleRadius = circleCropHandler.circleRadius
+        circleLayer.imageFrame = imageFrame.scaled(by: zoomScale).rounded(originRule: .down, sizeRule: .up)
+        circleLayer.circleCenter = circleHandler.circleCenter
+        circleLayer.circleRadius = circleHandler.circleRadius
     }
 
     func addCropGestureRecognizers() {
@@ -228,18 +287,46 @@ private extension TransformController {
     func removeCropGestoreRecognizers() {
         viewSource.contentView.removeGestureRecognizer(panGestureRecognizer)
     }
+
+    func updateTitle() {
+        if hasResizeCommand {
+            resizeButton.setTitle(resizeButtonTitle, for: .normal)
+        }
+    }
 }
 
-// MARK: - Editable Protocol
+// MARK: - EditorModuleController Conformance
+
+extension TransformController {
+    func getModule() -> EditorModule? { module }
+    func getRenderNode() -> RenderNode? { renderNode }
+    func getTitleView() -> UIView? { hasResizeCommand ? resizeButton : nil }
+    func editorDidRestoreSnapshot() { editMode = .none }
+
+    func viewSourceDidLayoutSubviews() {
+        DispatchQueue.main.async() {
+            self.updatePaths()
+        }
+    }
+
+    func viewSourceTraitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        cropLayer.updateColors()
+        circleLayer.updateColors()
+    }
+}
+
+// MARK: - Editable Conformance
 
 extension TransformController: Editable {
     func applyEditing() {
         applyPendingChanges()
         editMode = .none
+        removeObservers()
     }
 
     func cancelEditing() {
         editMode = .none
+        removeObservers()
     }
 }
 

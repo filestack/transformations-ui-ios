@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 import MetalKit
 
 protocol RenderPipelineDelegate: class {

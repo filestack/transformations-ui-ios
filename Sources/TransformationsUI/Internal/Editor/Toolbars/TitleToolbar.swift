@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
 @objc protocol TitleToolbarDelegate: class {
     func saveSelected(sender: UIButton)

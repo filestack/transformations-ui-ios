@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
 extension UIView {
     func renderToImage() -> UIImage {

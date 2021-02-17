@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 import MetalKit
 
 class ImageRenderNodeGroup: RenderNode, RenderGroupNode & IONode & ViewableNode {

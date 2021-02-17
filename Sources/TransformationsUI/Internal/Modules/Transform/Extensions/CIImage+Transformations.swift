@@ -2,19 +2,29 @@
 //  CIImage+Transformations.swift
 //  TransformationsUI
 //
-//  Created by Ruben Nine on 31/10/2019.
+//  Created by Ruben Nine on 05/11/2019.
 //  Copyright © 2019 Filestack. All rights reserved.
 //
 
 import UIKit
 
 extension CIImage {
-    /// Transforms an image using a given `RenderNodeTransform`.
+    /// Transforms an image using a given `TransformType`.
     ///
-    /// - Parameter type: The `RenderNodeTransform` to apply.
+    /// - Parameter type: The `TransformType` to apply.
     ///
     func transformed(using type: RenderNodeTransform) -> CIImage? {
         switch type {
+        case .flip:
+            return flipped()
+        case .flop:
+            return flopped()
+        case .rotate(let clockwise):
+            return rotated(clockwise: clockwise)
+        case .resize(let ratio):
+            let size = extent.size.scaledBy(x: ratio.width, y: ratio.height)
+
+            return resized(to: size)
         case .crop(let insets, let cropType):
             switch cropType {
             case .rect:
@@ -22,15 +32,77 @@ extension CIImage {
             case .circle:
                 return circled(by: insets)
             }
-        case .rotate:
-            return rotated()
+        }
+    }
+
+    func squareCropped() -> CIImage? {
+        var extent = self.extent
+
+        let minSide = min(extent.width, extent.height)
+
+        extent.origin.x += (extent.width - minSide) / 2
+        extent.origin.y += (extent.height - minSide) / 2
+        extent.size.width = minSide
+        extent.size.height = minSide
+
+        return cropped(to: extent)
+    }
+
+    /// Resize the image to a given size using an intermediate overextended image.
+    ///
+    /// - Parameters:
+    ///   - size: A `CGSize` with the desired output size.
+    ///   - inset: A `CGFloat` with the inset amount.
+    func resized(to size: CGSize) -> CIImage? {
+        let scaleX = size.width / extent.size.width
+        let scaleY = size.height / extent.size.height
+
+        let outputImage = applyingFilter("CILanczosScaleTransform",
+                                         parameters: [kCIInputScaleKey: scaleY,
+                                                      kCIInputAspectRatioKey: scaleX / scaleY])
+
+        if outputImage.extent.size == size.rounded() {
+            return outputImage
+        } else {
+            // We didn't get an exact match, use alternative resize.
+            return resizedOverextended(to: size)
         }
     }
 }
 
 private extension CIImage {
-    func rotated() -> CIImage? {
-        let transform = orientationTransform(for: .left)
+    func resizedOverextended(to size: CGSize, inset: CGFloat = -2) -> CIImage? {
+        let scaleX = size.width / extent.size.width
+        let scaleY = size.height / extent.size.height
+
+        let overExtendedImage = clampedToExtent()
+            .cropped(to: extent.insetBy(dx: inset, dy: inset))
+
+        let outputImage = overExtendedImage.applyingFilter("CILanczosScaleTransform",
+                                                           parameters: [kCIInputScaleKey: scaleY,
+                                                                        kCIInputAspectRatioKey: scaleX / scaleY])
+
+        let outSize = outputImage.extent.size
+
+        var rect = outputImage.extent.insetBy(dx: ((outSize.width - size.width) * 0.5),
+                                              dy: ((outSize.height - size.height) * 0.5))
+
+        rect.origin = rect.origin.rounded()
+        rect.size = size
+
+        return outputImage.cropped(to: rect)
+    }
+
+    func flipped() -> CIImage? {
+        return transformed(by: CGAffineTransform(scaleX: -1, y: 1))
+    }
+
+    func flopped() -> CIImage? {
+        return transformed(by: CGAffineTransform(scaleX: 1, y: -1))
+    }
+
+    func rotated(clockwise: Bool) -> CIImage? {
+        let transform = orientationTransform(for: clockwise ? .right : .left)
         return transformed(by: transform)
     }
 

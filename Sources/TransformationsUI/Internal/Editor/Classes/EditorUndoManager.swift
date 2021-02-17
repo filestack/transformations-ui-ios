@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import TransformationsUIShared
 
 protocol EditorUndoManagerDelegate: class {
     func undoManagerChanged(editorUndoManager: EditorUndoManager)

@@ -12,68 +12,17 @@ let package = Package(
             type: .dynamic,
             targets: ["TransformationsUI"]
         ),
-        .library(
-            name: "TransformationsUIShared",
-            targets: ["TransformationsUIShared"]
-        ),
-        .library(
-            name: "TransformationsUIPremiumAddOns",
-            targets: ["TransformationsUIPremiumAddOns"]
-        ),
-        .library(
-            name: "FilestackSDK",
-            targets: ["FilestackSDK"]
-        ),
-        .library(
-            name: "Filestack",
-            targets: ["Filestack"]
-        ),
-        .library(
-            name: "UberSegmentedControl",
-            targets: ["UberSegmentedControl"]
-        ),
-        .library(
-            name: "Pikko",
-            targets: ["Pikko"]
-        ),
-        .library(
-            name: "ZIPFoundation",
-            targets: ["ZIPFoundation"]
-        ),
     ],
-    dependencies: [],
+    dependencies: [
+        .package(name: "Filestack", url: "https://github.com/filestack/filestack-ios", .upToNextMajor(from: Version(2, 7, 0))),
+        .package(name: "FilestackSDK", url: "https://github.com/filestack/filestack-swift", .upToNextMajor(from: Version(2, 7, 0))),
+        .package(name: "Pikko", url: "https://github.com/rnine/Pikko.git", .upToNextMajor(from: Version(1, 0, 9))),
+        .package(name: "UberSegmentedControl", url: "https://github.com/rnine/UberSegmentedControl.git", .upToNextMajor(from: Version(1, 3, 4))),
+    ],
     targets: [
         .target(
             name: "TransformationsUI",
-            dependencies: ["TransformationsUIShared"]
-        ),
-        .binaryTarget(
-            name: "TransformationsUIShared",
-            path: "artifacts/TransformationsUIShared.xcframework"
-        ),
-        .binaryTarget(
-            name: "TransformationsUIPremiumAddOns",
-            path: "artifacts/TransformationsUIPremiumAddOns.xcframework"
-        ),
-        .binaryTarget(
-            name: "FilestackSDK",
-            path: "artifacts/FilestackSDK.xcframework"
-        ),
-        .binaryTarget(
-            name: "Filestack",
-            path: "artifacts/Filestack.xcframework"
-        ),
-        .binaryTarget(
-            name: "UberSegmentedControl",
-            path: "artifacts/UberSegmentedControl.xcframework"
-        ),
-        .binaryTarget(
-            name: "Pikko",
-            path: "artifacts/Pikko.xcframework"
-        ),
-        .binaryTarget(
-            name: "ZIPFoundation",
-            path: "artifacts/ZIPFoundation.xcframework"
+            dependencies: ["Filestack", "FilestackSDK", "Pikko", "UberSegmentedControl"]
         ),
     ]
 )

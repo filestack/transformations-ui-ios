@@ -7,14 +7,16 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
-enum RenderNodeTransform: RenderNodeChange {
+public enum RenderNodeTransform: RenderNodeChange {
     public enum CropType {
         case rect
         case circle
     }
 
-    case rotate
+    case flip
+    case flop
+    case rotate(clockwise: Bool)
+    case resize(ratio: CGSize)
     case crop(insets: UIEdgeInsets, type: RenderNodeTransform.CropType)
 }

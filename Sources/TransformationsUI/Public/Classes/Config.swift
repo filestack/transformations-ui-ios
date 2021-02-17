@@ -7,7 +7,6 @@
 //
 
 import Foundation
-import TransformationsUIShared
 
 /// Configuration object for `TransformationsUI`.
 open class Config: NSObject {
@@ -16,13 +15,13 @@ open class Config: NSObject {
     public let modules: EditorModules
 
     override private init() {
-        self.modules = StandardModules()
+        self.modules = Modules()
     }
 
     /// Designated initializer.
     ///
     /// - Parameter modules: An object conforming to `EditorModules`.
-    public init(modules: EditorModules = StandardModules()) {
+    public init(modules: EditorModules = Modules()) {
         self.modules = modules
     }
 }

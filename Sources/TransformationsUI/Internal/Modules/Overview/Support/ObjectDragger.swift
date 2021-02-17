@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
 class ObjectDragger {
     // MARK: - Internal Properties

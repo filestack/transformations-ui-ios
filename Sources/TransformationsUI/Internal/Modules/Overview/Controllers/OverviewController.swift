@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
 protocol OverviewControllerDelegate: class {
     func overviewSelectedModule(module: EditorModule, renderNode: RenderNode?)
@@ -15,7 +14,7 @@ protocol OverviewControllerDelegate: class {
 }
 
 class OverviewController: NSObject, EditorModuleController {
-    typealias Module = StandardModules.Overview
+    typealias Module = Modules.Overview
 
     // MARK: - Internal Properties
 
@@ -24,7 +23,7 @@ class OverviewController: NSObject, EditorModuleController {
 
     // MARK: - Private Properties
 
-    private let module: StandardModules.Overview
+    private let module: Modules.Overview
 
     private lazy var modulesToolbar: StandardToolbar = {
         let toolbar = StandardToolbar(items: module.modules, style: .modules)
@@ -112,7 +111,7 @@ class OverviewController: NSObject, EditorModuleController {
     // MARK: - Lifecycle
 
     required init(renderNode: RenderNode?, module: EditorModule, viewSource: ModuleViewSource) {
-        self.module = module as! StandardModules.Overview
+        self.module = module as! Modules.Overview
         self.viewSource = viewSource
         self.selectedObject = renderNode as? ObjectRenderNode
 

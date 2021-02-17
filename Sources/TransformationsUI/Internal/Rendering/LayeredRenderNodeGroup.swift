@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import TransformationsUIShared
 
 class LayeredRenderNodeGroup: RenderNode, RenderGroupNode & ViewableNode {
     typealias Node = RenderGroupChildNode & ViewableNode
