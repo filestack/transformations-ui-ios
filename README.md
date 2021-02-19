@@ -246,7 +246,7 @@ To discover other module features that may be configured, enabled or disabled, t
 
 ## Demo
 
-Check the [demos](https://github.com/filestack/transformations-ui-demo-ios) showcasing **Transformations UI** usage.
+Check the [demo](https://github.com/filestack/transformations-ui-demo-ios) showcasing **Transformations UI** usage.
 
 ## Versioning
 
