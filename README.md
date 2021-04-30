@@ -28,10 +28,25 @@ To install our Swift Package, please follow the steps below:
     import TransformationsUI
     ```
 
-2. Instantiate `TransformationsUI` and set delegate
+2. Instantiate `TransformationsUI` passing a `Filestack.Client` and set delegate
 
     ```swift
-    let transformationsUI = TransformationsUI()
+    let fsConfig = Filestack.Config.builder
+        .with(callbackURLScheme: "transformationsuidemo")
+        .with(imageURLExportPreset: .current)
+        .with(maximumSelectionLimit: 1)
+        .with(documentPickerAllowedUTIs: ["public.image"])
+        .with(cloudSourceAllowedUTIs: ["public.image"])
+        .build()
+
+    let policy = Policy(expiry: .distantFuture,
+                        call: [.pick, .read, .stat, .write, .writeURL, .store, .convert, .remove, .exif])
+
+    let security = try FilestackSDK.Security(policy: policy, appSecret: "YOUR-APP-SECRET")
+    let fsClient = Filestack.Client(apiKey: "YOUR-API-KEY", security: security, config: fsConfig)
+    let config = try Config(modules: modules, fsClient: fsClient)
+    
+    let transformationsUI = TransformationsUI(with: config)
     transformationsUI.delegate = self
     ```
 
@@ -139,11 +154,7 @@ Below you will find an exhaustive list of configurable properties and commands p
 
 | Property | Purpose | Example |
 |---|---|---|
-| `filestackAPIKey` | Filestack's API key required to pick images using Filestack's picker.| `"YOUR-API-KEY-HERE"` |
-| `filestackAppSecret` | Filestack's APP secret required to pick images using Filestack's picker.| `"YOUR-APP-SECRET"` |
-| `callbackURLScheme` | Required by Filestack's picker to complete the cloud provider's authentication flow (only required if any cloud sources are available.)| `"transformationsuidemo"` |
-| `availableCloudSources` | The list of [cloud sources](https://filestack.github.io/filestack-ios/Classes/CloudSource.html) available to Filestack's picker.| `[.dropbox, .googleDrive, .googlePhotos]` |
-| `availableLocalSources` | The list of [local sources](https://filestack.github.io/filestack-ios/Classes/LocalSource.html) available to Filestack's picker.| `[.camera, .photoLibrary, .documents]` |
+| `fsClient` | Filestack's client *(read-only)* | N/A |
 
 ### Border Module
 
