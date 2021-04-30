@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc protocol TitleToolbarDelegate: class {
+@objc protocol TitleToolbarDelegate: AnyObject {
     func saveSelected(sender: UIButton)
     func cancelSelected(sender: UIButton)
     func undoSelected(sender: UIButton)

@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol DescriptibleEditorItem: class {
+public protocol DescriptibleEditorItem: AnyObject {
     var uuid: UUID { get }
     var title: String { get }
     var icon: UIImage? { get }

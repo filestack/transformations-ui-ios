@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol BoundedRangeCommandToolbarDelegate: class {
+public protocol BoundedRangeCommandToolbarDelegate: AnyObject {
     func toolbarSliderChanged(slider: UISlider, for command: BoundedRangeCommand)
     func toolbarSliderFinishedChanging(slider: UISlider, for command: BoundedRangeCommand)
 }

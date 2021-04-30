@@ -20,7 +20,7 @@ class CollectionViewFlowLayout: UICollectionViewFlowLayout {
     }
 }
 
-protocol StickersPickerViewControllerDelegate: class {
+protocol StickersPickerViewControllerDelegate: AnyObject {
     func stickersPickerViewControllerDismissed(with image: UIImage?, in section: String?)
 }
 

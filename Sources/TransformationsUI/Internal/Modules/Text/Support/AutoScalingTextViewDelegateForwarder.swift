@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol SwiftAutoScalingTextViewDelegate: class {
+protocol SwiftAutoScalingTextViewDelegate: AnyObject {
     func textViewDidChange(_ textView: UITextView)
     func textViewFontDidChange(_ textView: AutoScalingTextView)
 }

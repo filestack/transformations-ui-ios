@@ -8,6 +8,6 @@
 
 import Foundation
 
-public protocol EditorModules: class {
+public protocol EditorModules: AnyObject {
     var all: [EditorModule] { get }
 }

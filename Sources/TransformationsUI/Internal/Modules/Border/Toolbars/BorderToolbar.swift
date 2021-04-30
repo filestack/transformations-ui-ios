@@ -9,7 +9,7 @@
 import UIKit
 import UberSegmentedControl
 
-public protocol BorderToolbarDelegate: class {
+public protocol BorderToolbarDelegate: AnyObject {
     func borderToolbarWidthButtonTapped(_ toolbar: BorderToolbar)
     func borderToolbarOpacityButtonTapped(_ toolbar: BorderToolbar)
     func borderToolbarColorButtonTapped(_ toolbar: BorderToolbar)

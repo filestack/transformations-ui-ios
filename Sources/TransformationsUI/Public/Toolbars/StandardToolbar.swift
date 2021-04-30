@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol StandardToolbarDelegate: class {
+public protocol StandardToolbarDelegate: AnyObject {
     func toolbarItemSelected(toolbar: StandardToolbar, item: DescriptibleEditorItem, control: UIControl)
 }
 

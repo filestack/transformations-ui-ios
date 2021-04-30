@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol ObjectPanHandlerDelegate: class {
+protocol ObjectPanHandlerDelegate: AnyObject {
     /// Called when a movement is detected.
     ///
     /// - Parameters:

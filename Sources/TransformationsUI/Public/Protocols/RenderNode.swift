@@ -21,7 +21,7 @@ open class RenderNode: PointerHashable {
 public protocol RenderNodeChange: Any {}
 
 /// The protocol any `RenderNode` delegates must conform to.
-public protocol RenderNodeDelegate: class {
+public protocol RenderNodeDelegate: AnyObject {
     /// Called when a node changed.
     ///
     /// Use it to perform an action when node changes frequently (e.g. a slider is modifying the brightness of this node.)

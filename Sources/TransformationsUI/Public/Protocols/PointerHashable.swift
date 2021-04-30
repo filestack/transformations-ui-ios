@@ -8,7 +8,7 @@
 
 import Foundation
 
-public protocol PointerHashable: class, Hashable {}
+public protocol PointerHashable: AnyObject, Hashable {}
 
 extension PointerHashable {
     public static func == (left: Self, right: Self) -> Bool { left === right }

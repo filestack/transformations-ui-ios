@@ -8,7 +8,7 @@
 
 import UIKit
 
-protocol OverviewControllerDelegate: class {
+protocol OverviewControllerDelegate: AnyObject {
     func overviewSelectedModule(module: EditorModule, renderNode: RenderNode?)
     func overviewCommittedChange()
 }

@@ -9,7 +9,7 @@
 import UIKit
 import UberSegmentedControl
 
-public protocol TextToolbarDelegate: class {
+public protocol TextToolbarDelegate: AnyObject {
     func textToolbarFontFamilyChanged(_ toolbar: TextToolbar)
     func textToolbarFontColorChanged(_ toolbar: TextToolbar)
     func textToolbarFontStyleChanged(_ toolbar: TextToolbar)

@@ -9,7 +9,7 @@
 import UIKit
 import MetalKit
 
-protocol RenderPipelineDelegate: class {
+protocol RenderPipelineDelegate: AnyObject {
     /// Called whenever the pipeline's content changed in a meaningful way.
     func pipelineChanged(pipeline: RenderPipeline)
 }

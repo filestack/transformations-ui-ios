@@ -8,7 +8,7 @@
 
 import UIKit
 
-public protocol ModuleViewSource: class {
+public protocol ModuleViewSource: AnyObject {
     var canvasView: UIView? { get }
     var scrollView: CenteredScrollView { get }
     var stackView: UIStackView { get }
@@ -19,7 +19,7 @@ public protocol ModuleViewSource: class {
     var discardApplyDelegate: DiscardApplyToolbarDelegate? { get }
 }
 
-public protocol EditorModuleController: class {
+public protocol EditorModuleController: AnyObject {
     /// Returns a newly instantiated `RenderNode` given an `EditorModule` and `RenderGroupNode`.
     static func renderNode(for module: EditorModule, in group: RenderGroupNode) -> RenderNode?
 

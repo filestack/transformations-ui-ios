@@ -8,7 +8,7 @@
 
 import UIKit
 
-@objc public protocol DiscardApplyToolbarDelegate: class {
+@objc public protocol DiscardApplyToolbarDelegate: AnyObject {
     func applySelected(sender: UIButton?)
     func discardSelected(sender: UIButton?)
 }

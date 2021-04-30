@@ -8,7 +8,7 @@
 
 import Foundation
 
-protocol EditorUndoManagerDelegate: class {
+protocol EditorUndoManagerDelegate: AnyObject {
     func undoManagerChanged(editorUndoManager: EditorUndoManager)
 }
 
