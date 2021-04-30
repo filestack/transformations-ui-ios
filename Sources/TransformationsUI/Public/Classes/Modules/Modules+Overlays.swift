@@ -30,6 +30,6 @@ extension Modules {
         public var autocreatesNode: Bool = false
 
         /// Filestack client
-        public var fsClient: Filestack.Client?
+        public internal(set) var fsClient: Filestack.Client?
     }
 }
