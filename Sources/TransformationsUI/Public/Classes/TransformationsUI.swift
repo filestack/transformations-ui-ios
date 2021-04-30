@@ -9,7 +9,7 @@
 import UIKit
 
 /// The delegate for `TransformationsUI`.
-public protocol TransformationsUIDelegate: class {
+public protocol TransformationsUIDelegate: AnyObject {
     /// Called when the editor is dismissed.
     ///
     /// - Parameter image: Returns the resulting edited `UIImage`, if available.
@@ -28,10 +28,6 @@ public class TransformationsUI: NSObject {
     public let config: Config
 
     // MARK: - Lifecycle
-
-    override public init() {
-        self.config = Config()
-    }
 
     /// Designated initializer.
     ///

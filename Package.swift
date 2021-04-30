@@ -11,7 +11,7 @@ let package = Package(
             name: "TransformationsUI",
             type: .dynamic,
             targets: ["TransformationsUI"]
-        ),
+        )
     ],
     dependencies: [
         .package(name: "Filestack", url: "https://github.com/filestack/filestack-ios", .upToNextMajor(from: Version(2, 7, 1))),
@@ -22,7 +22,10 @@ let package = Package(
     targets: [
         .target(
             name: "TransformationsUI",
-            dependencies: ["Filestack", "FilestackSDK", "Pikko", "UberSegmentedControl"]
+            dependencies: ["Filestack", "FilestackSDK", "Pikko", "UberSegmentedControl"],
+            resources: [
+                .copy("VERSION")
+            ]
         ),
     ]
 )

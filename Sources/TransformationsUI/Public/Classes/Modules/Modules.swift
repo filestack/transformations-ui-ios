@@ -11,6 +11,8 @@ import UIKit
 /// Represents a collection of premium modules available for processing images with
 /// [Transformations UI](https://www.filestack.com/docs/concepts/transform_ui/).
 public class Modules: EditorModules {
+    // MARK: - Public Properties
+
     /// Returns an array of all the supported modules.
     public lazy var all: [EditorModule] = [transform, filters, adjustments, text, stickers, overlays, border]
 
@@ -36,8 +38,7 @@ public class Modules: EditorModules {
     public let border = Border()
 
     /// Designated initializer for `Modules`.
-    ///
-    /// - Parameter apiKey: A Filestack API key that has permission to use
-    /// [Transformations UI](https://www.filestack.com/docs/concepts/transform_ui/).
-    public init() {}
+    public init() {
+        /* NO-OP */
+    }
 }

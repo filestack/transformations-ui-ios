@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import Filestack
 
 /// Configuration object for `TransformationsUI`.
 open class Config: NSObject {
@@ -14,14 +15,24 @@ open class Config: NSObject {
     /// available module.
     public let modules: EditorModules
 
-    override private init() {
-        self.modules = Modules()
-    }
+    /// Filestack Client.
+    public let fsClient: Filestack.Client
 
     /// Designated initializer.
     ///
     /// - Parameter modules: An object conforming to `EditorModules`.
-    public init(modules: EditorModules = Modules()) {
+    public init(modules: EditorModules, fsClient: Filestack.Client) throws {
         self.modules = modules
+        self.fsClient = fsClient
+
+        super.init()
+
+        try prefetch(using: fsClient.apiKey)
+
+        for module in modules.all {
+            if let module = module as? RequiresFSClient {
+                module.fsClient = fsClient
+            }
+        }
     }
 }

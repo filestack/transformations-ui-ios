@@ -11,7 +11,7 @@ import Filestack
 
 extension Modules {
     /// Overlays module configuration object.
-    public class Overlays: NSObject, EditorModule {
+    public class Overlays: NSObject, EditorModule, RequiresFSClient {
         /// :nodoc:
         public let uuid = UUID()
         /// :nodoc:
@@ -28,15 +28,8 @@ extension Modules {
         public var nodeType: RenderGroupChildNode.Type? = OverlaysRenderNode.self
         /// :nodoc:
         public var autocreatesNode: Bool = false
-        /// App's URL scheme.
-        public var callbackURLScheme: String = ""
-        /// Filestack API key.
-        public var filestackAPIKey: String = ""
-        /// Filestack app secret.
-        public var filestackAppSecret: String = ""
-        /// Available Filestack picker cloud sources.
-        public var availableCloudSources: [CloudSource] = CloudSource.all()
-        /// Available Filestack picker local sources.
-        public var availableLocalSources: [LocalSource] = LocalSource.all()
+
+        /// Filestack client
+        public var fsClient: Filestack.Client?
     }
 }

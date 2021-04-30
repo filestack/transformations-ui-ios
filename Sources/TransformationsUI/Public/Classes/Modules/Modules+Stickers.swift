@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Filestack
 
 extension Modules {
     /// Stickers module configuration object.

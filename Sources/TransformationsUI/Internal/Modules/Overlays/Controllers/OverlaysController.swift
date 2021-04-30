@@ -21,7 +21,9 @@ class OverlaysController: EditorModuleController {
     var renderNode: OverlaysRenderNode?
     var renderGroupNode: RenderGroupNode?
 
-    var fsClient: Filestack.Client?
+    // MARK: - Private Properties
+
+    private let fsClient: Filestack.Client
 
     // MARK: - View Overrides
 
@@ -55,8 +57,8 @@ class OverlaysController: EditorModuleController {
         self.viewSource = viewSource
         self.renderNode = renderNode as? OverlaysRenderNode
         self.renderGroupNode = self.renderNode?.group
+        self.fsClient = (module as! RequiresFSClient).fsClient!
 
-        setupFilestackClient()
         showPicker()
     }
 
@@ -68,28 +70,6 @@ class OverlaysController: EditorModuleController {
 // MARK: - Private Functions
 
 private extension OverlaysController {
-    func setupFilestackClient() {
-        let policy = Policy(expiry: .distantFuture,
-                            call: [.pick, .read, .stat, .write, .writeURL, .store, .convert, .remove, .exif])
-
-        guard let security = try? Security(policy: policy, appSecret: module.filestackAppSecret) else {
-            fatalError("Unable to instantiate Security object.")
-        }
-
-        // Create `Config` object.
-        let config = Filestack.Config.builder
-            .with(callbackURLScheme: module.callbackURLScheme)
-            .with(imageURLExportPreset: .current)
-            .with(maximumSelectionLimit: 1)
-            .with(availableCloudSources: module.availableCloudSources)
-            .with(availableLocalSources: module.availableLocalSources)
-            .with(documentPickerAllowedUTIs: ["public.image"])
-            .with(cloudSourceAllowedUTIs: ["public.image"])
-            .build()
-
-        fsClient = Filestack.Client(apiKey: module.filestackAPIKey, security: security, config: config)
-    }
-
     func cleanup() {
         /* NO-OP */
     }
@@ -97,14 +77,12 @@ private extension OverlaysController {
 
 private extension OverlaysController {
     @objc func showPicker() {
-        guard let client = fsClient else { return }
-
         // Store options for your uploaded files.
         // Here we are saying our storage location is S3 and access for uploaded files should be public.
         let storeOptions = StorageOptions(location: .s3, access: .public)
 
         // Instantiate picker by passing the `StorageOptions` object we just set up.
-        let picker = client.picker(storeOptions: storeOptions)
+        let picker = fsClient.picker(storeOptions: storeOptions)
 
         picker.pickerDelegate = self
         picker.behavior = .storeOnly
@@ -122,7 +100,7 @@ private extension OverlaysController {
         (viewSource as? UIViewController)?.present(alertController, animated: true)
 
         // Download content.
-        fsClient?.sdkClient.fileLink(for: handle).getContent(downloadProgress: { progress in
+        fsClient.sdkClient.fileLink(for: handle).getContent(downloadProgress: { progress in
             alertController.message = progress.localizedDescription
         }, completionHandler: { (response) in
             if response.error == nil, let data = response.data, let image = UIImage(data: data) {
