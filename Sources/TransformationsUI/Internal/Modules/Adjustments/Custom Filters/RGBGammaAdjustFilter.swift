@@ -45,10 +45,10 @@ extension RGBGammaAdjustFilter {
     // MARK: - Filter Constructor
 
     class Vendor: NSObject, CIFilterConstructor {
-        public static let MetalFilterName = "RGBGammaAdjust"
+        public static let FilterName = "RGBGammaAdjust"
 
         static func registerFilters() {
-            RGBGammaAdjustFilter.registerName(MetalFilterName, constructor: Vendor(), classAttributes: [:])
+            RGBGammaAdjustFilter.registerName(FilterName, constructor: Vendor(), classAttributes: [:])
         }
 
         func filter(withName name: String) -> CIFilter? {
