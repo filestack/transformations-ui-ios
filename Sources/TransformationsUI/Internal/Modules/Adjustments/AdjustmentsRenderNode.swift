@@ -41,6 +41,14 @@ class AdjustmentsRenderNode: RenderNode, RenderGroupChildNode & IONode {
         didSet { applyAdjustments() }
     }
 
+    var pixelate: Double = 1.0 {
+        didSet { applyAdjustments() }
+    }
+
+    var saturation: Double = 1.0 {
+        didSet { applyAdjustments() }
+    }
+
     required init(uuid: UUID? = nil) {
         super.init(uuid: uuid)
 
@@ -53,19 +61,25 @@ extension AdjustmentsRenderNode {
 
     private func applyAdjustments() {
         let shortestSide = Double(min(inputImage.extent.size.width, inputImage.extent.size.height))
+        let center = CIVector(x: inputImage.extent.size.width / 2, y: inputImage.extent.size.height / 2)
 
         renderedImage = inputImage
             .clampedToExtent()
             .applyingGaussianBlur(sigma: blurAmount * shortestSide)
             .applyingFilter("CIColorControls", parameters: [
                 "inputBrightness" : brightness,
-                "inputContrast": contrast
+                "inputContrast": contrast,
+                "inputSaturation": saturation
             ])
             .applyingFilter("RGBGammaAdjust", parameters: [
                 "inputGamma": gamma
             ])
             .applyingFilter("CIHueAdjust", parameters: [
                 "inputAngle" : hueRotationAngle
+            ])
+            .applyingFilter("CIPixellate", parameters: [
+                "inputCenter": center,
+                "inputScale": pixelate
             ])
             .applyingFilter("CIBlendWithAlphaMask", parameters: [
                 "inputMaskImage": inputImage
@@ -80,7 +94,9 @@ extension AdjustmentsRenderNode: Snapshotable {
             "contrast": contrast,
             "brightness": brightness,
             "gamma": gamma,
-            "hueRotationAngle": hueRotationAngle
+            "hueRotationAngle": hueRotationAngle,
+            "pixelate": pixelate,
+            "saturation": saturation,
         ]
     }
 
@@ -97,6 +113,10 @@ extension AdjustmentsRenderNode: Snapshotable {
                 self.gamma = gamma
             case let("hueRotationAngle", hueRotation as Double):
                 self.hueRotationAngle = hueRotation
+            case let("pixelate", pixelate as Double):
+                self.pixelate = pixelate
+            case let("saturation", saturation as Double):
+                self.saturation = saturation
             default:
                 break
             }

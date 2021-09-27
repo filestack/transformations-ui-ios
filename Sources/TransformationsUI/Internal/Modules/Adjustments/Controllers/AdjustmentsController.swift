@@ -102,6 +102,10 @@ extension AdjustmentsController {
             detailToolbar.updateValue(value: Double(renderNode.gamma.z), at: 2)
         case is Module.Commands.HueRotation:
             detailToolbar.updateValue(value: renderNode.hueRotationAngle)
+        case is Module.Commands.Pixelate:
+            detailToolbar.updateValue(value: renderNode.pixelate)
+        case is Module.Commands.Saturation:
+            detailToolbar.updateValue(value: renderNode.saturation)
         default:
             break
         }

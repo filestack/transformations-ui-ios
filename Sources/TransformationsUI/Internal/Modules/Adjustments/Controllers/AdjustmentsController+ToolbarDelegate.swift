@@ -41,6 +41,10 @@ extension AdjustmentsController: BoundedRangeCommandToolbarDelegate {
             }
         case is Module.Commands.HueRotation:
             renderNode.hueRotationAngle = Double(slider.value)
+        case is Module.Commands.Pixelate:
+            renderNode.pixelate = Double(slider.value)
+        case is Module.Commands.Saturation:
+            renderNode.saturation = Double(slider.value)
         default:
             break
         }
