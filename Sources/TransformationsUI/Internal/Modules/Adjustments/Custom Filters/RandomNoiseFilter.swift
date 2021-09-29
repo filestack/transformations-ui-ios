@@ -30,11 +30,14 @@ class RandomNoiseFilter: CIFilter {
             return inputImage
         }
 
-        return RandomNoiseFilter.filterKernel.apply(extent: inputImage.extent,
-                                           roiCallback: { _, destRect in
-            return destRect
-        },
-                                           arguments: [inputImage.clampedToExtent(), noiseAmount])
+        return RandomNoiseFilter.filterKernel.apply(
+            extent: inputImage.extent,
+            roiCallback: { $1 },
+            arguments: [
+                inputImage.clampedToExtent(),
+                noiseAmount
+            ]
+        )
     }
 }
 
