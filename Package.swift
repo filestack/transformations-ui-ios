@@ -23,7 +23,8 @@ let package = Package(
             name: "TransformationsUI",
             dependencies: ["Filestack", "FilestackSDK", "Pikko", "UberSegmentedControl"],
             resources: [
-                .copy("VERSION")
+                .copy("VERSION"),
+                .process("CoreImage/RandomNoise.cikernel")
             ]
         ),
     ]

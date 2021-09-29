@@ -45,6 +45,8 @@ extension AdjustmentsController: BoundedRangeCommandToolbarDelegate {
             renderNode.pixelate = Double(slider.value)
         case is Module.Commands.Saturation:
             renderNode.saturation = Double(slider.value)
+        case is Module.Commands.Noise:
+            renderNode.noise = Double(slider.value)
         default:
             break
         }

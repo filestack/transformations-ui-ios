@@ -21,6 +21,8 @@ class AdjustmentsRenderNode: RenderNode, RenderGroupChildNode & IONode {
         didSet { group?.nodeChanged(node: self) }
     }
 
+    // MARK: - Adjustments
+
     var blurAmount: Double = 0.0 {
         didSet { applyAdjustments() }
     }
@@ -49,10 +51,17 @@ class AdjustmentsRenderNode: RenderNode, RenderGroupChildNode & IONode {
         didSet { applyAdjustments() }
     }
 
+    var noise: Double = 0.0 {
+        didSet { applyAdjustments() }
+    }
+
+    // MARK: - Lifecycle
+
     required init(uuid: UUID? = nil) {
         super.init(uuid: uuid)
 
         RGBGammaAdjustFilter.Vendor.registerFilters()
+        RandomNoiseFilter.Vendor.registerFilters()
     }
 }
 
@@ -81,6 +90,9 @@ extension AdjustmentsRenderNode {
                 "inputCenter": center,
                 "inputScale": pixelate
             ])
+            .applyingFilter("RandomNoise", parameters: [
+                "noiseAmount": noise
+            ])
             .applyingFilter("CIBlendWithAlphaMask", parameters: [
                 "inputMaskImage": inputImage
             ])
@@ -97,6 +109,7 @@ extension AdjustmentsRenderNode: Snapshotable {
             "hueRotationAngle": hueRotationAngle,
             "pixelate": pixelate,
             "saturation": saturation,
+            "noise": noise
         ]
     }
 
@@ -117,6 +130,8 @@ extension AdjustmentsRenderNode: Snapshotable {
                 self.pixelate = pixelate
             case let("saturation", saturation as Double):
                 self.saturation = saturation
+            case let("noise", noise as Double):
+                self.noise = noise
             default:
                 break
             }

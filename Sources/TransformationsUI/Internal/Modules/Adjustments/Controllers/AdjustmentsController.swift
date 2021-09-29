@@ -106,6 +106,8 @@ extension AdjustmentsController {
             detailToolbar.updateValue(value: renderNode.pixelate)
         case is Module.Commands.Saturation:
             detailToolbar.updateValue(value: renderNode.saturation)
+        case is Module.Commands.Noise:
+            detailToolbar.updateValue(value: renderNode.noise)
         default:
             break
         }

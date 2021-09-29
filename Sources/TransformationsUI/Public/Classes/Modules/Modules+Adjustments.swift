@@ -36,7 +36,8 @@ extension Modules {
             Commands.Gamma(),
             Commands.HueRotation(),
             Commands.Pixelate(),
-            Commands.Saturation()
+            Commands.Saturation(),
+            Commands.Noise()
         ]
 
         /// All available commands.
@@ -131,6 +132,19 @@ extension Modules {
 
                 public let defaultValue: Double = 1
                 public let range: Range<Double> = (0..<2)
+                public let format: BoundedRangeFormat = .percent
+
+                public lazy var componentLabels: [String] = [title]
+            }
+
+            /// Noise command.
+            public class Noise: NSObject, EditorModuleCommand, BoundedRangeCommand {
+                public let uuid = UUID()
+                private(set) public lazy var title = "Noise"
+                private(set) public lazy var icon: UIImage? = .fromBundle("icon-adjustments-noise")
+
+                public let defaultValue: Double = 0
+                public let range: Range<Double> = (0..<1)
                 public let format: BoundedRangeFormat = .percent
 
                 public lazy var componentLabels: [String] = [title]
