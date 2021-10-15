@@ -2,9 +2,13 @@ kernel vec4 filterKernel(sampler inputImage, float amount) {
     vec2 uv = samplerCoord(inputImage);
     vec4 color = sample(inputImage, uv);
 
-    float x = (uv.x + 4.0 ) * (uv.y + 4.0 ) * 50.0;
-    vec4 grain = vec4(mod((mod(x, 13.0) + 1.0) * (mod(x, 123.0) + 1.0), (amount * 0.02)) - 0.0005) * 50.0;
+    if (amount <= 0.0) {
+        return color;
+    } else {
+        float x = (uv.x + 4.0 ) * (uv.y + 4.0 ) * 50.0;
+        vec4 grain = vec4(mod((mod(x, 13.0) + 1.0) * (mod(x, 123.0) + 1.0), (amount * 0.02)) - 0.0005) * 50.0;
 
-    grain = 1.0 - grain;
-    return color / vec4(min(1.0, grain.x), min(1.0, grain.y), min(1.0, grain.w), min(1.0, grain.z));
+        grain = 1.0 - grain;
+        return color / vec4(min(1.0, grain.x), min(1.0, grain.y), min(1.0, grain.w), min(1.0, grain.z));
+    }
 }
