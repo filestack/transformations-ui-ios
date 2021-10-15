@@ -24,6 +24,7 @@ class OverlaysController: EditorModuleController {
     // MARK: - Private Properties
 
     private let fsClient: Filestack.Client
+    private var selectedImage: UIImage?
 
     // MARK: - View Overrides
 
@@ -91,13 +92,13 @@ private extension OverlaysController {
         (viewSource as? UIViewController)?.present(picker, animated: true)
     }
 
-    func download(handle: String) {
+    func download(picker: PickerNavigationController, handle: String, completion: @escaping ((UIImage?) -> Void)) {
         let alertController = UIAlertController(title: "Fetching content",
                                                 message: "Please wait",
                                                 preferredStyle: .alert)
 
         // Present alert.
-        (viewSource as? UIViewController)?.present(alertController, animated: true)
+        picker.present(alertController, animated: true)
 
         // Download content.
         fsClient.sdkClient.fileLink(for: handle).getContent(downloadProgress: { progress in
@@ -105,12 +106,10 @@ private extension OverlaysController {
         }, completionHandler: { (response) in
             if response.error == nil, let data = response.data, let image = UIImage(data: data) {
                 alertController.dismiss(animated: false)
-                self.updateRenderNodeImage(using: image)
-                self.viewSource.discardApplyDelegate?.applySelected(sender: nil)
+                completion(image)
             } else {
                 let action = UIAlertAction(title: "OK", style: .default) { (action) in
-                    self.clearRenderNodeImage()
-                    self.viewSource.discardApplyDelegate?.discardSelected(sender: nil)
+                    completion(nil)
                 }
 
                 alertController.title = "Error"
@@ -122,7 +121,12 @@ private extension OverlaysController {
 
     func updateRenderNodeImage(using image: UIImage) {
         renderNode?.image = image
-        renderNode?.bounds.size.height *= (image.size.height / image.size.width)
+
+        if image.size.width >= image.size.height {
+            renderNode?.bounds.size.height *= image.size.height / image.size.width
+        } else {
+            renderNode?.bounds.size.width *= image.size.width / image.size.height
+        }
 
         if let groupView = (renderNode?.group as? ViewableNode)?.view {
             renderNode?.center = CGPoint(x: groupView.bounds.midX, y: groupView.bounds.midY)
@@ -140,27 +144,18 @@ private extension OverlaysController {
 
 extension OverlaysController: PickerNavigationControllerDelegate {
     func pickerPickedFiles(picker: PickerNavigationController, fileURLs: [URL]) {
-        var image: UIImage? = nil
-
         if let fileURL = fileURLs.first, let data = try? Data(contentsOf: fileURL) {
-            image = UIImage(data: data)
+            selectedImage = UIImage(data: data)
         }
 
-        picker.dismiss(animated: true) {
-            if let image = image {
-                self.updateRenderNodeImage(using: image)
-            } else {
-                self.clearRenderNodeImage()
-            }
-
-            self.viewSource.discardApplyDelegate?.applySelected(sender: nil)
-        }
+        picker.dismiss(animated: true)
     }
 
     func pickerStoredFile(picker: PickerNavigationController, response: StoreResponse) {
-        picker.dismiss(animated: true) {
-            if let handle = response.contents?["handle"] as? String {
-                self.download(handle: handle)
+        if let handle = response.contents?["handle"] as? String {
+            download(picker: picker, handle: handle) { image in
+                self.selectedImage = image
+                picker.dismiss(animated: true)
             }
         }
     }
@@ -171,5 +166,15 @@ extension OverlaysController: PickerNavigationControllerDelegate {
 
     func pickerReportedUploadProgress(picker: PickerNavigationController, progress: Float) {
         // NO-OP
+    }
+
+    func pickerWasDismissed(picker: PickerNavigationController) {
+        if let selectedImage = selectedImage {
+            updateRenderNodeImage(using: selectedImage)
+            viewSource.discardApplyDelegate?.applySelected(sender: nil)
+        } else {
+            clearRenderNodeImage()
+            viewSource.discardApplyDelegate?.discardSelected(sender: nil)
+        }
     }
 }
