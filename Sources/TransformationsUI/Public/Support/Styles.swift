@@ -33,7 +33,7 @@ extension EditorToolbarStyle {
         $0.innerInsets = Constants.Spacing.modulesToolbarInsets
         $0.itemSpacing = 0
         $0.itemStyle = .default
-        $0.buttonConfig = Constants.CustomButtons.default()
+        $0.buttonConfig = Constants.Buttons.default()
     }
 
     public static let segments = EditorToolbarStyle {
@@ -53,19 +53,19 @@ extension EditorToolbarStyle {
     public static let commands = EditorToolbarStyle {
         $0.fixedHeight = Constants.Size.defaultToolbarHeight
         $0.innerInsets = Constants.Spacing.commandToolbarInsets
-        $0.buttonConfig = Constants.CustomButtons.default()
+        $0.buttonConfig = Constants.Buttons.default()
     }
 
     public static let togglingCommands = EditorToolbarStyle {
         $0.fixedHeight = Constants.Size.mediumToolbarHeight
         $0.innerInsets = Constants.Spacing.commandToolbarInsets
-        $0.buttonConfig = Constants.CustomButtons.default(toggling: true)
+        $0.buttonConfig = Constants.Buttons.default(toggling: true)
     }
 
     public static let largeCommands = EditorToolbarStyle {
         $0.fixedHeight = Constants.Size.mediumToolbarHeight
         $0.innerInsets = Constants.Spacing.commandToolbarInsets
-        $0.buttonConfig = Constants.CustomButtons.filters()
+        $0.buttonConfig = Constants.Buttons.filters()
     }
 
     public static let boundedRangeCommand = EditorToolbarStyle {

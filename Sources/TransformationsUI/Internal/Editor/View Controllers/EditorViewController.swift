@@ -75,12 +75,7 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
     // MARK: - View Overrides
 
     override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
-        switch UIScreen.main.traitCollection.userInterfaceIdiom {
-        case .pad:
-            return .all
-        default:
-            return [.portrait, .portraitUpsideDown]
-        }
+        Constants.supportedInterfaceOrientations
     }
 
     // MARK: - Public Functions

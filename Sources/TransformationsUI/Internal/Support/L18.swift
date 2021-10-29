@@ -8,9 +8,9 @@
 
 import Foundation
 
-public struct L18 {
-    public static let save = l18("Save")
-    public static let cancel = l18("Cancel")
+struct L18 {
+    static let save = l18("Save")
+    static let cancel = l18("Cancel")
 }
 
 private extension L18 {

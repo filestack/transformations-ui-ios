@@ -155,6 +155,10 @@ class ResizeViewController: UIViewController {
 
         super.dismiss(animated: flag, completion: completion)
     }
+
+    override var supportedInterfaceOrientations: UIInterfaceOrientationMask {
+        Constants.supportedInterfaceOrientations
+    }
 }
 
 // MARK: - Actions
