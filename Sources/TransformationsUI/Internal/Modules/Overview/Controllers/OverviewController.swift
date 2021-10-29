@@ -36,26 +36,19 @@ class OverviewController: NSObject, EditorModuleController {
     private(set) lazy var objectToolbar: StandardToolbar = {
         let toolbar = StandardToolbar(items: module.commands, style: .commands)
 
-        toolbar.shouldHighlightSelectedItem = false
         toolbar.delegate = self
+        toolbar.backgroundColor = Constants.Color.secondaryBackground
 
         return toolbar
     }()
 
     private(set) var detailToolbar: BoundedRangeCommandToolbar?
 
-    private lazy var objectToolbarFXWrapperView: UIView = {
-        let view = VisualFXWrapperView(wrapping: objectToolbarStack, usingBlurEffect: Constants.ViewEffects.blur)
-
-        view.alpha = 0
-
-        return view
-    }()
-
     private(set) lazy var objectToolbarStack: UIStackView = {
         let stackView = UIStackView(arrangedSubviews: [objectToolbar])
 
         stackView.axis = .vertical
+        stackView.alpha = 0
 
         return stackView
     }()
@@ -162,7 +155,7 @@ private extension OverviewController {
         select(object: selectedObject)
         objectPanHandler.delegate = self
         addGestureRecognizers()
-        viewSource.stackView.addArrangedSubview(objectToolbarFXWrapperView)
+        viewSource.stackView.addArrangedSubview(objectToolbarStack)
         viewSource.stackView.addArrangedSubview(modulesToolbar)
     }
 
@@ -171,7 +164,7 @@ private extension OverviewController {
         removeGestureRecognizers()
         removeObjectSelectionView()
         modulesToolbar.removeFromSuperview()
-        objectToolbarFXWrapperView.removeFromSuperview()
+        objectToolbarStack.removeFromSuperview()
     }
 
     func addGestureRecognizers() {
@@ -201,12 +194,12 @@ private extension OverviewController {
                 self.objectSelectionView = objectSelectionView
             }
 
-            objectToolbarFXWrapperView.alpha = 1
+            objectToolbarStack.alpha = 1
             updateObjectSelectionView()
             updateObjectToolbar()
         } else {
             removeObjectSelectionView()
-            objectToolbarFXWrapperView.alpha = 0
+            objectToolbarStack.alpha = 0
         }
 
         updateDetailToolbar()

@@ -1,24 +1,24 @@
 {
   "images" : [
     {
+      "filename" : "arrow-undo.png",
       "idiom" : "universal",
-      "filename" : "ic_undo_36pt.png",
       "scale" : "1x"
     },
     {
+      "filename" : "arrow-undo@2x.png",
       "idiom" : "universal",
-      "filename" : "ic_undo_36pt_2x.png",
       "scale" : "2x"
     },
     {
+      "filename" : "arrow-undo@3x.png",
       "idiom" : "universal",
-      "filename" : "ic_undo_36pt_3x.png",
       "scale" : "3x"
     }
   ],
   "info" : {
-    "version" : 1,
-    "author" : "xcode"
+    "author" : "xcode",
+    "version" : 1
   },
   "properties" : {
     "template-rendering-intent" : "template"

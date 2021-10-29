@@ -30,7 +30,7 @@ public class DiscardApplyToolbar: EditorToolbar {
 
     // MARK: - Lifecycle
 
-    public required override init(style: EditorToolbarStyle = .default) {
+    public required override init(style: EditorToolbarStyle = .discardApply) {
         super.init(style: style)
         setup()
     }
@@ -51,14 +51,22 @@ public class DiscardApplyToolbar: EditorToolbar {
 
 private extension DiscardApplyToolbar {
     func setup() {
-        let discardButton = button(using: .fromBundle("icon-discard"))
-        let applyButton = button(using: .fromBundle("icon-apply"))
+        let discardButton = UIButton(type: .system)
+        let applyButton = UIButton(type: .system)
 
+        discardButton.setImage(.fromBundle("icon-discard"), for: .normal)
         discardButton.tintColor = style.itemStyle.tintColor
-        discardButton.addTarget(delegate, action: #selector(DiscardApplyToolbarDelegate.discardSelected), for: .touchUpInside)
 
-        applyButton.tintColor = Constants.Color.primaryActionTint
-        applyButton.addTarget(delegate, action: #selector(DiscardApplyToolbarDelegate.applySelected), for: .touchUpInside)
+        discardButton.addTarget(delegate,
+                                action: #selector(DiscardApplyToolbarDelegate.discardSelected),
+                                for: .primaryActionTriggered)
+
+        applyButton.setImage(.fromBundle("icon-apply"), for: .normal)
+        applyButton.tintColor = Constants.Color.accent
+
+        applyButton.addTarget(delegate,
+                              action: #selector(DiscardApplyToolbarDelegate.applySelected),
+                              for: .primaryActionTriggered)
 
         setItems([discardButton, UIView(), applyButton])
     }

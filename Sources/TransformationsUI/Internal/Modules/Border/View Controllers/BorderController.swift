@@ -34,12 +34,9 @@ class BorderController: EditorModuleController {
         let stackView = UIStackView(arrangedSubviews: [toolbar])
 
         stackView.axis = .vertical
+        stackView.backgroundColor = Constants.Color.secondaryBackground
 
         return stackView
-    }()
-
-    private(set) lazy var toolbarFXWrapperView: UIView = {
-        VisualFXWrapperView(wrapping: toolbarStack, usingBlurEffect: Constants.ViewEffects.blur)
     }()
 
     // MARK: - View Overrides
@@ -111,12 +108,12 @@ extension BorderController {
 
 private extension BorderController {
     func setup() {
-        viewSource.stackView.addArrangedSubview(toolbarFXWrapperView)
+        viewSource.stackView.addArrangedSubview(toolbarStack)
         resetControls()
     }
 
     func cleanup() {
-        toolbarFXWrapperView.removeFromSuperview()
+        toolbarStack.removeFromSuperview()
     }
 
     func resetControls() {

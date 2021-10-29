@@ -7,11 +7,10 @@
 //
 
 import UIKit
+import SnapKit
 
 open class ArrangeableToolbar: UIView {
     // MARK: - Open Properties
-
-    open var shouldAutoAdjustAxis: Bool = false
 
     open var distribution: UIStackView.Distribution {
         get { stackView.distribution }
@@ -37,7 +36,7 @@ open class ArrangeableToolbar: UIView {
         return stackView.arrangedSubviews
     }
 
-    open var innerInset: CGFloat = 0 {
+    open var innerInsets: UIEdgeInsets = .zero {
         didSet { setupViews() }
     }
 
@@ -47,16 +46,8 @@ open class ArrangeableToolbar: UIView {
 
     // MARK: - Private Properties
 
-    private lazy var stackView: UIStackView = {
-        let stackView = UIStackView()
-
-        stackView.translatesAutoresizingMaskIntoConstraints = false
-
-        return stackView
-    }()
-
+    private let stackView = UIStackView()
     private var shouldSetupViews = true
-    private var stackViewConstraints = [NSLayoutConstraint]()
 
     // MARK: - Lifecycle
     
@@ -136,30 +127,12 @@ extension ArrangeableToolbar {
             shouldSetupViews = false
             setupViews()
         }
-
-        if shouldAutoAdjustAxis {
-            rearrangeViews()
-        }
     }
 }
 
 private extension ArrangeableToolbar {
     func setupViews() {
-        removeConstraints(stackViewConstraints)
-        stackViewConstraints = fill(with: stackView, inset: innerInset, activate: true)
-    }
-
-    func rearrangeViews() {
-        switch (traitCollection.horizontalSizeClass, traitCollection.verticalSizeClass) {
-        // In vR we distribute the stack along the horizontal axis.
-        case (_, .regular):
-            stackView.axis = .horizontal
-        // In vC we distribute the stack along the vertical axis, and, optionally,
-        // we arrange the items from bottom to top.
-        case (_, .compact):
-            stackView.axis = .vertical
-        case (_, _):
-            break
-        }
+        addSubview(stackView)
+        stackView.snp.remakeConstraints { $0.edges.equalTo(self).inset(innerInsets) }
     }
 }

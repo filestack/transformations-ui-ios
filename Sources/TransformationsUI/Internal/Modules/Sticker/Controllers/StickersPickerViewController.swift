@@ -66,12 +66,13 @@ class StickersPickerViewController: UICollectionViewController {
             let header = UILabel()
 
             header.translatesAutoresizingMaskIntoConstraints = false
-            header.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
+            header.font = Constants.Fonts.default(ofSize: UIFont.labelFontSize)
             header.text = "No stickers provided."
             header.textAlignment = .center
-            header.backgroundColor = Constants.Color.background
+            header.backgroundColor = Constants.Color.tertiaryBackground
 
-            view.fill(with: header, activate: true)
+            view.addSubview(header)
+            header.snp.makeConstraints { $0.edges.equalTo(view) }
 
             UIView.transition(from: collectionView, to: header, duration: 0.5, options: .transitionCrossDissolve) { completed in
                 self.collectionView.isHidden = true
@@ -121,9 +122,12 @@ class StickerViewCell: UICollectionViewCell {
     override init(frame: CGRect) {
         super.init(frame: frame)
 
+        let insets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+
         backgroundView = UIView()
+
         contentView.addSubview(imageView)
-        contentView.fill(with: imageView, inset: 6, activate: true)
+        imageView.snp.makeConstraints { $0.edges.equalTo(contentView).inset(insets) }
     }
 
     required init?(coder: NSCoder) {
@@ -147,7 +151,7 @@ class SectionHeader: UICollectionReusableView {
         let label = UILabel()
 
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
+        label.font = Constants.Fonts.default(ofSize: UIFont.labelFontSize)
 
         return label
     }()
@@ -157,7 +161,7 @@ class SectionHeader: UICollectionReusableView {
 
         if sectionHeaderlabel.superview == nil {
             addSubview(sectionHeaderlabel)
-            fill(with: sectionHeaderlabel, activate: true)
+            sectionHeaderlabel.snp.makeConstraints { $0.edges.equalTo(self) }
         }
     }
 }

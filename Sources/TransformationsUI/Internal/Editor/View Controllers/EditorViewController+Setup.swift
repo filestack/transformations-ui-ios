@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 extension EditorViewController {
     func setup() {
@@ -56,11 +57,16 @@ private extension EditorViewController {
 
     func setupView() {
         view.backgroundColor = Constants.Color.background
-        moduleContainerView.backgroundColor = Constants.Color.moduleBackground
+        moduleContainerView.backgroundColor = Constants.Color.background
 
         stackView.addArrangedSubview(titleToolbar)
         stackView.addArrangedSubview(moduleContainerView)
 
-        view.fill(with: stackView, withSafeAreaRespecting: true, activate: true)
+        view.addSubview(stackView)
+
+        stackView.snp.makeConstraints { make in
+            make.left.right.bottom.equalTo(view)
+            make.top.equalTo(view.safeAreaLayoutGuide)
+        }
     }
 }

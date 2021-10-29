@@ -39,7 +39,7 @@ public class BorderToolbar: EditorToolbar {
 
     // MARK: - Lifecycle
 
-    public required init(commands: [EditorModuleCommand], style: EditorToolbarStyle = .default) {
+    public required init(commands: [EditorModuleCommand], style: EditorToolbarStyle = .accented) {
         self.commands = commands
 
         super.init(style: style)
@@ -97,15 +97,18 @@ public extension BorderToolbar {
 
 private extension BorderToolbar {
     func setup() {
-        shouldAutoAdjustAxis = false
         axis = .vertical
-        innerInset = 0
+        innerInsets = .zero
         distribution = .equalCentering
 
         let commandItems: [UIView] = (commands.enumerated().compactMap { offset, command in
             switch command {
             case is Commands.Width:
-                let control = UberSegmentedControl(items: ["Width"])
+
+                let control = UberSegmentedControl(
+                    items: ["Width"],
+                    config: .init(font: Constants.Fonts.segmentedControlFont)
+                )
 
                 control.addTarget(self, action: #selector(controlSelected), for: .valueChanged)
 
@@ -114,7 +117,10 @@ private extension BorderToolbar {
 
                 return control
             case is Commands.Opacity:
-                let control = UberSegmentedControl(items: ["Opacity"])
+                let control = UberSegmentedControl(
+                    items: ["Opacity"],
+                    config: .init(font: Constants.Fonts.segmentedControlFont)
+                )
 
                 control.addTarget(self, action: #selector(controlSelected), for: .valueChanged)
 
@@ -140,7 +146,7 @@ private extension BorderToolbar {
         stackView.axis = .horizontal
         stackView.spacing = style.itemSpacing
         stackView.distribution = .equalSpacing
-        stackView.innerInset = style.innerInset
+        stackView.innerInsets = style.innerInsets
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         innerStackView = stackView

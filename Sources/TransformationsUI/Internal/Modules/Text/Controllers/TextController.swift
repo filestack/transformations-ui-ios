@@ -45,8 +45,9 @@ class TextController: EditorModuleController {
 
         stackView.axis = .vertical
         stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.backgroundColor = Constants.Color.secondaryBackground
 
-        return VisualFXWrapperView(wrapping: stackView, usingBlurEffect: Constants.ViewEffects.blur)
+        return stackView
     }()
 
     // MARK: - View Overrides
@@ -95,6 +96,7 @@ class TextController: EditorModuleController {
         renderNode.textAlignment = module.defaultTextAlignment
 
         group.add(node: renderNode)
+        group.nodeFinishedChanging(node: renderNode, change: nil)
 
         return renderNode
     }
@@ -120,7 +122,6 @@ class TextController: EditorModuleController {
 private extension TextController {
     func setup() {
         addKeyboardObservers()
-
         updateToolbar()
 
         guard let groupView = (renderNode.group as? ViewableNode)?.view else { return }

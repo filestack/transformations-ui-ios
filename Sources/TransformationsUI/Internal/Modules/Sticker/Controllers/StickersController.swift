@@ -15,7 +15,7 @@ class StickersController: EditorModuleController {
 
     let module: Module
     let viewSource: ModuleViewSource
-    var renderNode: StickersRenderNode
+    var renderNode: StickersRenderNode?
     var renderGroupNode: RenderGroupNode?
 
     // MARK: - View Overrides
@@ -48,8 +48,8 @@ class StickersController: EditorModuleController {
     required init(renderNode: RenderNode?, module: EditorModule, viewSource: ModuleViewSource) {
         self.module = module as! Module
         self.viewSource = viewSource
-        self.renderNode = renderNode as! StickersRenderNode
-        self.renderGroupNode = self.renderNode.group
+        self.renderNode = renderNode as? StickersRenderNode
+        self.renderGroupNode = self.renderNode?.group
 
         setup()
         showPickSticker()
@@ -79,8 +79,8 @@ extension StickersController {
         }
 
         stickerPickerVC.elements = module.stickers
-        stickerPickerVC.selectedElement = renderNode.image
-        stickerPickerVC.selectedSection = renderNode.section
+        stickerPickerVC.selectedElement = renderNode?.image
+        stickerPickerVC.selectedSection = renderNode?.section
 
         let controller = UINavigationController(rootViewController: stickerPickerVC)
 
@@ -91,14 +91,11 @@ extension StickersController {
 extension StickersController: StickersPickerViewControllerDelegate {
     func stickersPickerViewControllerDismissed(with image: UIImage?, in section: String?) {
         if let image = image, let section = section {
-            renderNode.image = image
-            renderNode.section = section
+            renderNode?.image = image
+            renderNode?.center(for: image.size)
+            renderNode?.section = section
             viewSource.discardApplyDelegate?.applySelected(sender: nil)
         } else {
-            if renderNode.image == nil {
-                renderGroupNode?.remove(node: renderNode)
-            }
-
             viewSource.discardApplyDelegate?.discardSelected(sender: nil)
         }
     }

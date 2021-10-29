@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SnapKit
 
 public class VisualFXWrapperView: UIVisualEffectView {
     private let view: UIView
@@ -20,8 +21,12 @@ public class VisualFXWrapperView: UIVisualEffectView {
 
         let vibrancyView = UIVisualEffectView(effect: UIVibrancyEffect(blurEffect: effect))
 
-        contentView.fill(with: vibrancyView, activate: true)
-        contentView.fill(with: view, activate: true)
+        contentView.addSubview(vibrancyView)
+        contentView.addSubview(view)
+
+        vibrancyView.snp.makeConstraints { $0.edges.equalTo(contentView) }
+        view.snp.makeConstraints { $0.edges.equalTo(contentView) }
+
         translatesAutoresizingMaskIntoConstraints = false
     }
 

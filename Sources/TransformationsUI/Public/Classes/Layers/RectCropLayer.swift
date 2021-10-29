@@ -29,7 +29,7 @@ public class RectCropLayer: CALayer {
 
         layer.path = outsidePath
         layer.fillRule = .evenOdd
-        layer.fillColor = Constants.Color.moduleBackground.cgColor
+        layer.fillColor = Constants.Color.background.cgColor
         layer.opacity = Constants.Misc.cropOutsideOpacity
 
         return layer
@@ -108,7 +108,7 @@ public class RectCropLayer: CALayer {
 
 public extension RectCropLayer {
     func updateColors() {
-        outsideLayer.fillColor = Constants.Color.moduleBackground.cgColor
+        outsideLayer.fillColor = Constants.Color.background.cgColor
     }
 }
 

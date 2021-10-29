@@ -77,7 +77,7 @@ public class TextToolbar: EditorToolbar {
 
     // MARK: - Lifecycle
 
-    public required init(commandsInGroups: [[EditorModuleCommand]], style: EditorToolbarStyle = .default) {
+    public required init(commandsInGroups: [[EditorModuleCommand]], style: EditorToolbarStyle = .accented) {
         self.commandsInGroups = commandsInGroups
 
         super.init(style: style)
@@ -128,9 +128,8 @@ public class TextToolbar: EditorToolbar {
 
 private extension TextToolbar {
     func setup() {
-        shouldAutoAdjustAxis = false
         axis = .vertical
-        innerInset = 0
+        innerInsets = .zero
         distribution = .equalCentering
 
         var commandItemsInGroups: [[UIView]] = []
@@ -139,18 +138,21 @@ private extension TextToolbar {
             let commandItems: [UIView] = (commands.enumerated().compactMap { offset, command in
                 switch command {
                 case is Commands.SelectFontFamily:
-                    let segmentedControl = UberSegmentedControl(items: [fontFamily ?? "N/A"])
+                    let control = UberSegmentedControl(
+                        items: [fontFamily ?? "N/A"],
+                        config: .init(font: Constants.Fonts.segmentedControlFont)
+                    )
 
-                    segmentedControl.setImage(UIImage.fromBundle("icon-drop-down-arrow"), forSegmentAt: 0)
-                    segmentedControl.setSegmentSemanticContentAttribute(at: 0, attribute: .forceRightToLeft)
-                    segmentedControl.setSegmentImageEdgeInsets(at: 0, insets: UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 0))
+                    control.setImage(UIImage.fromBundle("icon-drop-down-arrow"), forSegmentAt: 0)
+                    control.setSegmentSemanticContentAttribute(at: 0, attribute: .forceRightToLeft)
+                    control.setSegmentImageEdgeInsets(at: 0, insets: UIEdgeInsets(top: 0, left: 14, bottom: 0, right: 0))
 
-                    segmentedControl.isMomentary = true
-                    segmentedControl.addTarget(self, action: #selector(controlSelected), for: .valueChanged)
+                    control.isMomentary = true
+                    control.addTarget(self, action: #selector(controlSelected), for: .valueChanged)
 
-                    selectFontFamilyControl = segmentedControl
+                    selectFontFamilyControl = control
 
-                    return segmentedControl
+                    return control
                 case is Commands.SelectFontColor:
                     let control = RingButton()
 
@@ -160,30 +162,35 @@ private extension TextToolbar {
 
                     return control
                 case is Commands.SelectFontStyle:
-                    let segmentedControl = UberSegmentedControl(items: [
-                        UIImage.fromBundle("icon-font-style-bold"),
-                        UIImage.fromBundle("icon-font-style-italic"),
-                        UIImage.fromBundle("icon-font-style-underline")
-                    ], allowsMultipleSelection: true)
+                    let control = UberSegmentedControl(
+                        items: [
+                            UIImage.fromBundle("icon-font-style-bold"),
+                            UIImage.fromBundle("icon-font-style-italic"),
+                            UIImage.fromBundle("icon-font-style-underline")
+                        ],
+                        config: .init(allowsMultipleSelection: true)
+                    )
 
-                    segmentedControl.addTarget(self, action: #selector(controlSelected), for: .valueChanged)
+                    control.addTarget(self, action: #selector(controlSelected), for: .valueChanged)
 
-                    selectFontStyleControl = segmentedControl
+                    selectFontStyleControl = control
 
-                    return segmentedControl
+                    return control
                 case is Commands.SelectTextAlignment:
-                    let segmentedControl = UberSegmentedControl(items: [
-                        UIImage.fromBundle("icon-text-align-left"),
-                        UIImage.fromBundle("icon-text-align-center"),
-                        UIImage.fromBundle("icon-text-align-right"),
-                        UIImage.fromBundle("icon-text-align-justify")
-                    ])
+                    let control = UberSegmentedControl(
+                        items: [
+                            UIImage.fromBundle("icon-text-align-left"),
+                            UIImage.fromBundle("icon-text-align-center"),
+                            UIImage.fromBundle("icon-text-align-right"),
+                            UIImage.fromBundle("icon-text-align-justify")
+                        ]
+                    )
 
-                    segmentedControl.addTarget(self, action: #selector(controlSelected), for: .valueChanged)
+                    control.addTarget(self, action: #selector(controlSelected), for: .valueChanged)
 
-                    selectTextAlignmentControl = segmentedControl
+                    selectTextAlignmentControl = control
 
-                    return segmentedControl
+                    return control
                 default:
                     return nil
                 }
@@ -199,7 +206,6 @@ private extension TextToolbar {
 
             innerToolbar.axis = .horizontal
             innerToolbar.spacing = style.itemSpacing
-            innerToolbar.shouldAutoAdjustAxis = false
             innerToolbar.distribution = .fill
 
             innerToolbars.append(innerToolbar)
@@ -210,7 +216,7 @@ private extension TextToolbar {
         stackView.axis = .vertical
         stackView.spacing = style.itemSpacing
         stackView.distribution = .equalCentering
-        stackView.innerInset = style.innerInset
+        stackView.innerInsets = style.innerInsets
         stackView.translatesAutoresizingMaskIntoConstraints = false
 
         innerStackView = stackView

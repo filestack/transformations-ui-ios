@@ -7,9 +7,9 @@
 //
 
 import UIKit
+import SnapKit
 
 extension ModuleViewController {
-
     func setup() {
         canScrollAndZoom = true
 
@@ -21,7 +21,9 @@ extension ModuleViewController {
         contentView.layoutMarginsGuide.topAnchor.constraint(equalTo: scrollView.topAnchor).isActive = true
         contentView.layoutMarginsGuide.bottomAnchor.constraint(equalTo: scrollView.bottomAnchor).isActive = true
 
-        view.fill(with: stackView, activate: true)
+        view.addSubview(stackView)
+        stackView.snp.makeConstraints { $0.edges.equalTo(view) }
+
         view.clipsToBounds = true
     }
 }

@@ -20,14 +20,10 @@ class FiltersController: EditorModuleController {
     private(set) lazy var toolbar: StandardToolbar = {
         let toolbar = StandardToolbar(items: module.commands, style: .largeCommands)
 
-        toolbar.shouldHighlightSelectedItem = true
         toolbar.delegate = self
+        toolbar.backgroundColor = Constants.Color.secondaryBackground
 
         return toolbar
-    }()
-
-    private(set) lazy var toolbarFXWrapperView: UIView = {
-        VisualFXWrapperView(wrapping: toolbar, usingBlurEffect: Constants.ViewEffects.blur)
     }()
 
     // MARK: - View Overrides
@@ -54,13 +50,13 @@ class FiltersController: EditorModuleController {
 
 private extension FiltersController {
     func setup() {
-        viewSource.stackView.addArrangedSubview(toolbarFXWrapperView)
+        viewSource.stackView.addArrangedSubview(toolbar)
         setupToolbarItemIcons()
         resetToolbar()
     }
 
     func cleanup() {
-        toolbarFXWrapperView.removeFromSuperview()
+        toolbar.removeFromSuperview()
     }
 
     func resetToolbar() {
@@ -90,7 +86,7 @@ private extension FiltersController {
 
                 DispatchQueue.main.async {
                     if let cgImage = CIContext().createCGImage(ciImage, from: ciImage.extent) {
-                        button.setImage(UIImage(cgImage: cgImage), for: .normal)
+                        button.setImage(UIImage(cgImage: cgImage).withRenderingMode(.alwaysOriginal), for: .normal)
                     }
                 }
             default:

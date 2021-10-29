@@ -58,6 +58,7 @@ public class CIImageView: MTKView {
         isPaused = true
         enableSetNeedsDisplay = true
         framebufferOnly = false
+        isOpaque = false
     }
 
     required init(coder: NSCoder) {

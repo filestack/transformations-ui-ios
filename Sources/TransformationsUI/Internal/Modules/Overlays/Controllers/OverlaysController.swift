@@ -118,28 +118,6 @@ private extension OverlaysController {
             }
         })
     }
-
-    func updateRenderNodeImage(using image: UIImage) {
-        renderNode?.image = image
-
-        if image.size.width >= image.size.height {
-            renderNode?.bounds.size.height *= image.size.height / image.size.width
-        } else {
-            renderNode?.bounds.size.width *= image.size.width / image.size.height
-        }
-
-        if let groupView = (renderNode?.group as? ViewableNode)?.view {
-            renderNode?.center = CGPoint(x: groupView.bounds.midX, y: groupView.bounds.midY)
-        }
-    }
-
-    func clearRenderNodeImage() {
-        if let renderNode = renderNode {
-            renderGroupNode?.remove(node: renderNode)
-        }
-
-        renderNode = nil
-    }
 }
 
 extension OverlaysController: PickerNavigationControllerDelegate {
@@ -164,16 +142,12 @@ extension OverlaysController: PickerNavigationControllerDelegate {
         // NO-OP
     }
 
-    func pickerReportedUploadProgress(picker: PickerNavigationController, progress: Float) {
-        // NO-OP
-    }
-
     func pickerWasDismissed(picker: PickerNavigationController) {
         if let selectedImage = selectedImage {
-            updateRenderNodeImage(using: selectedImage)
+            renderNode?.image = selectedImage
+            renderNode?.center(for: selectedImage.size)
             viewSource.discardApplyDelegate?.applySelected(sender: nil)
         } else {
-            clearRenderNodeImage()
             viewSource.discardApplyDelegate?.discardSelected(sender: nil)
         }
     }

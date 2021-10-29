@@ -6,8 +6,8 @@
         "repositoryURL": "https://github.com/filestack/filestack-ios",
         "state": {
           "branch": null,
-          "revision": "35268523c781037098e4b3c896a91dd0638c20a2",
-          "version": "2.8.3"
+          "revision": "4fee6e96a1d97c34a15017044169566b8c02c1e5",
+          "version": "2.8.4"
         }
       },
       {
@@ -29,12 +29,30 @@
         }
       },
       {
+        "package": "SnapKit",
+        "repositoryURL": "https://github.com/SnapKit/SnapKit.git",
+        "state": {
+          "branch": null,
+          "revision": "d458564516e5676af9c70b4f4b2a9178294f1bc6",
+          "version": "5.0.1"
+        }
+      },
+      {
+        "package": "SwiftMessages",
+        "repositoryURL": "https://github.com/SwiftKickMobile/SwiftMessages.git",
+        "state": {
+          "branch": null,
+          "revision": "1e49de7b3780b69927bc3e61903d8ec0693a3dc5",
+          "version": "9.0.5"
+        }
+      },
+      {
         "package": "UberSegmentedControl",
         "repositoryURL": "https://github.com/rnine/UberSegmentedControl.git",
         "state": {
           "branch": null,
-          "revision": "4df7107bd875f7fd1768002a7a0cbea9d16b4c18",
-          "version": "1.3.5"
+          "revision": "5a6bf2d7c768124a128defda3907635cbf63885a",
+          "version": "1.4.0"
         }
       },
       {

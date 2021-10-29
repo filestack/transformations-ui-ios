@@ -29,7 +29,7 @@ public class BoundedRangeCommandToolbar: EditorToolbar {
 
     // MARK: - Lifecycle
 
-    public init(command: BoundedRangeCommand, style: EditorToolbarStyle = .default) {
+    public init(command: BoundedRangeCommand, style: EditorToolbarStyle = .accented) {
         self.command = command
 
         super.init(style: style)
@@ -89,7 +89,7 @@ private extension BoundedRangeCommandToolbar {
 
         label.text = title
         label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: UIFont.smallSystemFontSize)
+        label.font = Constants.Fonts.bold(ofSize: UIFont.smallSystemFontSize)
         label.widthAnchor.constraint(equalToConstant: 100).isActive = true
 
         return label
@@ -100,7 +100,7 @@ private extension BoundedRangeCommandToolbar {
 
         label.text = command.formattedString(using: command.defaultValue)
         label.textAlignment = .center
-        label.font = .boldSystemFont(ofSize: UIFont.smallSystemFontSize)
+        label.font = Constants.Fonts.bold(ofSize: UIFont.smallSystemFontSize)
         label.widthAnchor.constraint(equalToConstant: 100).isActive = true
 
         return label
@@ -109,7 +109,7 @@ private extension BoundedRangeCommandToolbar {
     func createSlider(for command: BoundedRangeCommand, index: Int, title: String) -> UISlider {
         let slider = UISlider()
 
-        slider.tintColor = Constants.Color.primaryActionTint
+        slider.tintColor = Constants.Color.accent
         slider.minimumValue = Float(command.range.lowerBound)
         slider.maximumValue = Float(command.range.upperBound)
         slider.value = Float(command.defaultValue)

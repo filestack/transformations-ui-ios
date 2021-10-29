@@ -14,7 +14,7 @@ public class Modules: EditorModules {
     // MARK: - Public Properties
 
     /// Returns an array of all the supported modules.
-    public lazy var all: [EditorModule] = [transform, filters, adjustments, text, stickers, overlays, border]
+    public lazy var all: [EditorModule] = [transform, filters, adjustments, border, text, stickers, overlays]
 
     /// Transform module.
     public let transform = Transform()

@@ -19,9 +19,8 @@ class AdjustmentsController: EditorModuleController {
     private(set) var detailToolbar: BoundedRangeCommandToolbar?
 
     private(set) lazy var toolbar: StandardToolbar = {
-        let toolbar = StandardToolbar(items: module.commands, style: .commands)
+        let toolbar = StandardToolbar(items: module.commands, style: .togglingCommands)
 
-        toolbar.shouldHighlightSelectedItem = true
         toolbar.delegate = self
 
         return toolbar
@@ -31,12 +30,9 @@ class AdjustmentsController: EditorModuleController {
         let stackView = UIStackView(arrangedSubviews: [toolbar])
 
         stackView.axis = .vertical
+        stackView.backgroundColor = Constants.Color.secondaryBackground
 
         return stackView
-    }()
-
-    private(set) lazy var toolbarFXWrapperView: UIView = {
-        VisualFXWrapperView(wrapping: toolbarStack, usingBlurEffect: Constants.ViewEffects.blur)
     }()
 
     // MARK: - Private Properties
@@ -120,12 +116,12 @@ extension AdjustmentsController {
 
 private extension AdjustmentsController {
     func setup() {
-        viewSource.stackView.addArrangedSubview(toolbarFXWrapperView)
+        viewSource.stackView.addArrangedSubview(toolbarStack)
         resetControls()
     }
 
     func cleanup() {
-        toolbarFXWrapperView.removeFromSuperview()
+        toolbarStack.removeFromSuperview()
     }
 
     func resetControls() {

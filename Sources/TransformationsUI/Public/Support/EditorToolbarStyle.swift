@@ -7,20 +7,23 @@
 //
 
 import UIKit
+import TUIKit
 
 public struct EditorToolbarStyle {
     /// Defines the toolbar background color, or `nil` if transparency is required.
     public var backgroundColor: UIColor? = nil
-    /// Defines the inner toolbar inset in points (applies to all sides.)
-    public var innerInset: CGFloat = .zero
+    /// Defines the toolbar's inner insets.
+    public var innerInsets: UIEdgeInsets = .zero
     /// Defines the space between items in the toolbar.
     public var itemSpacing: CGFloat = .zero
     /// Defines the toolbar's fixed height.
     public var fixedHeight: CGFloat? = nil
     /// Defines the toolbar items style.
-    public var itemStyle: EditorToolbarItemStyle = .default
+    public var itemStyle = EditorToolbarItemStyle.accented
     /// Defines the toolbar's layout axis. Defaults to `horizontal`.
-    public var axis: NSLayoutConstraint.Axis = .horizontal
+    public var axis = NSLayoutConstraint.Axis.horizontal
+    /// Defines whether the toolbar item is highlightable.
+    public var buttonConfig = TUIButton.UIConfig()
 
     public init(_ build: (inout EditorToolbarStyle) -> Void) {
         build(&self)

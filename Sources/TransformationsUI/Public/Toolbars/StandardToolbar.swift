@@ -7,6 +7,8 @@
 //
 
 import UIKit
+import TUIKit
+import SnapKit
 
 public protocol StandardToolbarDelegate: AnyObject {
     func toolbarItemSelected(toolbar: StandardToolbar, item: DescriptibleEditorItem, control: UIControl)
@@ -22,14 +24,8 @@ public class StandardToolbar: EditorToolbar {
 
     public var selectedItem: UIView? {
         didSet {
-            if shouldHighlightSelectedItem {
-                for item in items {
-                    if selectedItem == nil {
-                        item.alpha = 1.0
-                    } else {
-                        item.alpha = item == selectedItem ? 1.0 : 0.5
-                    }
-                }
+            if let button = selectedItem as? TUIButton {
+                button.isSelected = true
             }
         }
     }
@@ -41,8 +37,6 @@ public class StandardToolbar: EditorToolbar {
         return descriptibleItems[idx]
     }
 
-    public var shouldHighlightSelectedItem: Bool = false
-
     public override var spacing: CGFloat {
         set { innerToolbar.spacing = newValue }
         get { innerToolbar.spacing }
@@ -50,11 +44,12 @@ public class StandardToolbar: EditorToolbar {
 
     // MARK: - Private Properties
 
+    private let buttonGroup = TUIButton.Group()
     private lazy var innerToolbar = ArrangeableToolbar()
 
     // MARK: - Lifecycle
 
-    public required init(items: [DescriptibleEditorItem], style: EditorToolbarStyle = .default) {
+    public required init(items: [DescriptibleEditorItem], style: EditorToolbarStyle = .accented) {
         self.descriptibleItems = items
         super.init(style: style)
         setup()
@@ -69,11 +64,15 @@ public class StandardToolbar: EditorToolbar {
     public override func setItems(_ items: [UIView] = [], animated: Bool = false) {
         innerToolbar = ArrangeableToolbar(items: items)
         innerToolbar.spacing = style.itemSpacing
+        innerToolbar.innerInsets = style.innerInsets
+        innerToolbar.distribution = .fillEqually
 
         let scrollView = ToolbarScrollView()
 
         scrollView.translatesAutoresizingMaskIntoConstraints = false
-        scrollView.fill(with: innerToolbar, activate: true)
+
+        scrollView.addSubview(innerToolbar)
+        innerToolbar.snp.makeConstraints { $0.edges.equalTo(scrollView) }
 
         super.setItems([scrollView], animated: animated)
     }
@@ -91,11 +90,11 @@ public extension StandardToolbar {
 
 private extension StandardToolbar {
     @objc func toolbarItemSelected(sender: UIControl) {
-        guard let control = items[sender.tag] as? UIControl else { return }
+        guard let control = items[sender.tag] as? TUIButton else { return }
 
-        selectedItem = control
         let item = descriptibleItems[sender.tag]
 
+        selectedItem = control
         delegate?.toolbarItemSelected(toolbar: self, item: item, control: control)
     }
 }
@@ -107,10 +106,19 @@ private extension StandardToolbar {
         setItems(descriptibleItems.enumerated().compactMap {
             guard let image = $0.element.icon else { return nil }
 
-            let button = self.button(using: $0.element.title, image: image)
+            let button = TUIButton(type: .custom)
 
-            button.addTarget(delegate, action: #selector(toolbarItemSelected), for: .touchUpInside)
+            button.setTitle($0.element.title, for: .normal)
+            button.setImage(image, for: .normal)
+
+            button.addTarget(delegate,
+                             action: #selector(toolbarItemSelected),
+                             for: .primaryActionTriggered)
+
             button.tag = $0.offset
+
+            button.group = buttonGroup
+            button.apply(config: style.buttonConfig)
 
             return button
         })

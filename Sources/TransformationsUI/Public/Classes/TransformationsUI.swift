@@ -34,6 +34,8 @@ public class TransformationsUI: NSObject {
     /// - Parameter config: A `Config` object.
     public init(with config: Config) {
         self.config = config
+        super.init()
+        self.setup()
     }
 
     // MARK: - Open Functions
@@ -46,5 +48,36 @@ public class TransformationsUI: NSObject {
         return EditorViewController(image: image, config: config) { image in
             self.delegate?.editorDismissed(with: image)
         }
+    }
+}
+
+private extension TransformationsUI {
+    func setup() {
+        // Register custom fonts.
+        for font in Config.fontsURLs() {
+            do {
+                try UIFont.register(from: font)
+            } catch {
+                print("Error registering font:", error.localizedDescription)
+            }
+        }
+
+        let font: UIFont = Constants.Fonts.semibold(ofSize: Constants.Fonts.navigationFontSize)
+
+        // Setup custom font and foreground colors.
+        // Navigation bar.
+        UINavigationBar.appearance().titleTextAttributes = [
+            .font: font,
+            .foregroundColor: Constants.Color.defaultTint
+        ]
+
+        // Bar button item.
+        UIBarButtonItem.appearance().setTitleTextAttributes(
+            [
+                .font: font,
+                .foregroundColor: Constants.Color.accent
+            ],
+            for: UIControl.State.normal
+        )
     }
 }

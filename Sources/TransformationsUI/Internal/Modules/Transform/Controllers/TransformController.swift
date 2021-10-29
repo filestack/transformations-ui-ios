@@ -9,6 +9,7 @@
 import UIKit
 import AVFoundation.AVUtilities
 import UberSegmentedControl
+import SwiftMessages
 
 class TransformController: EditorModuleController {
     typealias Module = Modules.Transform
@@ -72,6 +73,7 @@ class TransformController: EditorModuleController {
     private lazy var extraToolbar: StandardToolbar = {
         let toolbar = StandardToolbar(items: extraToolbarCommands, style: .commands)
         toolbar.delegate = self
+        toolbar.backgroundColor = Constants.Color.secondaryBackground
 
         return toolbar
     }()
@@ -80,16 +82,9 @@ class TransformController: EditorModuleController {
         let toolbar = SegmentedControlToolbar(items: cropToolbarCommands, style: .segments)
 
         toolbar.delegate = self
+        toolbar.backgroundColor = Constants.Color.secondaryBackground
 
         return toolbar
-    }()
-
-    private lazy var extraToolbarFXWrapperView: UIView = {
-        VisualFXWrapperView(wrapping: extraToolbar, usingBlurEffect: Constants.ViewEffects.blur)
-    }()
-
-    private lazy var cropToolbarFXWrapperView: UIView = {
-        VisualFXWrapperView(wrapping: cropToolbar, usingBlurEffect: Constants.ViewEffects.blur)
     }()
 
     private var observers: [NSKeyValueObservation] = []
@@ -98,10 +93,10 @@ class TransformController: EditorModuleController {
     private let circleLayer = CircleCropLayer()
 
     private lazy var resizeButton: UIButton = {
-        let button = ToolbarButton(type: .system)
+        let button = UIButton(type: .system)
 
         button.tintColor = Constants.Color.defaultTint
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: UIFont.labelFontSize)
+        button.titleLabel?.font = Constants.Fonts.default(ofSize: 16)
         button.setImage(UIImage.fromBundle("icon-drop-down-arrow"), for: .normal)
         button.semanticContentAttribute = .forceRightToLeft
         button.imageEdgeInsets.left = 14
@@ -131,22 +126,17 @@ class TransformController: EditorModuleController {
     // MARK: - Actions
 
     @objc func resizeTapped(sender: UIButton) {
+        guard let sourceVC = viewSource as? UIViewController else { return }
+
         let resizeVC = ResizeViewController()
 
-        resizeVC.title = "Resize Image"
         resizeVC.delegate = self
-
-        if #available(iOS 13.0, *) {
-            resizeVC.isModalInPresentation = true
-        }
-
         resizeVC.imageSize = renderNode.outputImage.extent.size
 
-        let controller = UINavigationController(rootViewController: resizeVC)
-        controller.modalPresentationStyle = .popover
-        (controller.presentationController as? UIPopoverPresentationController)?.sourceView = sender
+        let segue = SwiftMessagesCenteredSegue(identifier: nil, source: sourceVC, destination: resizeVC)
 
-        (viewSource as? UIViewController)?.present(controller, animated: true)
+        segue.keyboardTrackingView = KeyboardTrackingView()
+        segue.perform()
     }
 
     // MARK: - Pan Gesture Handling
@@ -169,15 +159,15 @@ class TransformController: EditorModuleController {
 
 private extension TransformController {
     func setup() {
-        viewSource.stackView.insertArrangedSubview(extraToolbarFXWrapperView, at: 0)
-        viewSource.stackView.addArrangedSubview(cropToolbarFXWrapperView)
+        viewSource.stackView.insertArrangedSubview(extraToolbar, at: 0)
+        viewSource.stackView.addArrangedSubview(cropToolbar)
         viewSource.contentView.directionalLayoutMargins = Constants.Spacing.insetContentLayout
         addObservers()
     }
 
     func cleanup() {
-        extraToolbarFXWrapperView.removeFromSuperview()
-        cropToolbarFXWrapperView.removeFromSuperview()
+        extraToolbar.removeFromSuperview()
+        cropToolbar.removeFromSuperview()
         viewSource.contentView.directionalLayoutMargins = .zero
         editMode = .none
         removeObservers()

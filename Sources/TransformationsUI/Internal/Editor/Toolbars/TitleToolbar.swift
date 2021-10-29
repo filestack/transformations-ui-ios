@@ -10,7 +10,6 @@ import UIKit
 
 @objc protocol TitleToolbarDelegate: AnyObject {
     func saveSelected(sender: UIButton)
-    func cancelSelected(sender: UIButton)
     func undoSelected(sender: UIButton)
     func redoSelected(sender: UIButton)
 }
@@ -27,66 +26,74 @@ class TitleToolbar: EditorToolbar {
     private var innerToolbar = ArrangeableToolbar()
 
     private var saveButton: UIButton {
-        let button = self.button(using: L18.save.uppercased())
+        let button = UIButton(type: .system)
 
-        button.setTitleColor(Constants.Color.primaryActionTint, for: .normal)
-        button.titleLabel?.font = UIFont.boldSystemFont(ofSize: UIFont.buttonFontSize)
-        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.saveSelected), for: .touchUpInside)
+        button.titleLabel?.font = Constants.Fonts.semibold(ofSize: Constants.Fonts.navigationFontSize)
+        button.setTitle(L18.save.uppercased(), for: .normal)
+
+        button.addTarget(delegate,
+                         action: #selector(TitleToolbarDelegate.saveSelected),
+                         for: .primaryActionTriggered)
 
         return button
     }
 
-    private lazy var cancelButton: UIButton = {
-        let button = self.button(using: L18.cancel)
-
-        button.setTitleColor(Constants.Color.defaultTint, for: .normal)
-        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.cancelSelected), for: .touchUpInside)
-
-        return button
-    }()
-
     lazy var undo: UIButton = {
-        let button = self.button(using: .fromBundle("icon-undo"))
+        let button = UIButton(type: .system)
 
-        button.tintColor = Constants.Color.primaryActionTint
-        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.undoSelected), for: .touchUpInside)
+        button.setImage(.fromBundle("icon-undo"), for: .normal)
+
+        button.widthAnchor.constraint(equalToConstant: Constants.Size.toolbarButtonSize.width).isActive = true
+        button.heightAnchor.constraint(equalToConstant: Constants.Size.toolbarButtonSize.height).isActive = true
+
+        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.undoSelected),
+                         for: .primaryActionTriggered)
 
         return button
     }()
 
     lazy var redo: UIButton = {
-        let button = self.button(using: .fromBundle("icon-redo"))
+        let button = UIButton(type: .system)
 
-        button.tintColor = Constants.Color.primaryActionTint
-        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.redoSelected), for: .touchUpInside)
+        button.setImage(.fromBundle("icon-redo"), for: .normal)
+
+        button.widthAnchor.constraint(equalToConstant: Constants.Size.toolbarButtonSize.width).isActive = true
+        button.heightAnchor.constraint(equalToConstant: Constants.Size.toolbarButtonSize.height).isActive = true
+
+        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.redoSelected),
+                         for: .primaryActionTriggered)
 
         return button
     }()
 
+    override init(style: EditorToolbarStyle = .accented) {
+        super.init(style: style)
+
+        setup()
+    }
+
+    public required init(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+
     // MARK: - Misc Overrides
 
     override func setItems(_ items: [UIView] = [], animated: Bool = false) {
-        shouldAutoAdjustAxis = false
-
         undoRedoToolbar = ArrangeableToolbar(items: [undo, redo])
-        undoRedoToolbar.spacing = style.itemSpacing
-        undoRedoToolbar.shouldAutoAdjustAxis = false
+        undoRedoToolbar.spacing = 16
 
         innerToolbar = ArrangeableToolbar(items: items)
         innerToolbar.spacing = style.itemSpacing
-        innerToolbar.shouldAutoAdjustAxis = false
 
-        saveButtonToolbar = ArrangeableToolbar(items: [UIView(), saveButton])
-        saveButtonToolbar.spacing = 0
-        saveButtonToolbar.shouldAutoAdjustAxis = false
+        saveButtonToolbar = ArrangeableToolbar(items: [saveButton])
         saveButtonToolbar.alignment = .trailing
 
         super.setItems([undoRedoToolbar, innerToolbar, saveButtonToolbar], animated: animated)
     }
+}
 
-    override func layoutSubviews() {
-        super.layoutSubviews()
-
-        saveButtonToolbar.widthAnchor.constraint(equalTo: undoRedoToolbar.widthAnchor).isActive = true
+private extension TitleToolbar {
+    func setup() {
+        distribution = .equalCentering
     }
 }

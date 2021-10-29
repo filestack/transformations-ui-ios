@@ -18,6 +18,15 @@ open class Config: NSObject {
     /// Filestack Client.
     public let fsClient: Filestack.Client
 
+    static func fontsURLs() -> [URL] {
+        [
+            "Montserrat-Regular",
+            "Montserrat-SemiBold",
+            "Montserrat-Bold"
+        ]
+        .map { Bundle.module.url(forResource: $0, withExtension: "ttf")! }
+    }
+
     /// Designated initializer.
     ///
     /// - Parameter modules: An object conforming to `EditorModules`.

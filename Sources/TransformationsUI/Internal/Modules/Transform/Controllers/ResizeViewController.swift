@@ -7,15 +7,10 @@
 //
 
 import UIKit
+import SnapKit
 
 protocol ResizeViewControllerDelegate: AnyObject {
-    func resizeViewControllerDismissed(with size:CGSize)
-}
-
-private enum SizeDimension {
-    case width
-    case height
-    case both
+    func resizeViewControllerDismissed(with size: CGSize)
 }
 
 class ResizeViewController: UIViewController {
@@ -45,27 +40,45 @@ class ResizeViewController: UIViewController {
         }
     }
 
-    private func label(titled title: String) -> UILabel {
+    private func label(titled title: String, isBold: Bool = false, isCentered: Bool = false) -> UILabel {
         let label = UILabel()
+        let fontSize = UIFont.labelFontSize
 
         label.text = title
-        label.font = UIFont.systemFont(ofSize: UIFont.labelFontSize)
+        label.font = isBold ? Constants.Fonts.bold(ofSize: fontSize) : Constants.Fonts.default(ofSize: fontSize)
+        label.textAlignment = isCentered ? .center : .natural
 
         return label
     }
 
-    private lazy var labelsStackView = UIStackView(arrangedSubviews: [
+    private lazy var widthStackView = UIStackView(arrangedSubviews: [
         label(titled: "Width"),
-        label(titled: "Height"),
-        label(titled: "Lock ratio")
+        widthTextfield
     ])
 
-    private lazy var controlsStackView = UIStackView(arrangedSubviews: [
-        widthTextfield, heightTextfield, lockRatioSwitch
+    private lazy var heightStackView = UIStackView(arrangedSubviews: [
+        label(titled: "Height"),
+        heightTextfield
+    ])
+
+    private lazy var lockRatioStackView = UIStackView(arrangedSubviews: [
+        label(titled: "Lock ratio"),
+        lockRatioSwitch
     ])
 
     private lazy var stackView = UIStackView(arrangedSubviews: [
-        labelsStackView, controlsStackView
+        label(titled: title ?? "", isBold: true, isCentered: true),
+        UIView(),
+        widthStackView,
+        heightStackView,
+        lockRatioStackView,
+        UIView(),
+        actionsStackView,
+    ])
+
+    private lazy var actionsStackView = UIStackView(arrangedSubviews: [
+        cancelButton,
+        applyButton
     ])
 
     private lazy var widthTextfield: UITextField = {
@@ -75,6 +88,7 @@ class ResizeViewController: UIViewController {
         textField.textAlignment = .right
         textField.borderStyle = .roundedRect
         textField.delegate = self
+        textField.font = Constants.Fonts.default(ofSize: UIFont.labelFontSize)
 
         return textField
     }()
@@ -86,6 +100,7 @@ class ResizeViewController: UIViewController {
         textField.textAlignment = .right
         textField.borderStyle = .roundedRect
         textField.delegate = self
+        textField.font = Constants.Fonts.default(ofSize: UIFont.labelFontSize)
 
         return textField
     }()
@@ -99,6 +114,28 @@ class ResizeViewController: UIViewController {
         return control
     }()
 
+    private lazy var cancelButton: UIButton = {
+        let button = UIButton(type: .system)
+
+        button.setTitle(L18.cancel, for: .normal)
+        button.addTarget(self, action: #selector(cancelSelected(_:)), for: .primaryActionTriggered)
+        button.titleLabel?.font = Constants.Fonts.semibold(ofSize: Constants.Fonts.navigationFontSize)
+        button.tintColor = Constants.Color.defaultTint
+
+        return button
+    }()
+
+    private lazy var applyButton: UIButton = {
+        let button = UIButton(type: .system)
+
+        button.setTitle("Apply", for: .normal)
+        button.addTarget(self, action: #selector(applySelected(_:)), for: .primaryActionTriggered)
+        button.titleLabel?.font = Constants.Fonts.semibold(ofSize: Constants.Fonts.navigationFontSize)
+        button.tintColor = Constants.Color.accent
+
+        return button
+    }()
+
     private var allowEndEditing: Bool = false
 
     override func viewDidLoad() {
@@ -107,15 +144,23 @@ class ResizeViewController: UIViewController {
         setup()
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+
+        widthTextfield.becomeFirstResponder()
+    }
+
     override func dismiss(animated flag: Bool, completion: (() -> Void)? = nil) {
         allowEndEditing = true
 
         super.dismiss(animated: flag, completion: completion)
     }
+}
 
-    // MARK: - Actions
+// MARK: - Actions
 
-    @objc func applySelected(sender: UIButton) {
+extension ResizeViewController {
+    @objc func applySelected(_ sender: UIButton) {
         dismiss(animated: true) {
             if self.outputImageSize.width > 0 && self.outputImageSize.height > 0 {
                 self.delegate?.resizeViewControllerDismissed(with: self.outputImageSize)
@@ -123,16 +168,18 @@ class ResizeViewController: UIViewController {
         }
     }
 
-    @objc func cancelSelected(sender: UIButton) {
+    @objc func cancelSelected(_ sender: UIButton) {
         dismiss(animated: true)
     }
 
-    @objc func lockRatioSwitchChanged(sender: UISwitch) {
+    @objc func lockRatioSwitchChanged(_ sender: UISwitch) {
         if lockRatioSwitch.isOn {
             enforceOutputSizeRatio()
         }
     }
 }
+
+// MARK: - UITextFieldDelegate Protocol
 
 extension ResizeViewController: UITextFieldDelegate {
     func textFieldShouldReturn(_ textField: UITextField) -> Bool {
@@ -168,6 +215,8 @@ extension ResizeViewController: UITextFieldDelegate {
         }
     }
 }
+
+// MARK: - Private Functions
 
 private extension ResizeViewController {
     func numericValue(for textField: UITextField) -> Double {
@@ -217,50 +266,60 @@ private extension ResizeViewController {
     }
 }
 
+// MARK: - Private Functions (Setup)
+
 private extension ResizeViewController {
     func setup() {
-        setupNavigationItems()
+        title = "Resize Image"
         setupViews()
     }
 
-    func setupNavigationItems() {
-        navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .cancel,
-                                                           target: self,
-                                                           action: #selector(cancelSelected))
-
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Apply",
-                                                            style: .done,
-                                                            target: self,
-                                                            action: #selector(applySelected))
-    }
-
     func setupViews() {
-        view.backgroundColor = Constants.Color.background
+        preferredContentSize = CGSize(width: 280, height: 260)
+        view.backgroundColor = Constants.Color.secondaryBackground
 
-        labelsStackView.axis = .vertical
-        labelsStackView.spacing = 6
-        labelsStackView.distribution = .equalSpacing
+        widthStackView.axis = .horizontal
+        widthStackView.alignment = .fill
+        widthStackView.distribution = .fill
+        widthStackView.spacing = 12
 
-        controlsStackView.axis = .vertical
-        controlsStackView.spacing = 6
-        controlsStackView.alignment = .trailing
-        controlsStackView.distribution = .equalSpacing
+        heightStackView.axis = .horizontal
+        heightStackView.alignment = .fill
+        heightStackView.distribution = .fill
+        heightStackView.spacing = 12
 
-        stackView.axis = .horizontal
-        stackView.spacing = 6
+        lockRatioStackView.axis = .horizontal
+        lockRatioStackView.alignment = .fill
+        lockRatioStackView.spacing = 12
+        lockRatioStackView.distribution = .fill
+
+        actionsStackView.axis = .horizontal
+        actionsStackView.alignment = .fill
+        actionsStackView.distribution = .equalSpacing
+        actionsStackView.spacing = 12
+
+        stackView.axis = .vertical
+        stackView.alignment = .fill
         stackView.distribution = .fill
+        stackView.spacing = 12
 
-        let containingStackView = UIStackView(arrangedSubviews: [UIView(), stackView, UIView()])
-        containingStackView.axis = .horizontal
-        containingStackView.distribution = .equalSpacing
+        for stackView in [widthStackView, heightStackView, lockRatioStackView] {
+            stackView.arrangedSubviews.last?.snp.makeConstraints { $0.width.equalTo(80) }
+        }
 
-        widthTextfield.widthAnchor.constraint(equalToConstant: 80).isActive = true
-        heightTextfield.widthAnchor.constraint(equalToConstant: 80).isActive = true
+        let insets = UIEdgeInsets(top: 20, left: 40, bottom: 20, right: 40)
 
-        view.fill(with: containingStackView,
-                  connectingEdges: [.left, .right, .top],
-                  inset: 22,
-                  withSafeAreaRespecting: true,
-                  activate: true)
+        view.addSubview(stackView)
+        stackView.snp.makeConstraints { $0.left.right.top.equalTo(view.safeAreaLayoutGuide).inset(insets) }
+    }
+}
+
+// MARK: - ResizeViewController.SizeDimension
+
+private extension ResizeViewController {
+    enum SizeDimension {
+        case width
+        case height
+        case both
     }
 }

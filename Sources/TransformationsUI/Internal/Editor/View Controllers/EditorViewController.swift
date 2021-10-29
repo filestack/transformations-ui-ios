@@ -7,12 +7,13 @@
 //
 
 import UIKit
+import SnapKit
 
 final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate, TitleToolbarDelegate {
     // MARK: - Internal Properties
 
     lazy var titleToolbar: TitleToolbar = {
-        let toolbar = TitleToolbar(style: .default)
+        let toolbar = TitleToolbar(style: .accented)
 
         toolbar.delegate = self
 
@@ -87,7 +88,9 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
     func attachModuleViewController() {
         addChild(moduleViewController)
 
-        moduleContainerView.fill(with: moduleViewController.view, activate: true)
+        moduleContainerView.addSubview(moduleViewController.view)
+        moduleViewController.view.snp.makeConstraints { $0.edges.equalTo(moduleContainerView) }
+
         moduleViewController.didMove(toParent: self)
         moduleViewController.discardApplyDelegate = self
     }
@@ -149,7 +152,7 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
             renderPipeline.restore(from: state)
         }
 
-        activateOverviewModule()
+        activateOverviewModule(settingRenderNode: false)
     }
 
     // MARK: - TitleToolbar Delegate
@@ -164,12 +167,6 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
 
         dismiss(animated: true) {
             self.completion?(editedImage)
-        }
-    }
-
-    func cancelSelected(sender: UIButton) {
-        dismiss(animated: true) {
-            self.completion?(nil)
         }
     }
 
@@ -201,9 +198,9 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
 // MARK: - Private Functions
 
 private extension EditorViewController {
-    func activateOverviewModule() {
+    func activateOverviewModule(settingRenderNode: Bool = true) {
         // Try to get object render node from active module.
-        let objectRenderNode = moduleViewController.activeModuleController?.getRenderNode() as? ObjectRenderNode
+        let objectRenderNode = settingRenderNode ? moduleViewController.activeModuleController?.getRenderNode() as? ObjectRenderNode : nil
 
         // Activate module
         activate(module: overviewModule, renderNode: objectRenderNode)

@@ -17,7 +17,9 @@ public class SegmentedControlToolbar: StandardToolbar {
                                                                                     valueOptions: .strongMemory)
 
     private lazy var segmentedControl: UberSegmentedControl = {
-        let control = UberSegmentedControl(items: nil)
+        let control = UberSegmentedControl(
+            config: .init(font: Constants.Fonts.segmentedControlFont)
+        )
 
         // Setup segmented control depending on item style.
         switch style.itemStyle.mode {
