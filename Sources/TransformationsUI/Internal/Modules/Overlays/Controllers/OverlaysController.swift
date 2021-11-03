@@ -129,10 +129,6 @@ extension OverlaysController: PickerNavigationControllerDelegate {
         }
     }
 
-    func pickerUploadedFiles(picker: PickerNavigationController, responses: [JSONResponse]) {
-        // NO-OP
-    }
-
     func pickerWasDismissed(picker: PickerNavigationController) {
         if let image = selectedImage?.normalizedImage, let renderNode = renderNode {
             renderNode.image = image
