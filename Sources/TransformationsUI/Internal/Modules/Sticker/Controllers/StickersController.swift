@@ -27,16 +27,7 @@ class StickersController: EditorModuleController {
     // MARK: - Static Overrides
 
     static func renderNode(for module: EditorModule, in group: RenderGroupNode) -> RenderNode? {
-        guard let groupView = (group as? ViewableNode)?.view else { return nil }
-
-        let bounds = groupView.bounds
-        let size: CGFloat = min(bounds.width, bounds.height) * 0.90
-        let rect = CGRect(origin: .zero, size: CGSize(width: size, height: size))
-
         let renderNode = StickersRenderNode()
-
-        renderNode.center = CGPoint(x: bounds.midX, y: bounds.midY)
-        renderNode.bounds = CGRect(origin: .zero, size: rect.size)
 
         group.add(node: renderNode)
 
