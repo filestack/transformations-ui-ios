@@ -59,9 +59,10 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
         guard let renderPipeline = RenderPipeline(inputImage: image) else { return nil }
 
         self.config = config
-        self.modules = config.modules.all.compactMap { $0.isEnabled ? $0 : nil }
         self.renderPipeline = renderPipeline
         self.completion = completion
+
+        modules = config.modules.all.compactMap { $0.isEnabled ? $0 : nil }
 
         super.init(nibName: nil, bundle: nil)
 
@@ -111,7 +112,7 @@ final class EditorViewController: UIViewController, DiscardApplyToolbarDelegate,
 
                 toolbar.delegate = self
                 stackView.addArrangedSubview(toolbar)
-                self.discardApplyToolbar = toolbar
+                discardApplyToolbar = toolbar
             }
         } else if let discardApplyToolbar = discardApplyToolbar {
             stackView.removeArrangedSubview(discardApplyToolbar)

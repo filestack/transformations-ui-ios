@@ -19,9 +19,7 @@ class EditorUndoManager {
 
     weak var delegate: EditorUndoManagerDelegate?
 
-    var currentStep: UndoStep {
-        return undoStack.last ?? initialStep
-    }
+    var currentStep: UndoStep { undoStack.last ?? initialStep }
 
     // MARK: - Private Properties
 
@@ -91,15 +89,11 @@ extension EditorUndoManager {
 
     /// Returns whether the undo manager contains any steps in the undo stack.
     /// - Returns: `true` if it can undo, `false` otherwise.
-    func canUndo() -> Bool {
-        return !undoStack.isEmpty
-    }
+    func canUndo() -> Bool { !undoStack.isEmpty }
 
     /// Returns whether the undo manager contains any steps in the redo stack.
     /// - Returns: `true` if it can redo, `false` otherwise.
-    func canRedo() -> Bool {
-        return !redoStack.isEmpty
-    }
+    func canRedo() -> Bool { !redoStack.isEmpty }
 }
 
 // MARK: - Misc UndoStep Extensions

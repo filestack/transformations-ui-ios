@@ -31,9 +31,11 @@ class TitleToolbar: EditorToolbar {
         button.titleLabel?.font = Constants.Fonts.semibold(ofSize: Constants.Fonts.navigationFontSize)
         button.setTitle(L18.save.uppercased(), for: .normal)
 
-        button.addTarget(delegate,
-                         action: #selector(TitleToolbarDelegate.saveSelected),
-                         for: .primaryActionTriggered)
+        button.addTarget(
+                delegate,
+                action: #selector(TitleToolbarDelegate.saveSelected),
+                for: .primaryActionTriggered
+        )
 
         return button
     }
@@ -46,8 +48,11 @@ class TitleToolbar: EditorToolbar {
         button.widthAnchor.constraint(equalToConstant: Constants.Size.toolbarButtonSize.width).isActive = true
         button.heightAnchor.constraint(equalToConstant: Constants.Size.toolbarButtonSize.height).isActive = true
 
-        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.undoSelected),
-                         for: .primaryActionTriggered)
+        button.addTarget(
+                delegate,
+                action: #selector(TitleToolbarDelegate.undoSelected),
+                for: .primaryActionTriggered
+        )
 
         return button
     }()
@@ -60,8 +65,11 @@ class TitleToolbar: EditorToolbar {
         button.widthAnchor.constraint(equalToConstant: Constants.Size.toolbarButtonSize.width).isActive = true
         button.heightAnchor.constraint(equalToConstant: Constants.Size.toolbarButtonSize.height).isActive = true
 
-        button.addTarget(delegate, action: #selector(TitleToolbarDelegate.redoSelected),
-                         for: .primaryActionTriggered)
+        button.addTarget(
+                delegate,
+                action: #selector(TitleToolbarDelegate.redoSelected),
+                for: .primaryActionTriggered
+        )
 
         return button
     }()
