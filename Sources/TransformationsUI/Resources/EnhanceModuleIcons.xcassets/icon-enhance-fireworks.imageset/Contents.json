@@ -1,0 +1,12 @@
+{
+  "images" : [
+    {
+      "filename" : "icon-enhancement-fireworks.png",
+      "idiom" : "universal"
+    }
+  ],
+  "info" : {
+    "author" : "xcode",
+    "version" : 1
+  }
+}
