@@ -25,6 +25,11 @@ class RenderPipeline {
         let view = UIView()
 
         view.translatesAutoresizingMaskIntoConstraints = false
+        view.layer.shadowColor = UIColor.black.cgColor
+        view.layer.shadowRadius = 40.0
+        view.layer.shadowOpacity = 0.67
+        view.layer.shadowOffset = CGSize(width: 0, height: 30)
+        view.layer.masksToBounds = false
 
         return view
     }()
